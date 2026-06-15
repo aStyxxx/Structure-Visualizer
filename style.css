@@ -568,56 +568,63 @@ body {
 /* --- Tree Layout --- */
 .tree-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+    justify-content: center;
     margin-top: 20px;
+    width: 100%;
+    overflow-x: auto;
 }
-.tree-node-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0 10px;
+.tree-container ul {
+    padding-top: 20px;
     position: relative;
-}
-.tree-node-wrapper.empty {
-    visibility: hidden;
-}
-.tree-children {
     display: flex;
     justify-content: center;
-    margin-top: 40px;
+    padding-left: 0;
+}
+.tree-container li {
+    float: left; text-align: center;
+    list-style-type: none;
     position: relative;
+    padding: 20px 10px 0 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-/* Connect parent to children horizontal line */
-.tree-children::before {
+.tree-container li::before, .tree-container li::after {
     content: '';
-    position: absolute;
-    top: -20px;
-    left: 25%;
-    right: 25%;
+    position: absolute; top: 0; right: 50%;
     border-top: 2px solid var(--accent-primary);
-    height: 20px;
+    width: 50%; height: 20px;
 }
-/* Vertical line from parent down */
-.tree-node-wrapper > .tree-children::after {
-    content: '';
-    position: absolute;
-    top: -40px;
-    left: 50%;
-    width: 2px;
-    height: 20px;
-    background: var(--accent-primary);
+.tree-container li::after {
+    right: auto; left: 50%;
+    border-left: 2px solid var(--accent-primary);
 }
-/* Vertical line down to child */
-.tree-children > .tree-node-wrapper::before {
+.tree-container li:only-child::after, .tree-container li:only-child::before {
+    display: none;
+}
+.tree-container li:only-child { padding-top: 0; }
+.tree-container li:first-child::before, .tree-container li:last-child::after {
+    border: 0 none;
+}
+.tree-container li:last-child::before {
+    border-right: 2px solid var(--accent-primary);
+}
+.tree-container ul::before {
     content: '';
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    width: 2px;
-    height: 20px;
-    background: var(--accent-primary);
+    position: absolute; top: 0; left: calc(50% - 1px);
+    border-left: 2px solid var(--accent-primary);
+    width: 0; height: 20px;
+}
+.tree-container > ul::before { display: none; }
+.tree-container > ul { padding-top: 0; }
+
+.empty-node {
+    visibility: hidden;
+}
+.hidden-node {
+    width: 50px; height: 50px;
+    margin: 0; padding: 0;
+    border: none; background: transparent;
 }
 
 /* --- Graph Layout --- */

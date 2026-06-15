@@ -25,8 +25,108 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentStructure = 'singly-linked-list';
     let structureData = [];
     let isExecuting = false;
+    let executionId = 0;
     let isPaused = false;
     let stepIndex = 0;
+
+    // --- Localization ---
+    const translations = {
+        'en': {
+            'visualizing': 'Visualizing',
+            'run': '▶ Run',
+            'pause': '⏸ Pause',
+            'resume': '▶ Resume',
+            'step': '⏭ Step',
+            'clear_vis': '⏹ Clear Vis',
+            'clear_script': '🗑 Clear Script',
+            'empty_workspace': 'Click a block above to add it here...',
+            'bfs_desc': 'BFS (Breadth-First Search) explores the graph layer by layer using a Queue.',
+            'dfs_desc': 'DFS (Depth-First Search) explores the graph as deep as possible before backtracking using a Stack.',
+            'singly-linked-list': 'Singly Linked List',
+            'doubly-linked-list': 'Doubly Linked List',
+            'circular-linked-list': 'Circular Linked List',
+            'directed-graph': 'Directed Graph',
+            'undirected-graph': 'Undirected Graph',
+            'binary-search-tree': 'Binary Search Tree',
+            'avl-tree': 'AVL Tree',
+            'queue': 'Queue:',
+            'stack': 'Stack:',
+            'visited': 'Visited:'
+        },
+        'uk': {
+            'visualizing': 'Візуалізація',
+            'run': '▶ Запуск',
+            'pause': '⏸ Пауза',
+            'resume': '▶ Продовжити',
+            'step': '⏭ Крок',
+            'clear_vis': '⏹ Очистити Віз.',
+            'clear_script': '🗑 Оч. Скрипт',
+            'empty_workspace': 'Натисніть на блок вище, щоб додати його сюди...',
+            'bfs_desc': 'BFS (Пошук в ширину) обходить граф рівень за рівнем, використовуючи Чергу (Queue).',
+            'dfs_desc': 'DFS (Пошук в глибину) йде вглиб графа настільки далеко, наскільки це можливо, використовуючи Стек (Stack).',
+            'singly-linked-list': 'Однозв\'язний список',
+            'doubly-linked-list': 'Двозв\'язний список',
+            'circular-linked-list': 'Кільцевий список',
+            'directed-graph': 'Орієнтований граф',
+            'undirected-graph': 'Неорієнтований граф',
+            'binary-search-tree': 'Бінарне дерево пошуку',
+            'avl-tree': 'АВЛ Дерево',
+            'queue': 'Черга (Queue):',
+            'stack': 'Стек (Stack):',
+            'visited': 'Відвідані:'
+        }
+    };
+    
+    let currentLang = 'en';
+    
+    function applyTranslations() {
+        const t = translations[currentLang];
+        btnRun.textContent = t.run;
+        btnPause.textContent = isPaused ? t.resume : t.pause;
+        btnStep.textContent = t.step;
+        btnClearVis.textContent = t.clear_vis;
+        btnClearScript.textContent = t.clear_script;
+        
+        if (workspaceContainer.innerHTML.includes('empty-text')) {
+            workspaceContainer.innerHTML = `<p class="empty-text">${t.empty_workspace}</p>`;
+        }
+        
+        navItems.forEach(item => {
+            const struct = item.getAttribute('data-structure');
+            if (t[struct]) {
+                item.textContent = t[struct];
+            }
+            if (item.classList.contains('active')) {
+                visualizerPlaceholderText.textContent = `${t.visualizing}: ${t[struct] || item.textContent}`;
+            }
+        });
+    }
+
+    document.getElementById('lang-en').addEventListener('click', () => {
+        currentLang = 'en';
+        document.getElementById('lang-en').classList.add('active');
+        document.getElementById('lang-en').style.fontWeight = 'bold';
+        document.getElementById('lang-en').style.color = 'var(--text-main)';
+        document.getElementById('lang-uk').classList.remove('active');
+        document.getElementById('lang-uk').style.fontWeight = 'normal';
+        document.getElementById('lang-uk').style.color = 'var(--text-muted)';
+        applyTranslations();
+    });
+    
+    document.getElementById('lang-uk').addEventListener('click', () => {
+        currentLang = 'uk';
+        document.getElementById('lang-uk').classList.add('active');
+        document.getElementById('lang-uk').style.fontWeight = 'bold';
+        document.getElementById('lang-uk').style.color = 'var(--text-main)';
+        document.getElementById('lang-en').classList.remove('active');
+        document.getElementById('lang-en').style.fontWeight = 'normal';
+        document.getElementById('lang-en').style.color = 'var(--text-muted)';
+        applyTranslations();
+    });
+    
+    // Initial apply
+    applyTranslations();
+
 
     // --- Block Definitions & Code ---
     const blockTypes = {
@@ -38,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'remove_tail', label: 'remove_tail', type: 'remove' },
             { id: 'reverse', label: 'reverse', type: 'action' },
             { id: 'print', label: 'print', type: 'action' },
-            { id: 'sort', label: 'sort', type: 'action', hasSelect: true, options: ['Bubble Sort'] }
+            { id: 'sort', label: 'sort', type: 'action', hasSelect: true, options: ['Bubble Sort', 'Selection Sort', 'Insertion Sort', 'Quick Sort'] }
         ],
         'graph': [
             { id: 'add_vertex', label: 'add_vertex', type: 'add', inputs: ['val'] },
@@ -320,21 +420,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (currentStructure.includes('list')) {
-            // Render HEAD
-            const headWrapper = document.createElement('div');
-            headWrapper.className = 'node-wrapper';
-            const headNode = document.createElement('div');
-            headNode.className = 'node nullptr';
-            headNode.textContent = 'HEAD';
-            headNode.style.borderRadius = '8px';
-            headWrapper.appendChild(headNode);
-            
-            const headArrow = document.createElement('div');
-            headArrow.className = 'arrow';
-            if (currentStructure === 'doubly-linked-list') headArrow.classList.add('double');
-            headWrapper.appendChild(headArrow);
-            visualizerContainer.appendChild(headWrapper);
-
             // Render Nodes
             structureData.forEach((val, index) => {
                 const wrapper = document.createElement('div');
@@ -359,24 +444,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             // Render Tail/NULL
-            const endWrapper = document.createElement('div');
-            endWrapper.className = 'node-wrapper';
-            const endNode = document.createElement('div');
-            endNode.className = 'node nullptr';
-            
-            if (currentStructure.includes('circular')) {
-                endNode.textContent = 'HEAD';
-                endNode.style.borderRadius = '8px';
-            } else {
+            if (!currentStructure.includes('circular')) {
+                const endWrapper = document.createElement('div');
+                endWrapper.className = 'node-wrapper';
+                const endNode = document.createElement('div');
+                endNode.className = 'node nullptr';
                 endNode.textContent = 'NULL';
-                endNode.style.border = '2px dashed var(--text-muted)';
+                endNode.style.border = '2px dashed rgba(255,255,255,0.15)';
                 endNode.style.background = 'transparent';
-                endNode.style.color = 'var(--text-muted)';
+                endNode.style.color = 'rgba(255,255,255,0.2)';
+                endNode.style.boxShadow = 'none';
+                
+                endWrapper.appendChild(endNode);
+                visualizerContainer.appendChild(endWrapper);
             }
-            
-            endWrapper.appendChild(endNode);
-            visualizerContainer.appendChild(endWrapper);
-            
         } else if (currentStructure.includes('graph')) {
             const graphContainer = document.createElement('div');
             graphContainer.className = 'graph-container';
@@ -434,44 +515,34 @@ document.addEventListener('DOMContentLoaded', () => {
             treeContainer.className = 'tree-container';
             
             function buildTreeDOM(node) {
-                if (!node) return null;
-                const wrapper = document.createElement('div');
-                wrapper.className = 'tree-node-wrapper';
+                if (!node) {
+                    const emptyLi = document.createElement('li');
+                    emptyLi.className = 'empty-node';
+                    const emptyEl = document.createElement('div');
+                    emptyEl.className = 'node hidden-node';
+                    emptyLi.appendChild(emptyEl);
+                    return emptyLi;
+                }
+                const li = document.createElement('li');
                 
                 const el = document.createElement('div');
                 el.className = 'node';
                 el.textContent = node.val;
-                wrapper.appendChild(el);
+                el.dataset.val = node.val;
+                li.appendChild(el);
                 
                 if (node.left || node.right) {
-                    const children = document.createElement('div');
-                    children.className = 'tree-children';
-                    
-                    const leftChild = buildTreeDOM(node.left);
-                    const rightChild = buildTreeDOM(node.right);
-                    
-                    if (leftChild) children.appendChild(leftChild);
-                    else {
-                        const empty = document.createElement('div');
-                        empty.className = 'tree-node-wrapper empty';
-                        empty.style.width = '50px';
-                        children.appendChild(empty);
-                    }
-                    
-                    if (rightChild) children.appendChild(rightChild);
-                    else {
-                        const empty = document.createElement('div');
-                        empty.className = 'tree-node-wrapper empty';
-                        empty.style.width = '50px';
-                        children.appendChild(empty);
-                    }
-                    
-                    wrapper.appendChild(children);
+                    const ul = document.createElement('ul');
+                    ul.appendChild(buildTreeDOM(node.left));
+                    ul.appendChild(buildTreeDOM(node.right));
+                    li.appendChild(ul);
                 }
-                return wrapper;
+                return li;
             }
             
-            treeContainer.appendChild(buildTreeDOM(structureData));
+            const rootUl = document.createElement('ul');
+            rootUl.appendChild(buildTreeDOM(structureData));
+            treeContainer.appendChild(rootUl);
             visualizerContainer.appendChild(treeContainer);
         }
     }
@@ -530,9 +601,82 @@ document.addEventListener('DOMContentLoaded', () => {
                     await sleep(400);
                     await checkPause();
                 }
+                await sleep(600); // Give user time to see the arrows flipped
                 structureData.reverse();
                 renderVisualizer();
             }
+        } else if (blockId === 'bfs' || blockId === 'dfs') {
+            if (!structureData.vertices || structureData.vertices.length === 0) return;
+            let startNode = v1 || structureData.vertices[0];
+            if (!structureData.vertices.includes(startNode)) {
+                alert(`Vertex ${startNode} not found!`);
+                return;
+            }
+            
+            const statusContainer = document.createElement('div');
+            statusContainer.style.position = 'absolute';
+            statusContainer.style.bottom = '10px';
+            statusContainer.style.left = '10px';
+            statusContainer.style.color = 'var(--text-main)';
+            statusContainer.style.background = 'rgba(0,0,0,0.6)';
+            statusContainer.style.padding = '10px';
+            statusContainer.style.borderRadius = '8px';
+            statusContainer.innerHTML = `
+                <div style="margin-bottom: 5px; font-family: monospace;"><strong>${blockId === 'bfs' ? translations[currentLang].queue : translations[currentLang].stack}</strong> <span id="ds-container">[]</span></div>
+                <div style="font-family: monospace;"><strong>${translations[currentLang].visited}</strong> <span id="vis-container">[]</span></div>
+            `;
+            visualizerContainer.appendChild(statusContainer);
+            
+            let ds = []; 
+            let visited = [];
+            
+            ds.push(startNode);
+            
+            const adj = {};
+            structureData.vertices.forEach(v => adj[v] = []);
+            structureData.edges.forEach(e => {
+                adj[e.u].push(e.v);
+                if (currentStructure === 'undirected-graph') {
+                    adj[e.v].push(e.u);
+                }
+            });
+            
+            const updateUI = async () => {
+                document.getElementById('ds-container').textContent = JSON.stringify(ds);
+                document.getElementById('vis-container').textContent = JSON.stringify(visited);
+                await sleep(600);
+            };
+            
+            const domNodes = Array.from(document.querySelectorAll('.graph-node'));
+            
+            while (ds.length > 0) {
+                await checkPause();
+                let current = blockId === 'bfs' ? ds.shift() : ds.pop();
+                
+                if (!visited.includes(current)) {
+                    visited.push(current);
+                    
+                    let targetDom = domNodes.find(n => n.textContent === current);
+                    if (targetDom) {
+                        targetDom.style.backgroundColor = '#f59e0b';
+                        targetDom.style.transform = 'scale(1.2)';
+                        await updateUI();
+                        targetDom.style.backgroundColor = '#10b981';
+                        targetDom.style.transform = 'scale(1)';
+                    }
+                    
+                    let neighbors = adj[current];
+                    for (let neighbor of neighbors) {
+                        if (!visited.includes(neighbor) && !ds.includes(neighbor)) {
+                            ds.push(neighbor);
+                        }
+                    }
+                    await updateUI();
+                }
+            }
+            await sleep(1500);
+            statusContainer.remove();
+            renderVisualizer(); 
         } else if (blockId === 'add_vertex') {
             if (!structureData.vertices) structureData = { vertices: [], edges: [] };
             if (!structureData.vertices.includes(v1)) {
@@ -564,6 +708,90 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             renderVisualizer();
             await sleep(700);
+        } else if (blockId === 'search') {
+            const visualizerText = document.createElement('p');
+            visualizerText.style.position = 'absolute';
+            visualizerText.style.top = '10px';
+            visualizerText.style.fontWeight = 'bold';
+            visualizerText.style.color = 'var(--text-main)';
+            visualizerContainer.appendChild(visualizerText);
+            
+            if (!structureData) {
+                visualizerText.textContent = `Tree is empty! Cannot find ${v1}.`;
+                visualizerText.style.color = '#ef4444';
+                await sleep(2000);
+                visualizerText.remove();
+                return;
+            }
+            
+            const searchNode = document.createElement('div');
+            searchNode.className = 'node';
+            searchNode.textContent = v1;
+            searchNode.style.position = 'absolute';
+            searchNode.style.zIndex = '100';
+            searchNode.style.transition = 'all 0.6s ease';
+            searchNode.style.backgroundColor = 'var(--accent-secondary)';
+            searchNode.style.left = '10px';
+            searchNode.style.top = '50px';
+            visualizerContainer.appendChild(searchNode);
+
+            let curr = structureData;
+            let found = false;
+            while (curr) {
+                const domNodes = document.querySelectorAll('.tree-container .node:not(.hidden-node)');
+                let targetNode = Array.from(domNodes).find(n => n.dataset.val == curr.val);
+                
+                let op = parseInt(v1) === parseInt(curr.val) ? '=' : (parseInt(v1) < parseInt(curr.val) ? '<' : '>');
+                
+                if (targetNode) {
+                    const rect = targetNode.getBoundingClientRect();
+                    const containerRect = visualizerContainer.getBoundingClientRect();
+                    
+                    searchNode.style.left = `${rect.left - containerRect.left + 70}px`;
+                    searchNode.style.top = `${rect.top - containerRect.top}px`;
+                    
+                    const operator = document.createElement('div');
+                    operator.style.position = 'absolute';
+                    operator.style.left = `${rect.left - containerRect.left + 50}px`;
+                    operator.style.top = `${rect.top - containerRect.top + 12}px`;
+                    operator.style.fontWeight = 'bold';
+                    operator.style.fontSize = '24px';
+                    operator.style.zIndex = '100';
+                    operator.textContent = op;
+                    if (op === '=') operator.style.color = '#10b981';
+                    visualizerContainer.appendChild(operator);
+                    
+                    targetNode.classList.add('anim-highlight-yellow');
+                    visualizerText.textContent = `Comparing ${v1} with ${curr.val}...`;
+                    
+                    await sleep(1000);
+                    operator.remove();
+                    targetNode.classList.remove('anim-highlight-yellow');
+                }
+                
+                if (op === '=') {
+                    found = true;
+                    if (targetNode) targetNode.style.borderColor = '#10b981';
+                    searchNode.style.backgroundColor = '#10b981';
+                    break;
+                } else if (op === '<') {
+                    curr = curr.left;
+                } else {
+                    curr = curr.right;
+                }
+            }
+            if (!found) {
+                visualizerText.textContent = `Value ${v1} not found in the tree!`;
+                visualizerText.style.color = '#ef4444';
+                searchNode.style.backgroundColor = '#ef4444';
+            } else {
+                visualizerText.textContent = `Found ${v1}!`;
+                visualizerText.style.color = '#10b981';
+            }
+            await sleep(2500);
+            visualizerText.remove();
+            searchNode.remove();
+            renderVisualizer();
         } else if (blockId === 'print') {
             for (let i = 0; i < nodes.length; i++) {
                 nodes[i].classList.add('anim-highlight-yellow');
@@ -571,43 +799,154 @@ document.addEventListener('DOMContentLoaded', () => {
                 nodes[i].classList.remove('anim-highlight-yellow');
             }
         } else if (blockId === 'sort') {
-            // Bubble Sort Visualization
             let n = structureData.length;
-            for (let i = 0; i < n - 1; i++) {
-                for (let j = 0; j < n - i - 1; j++) {
-                    const currentNodes = document.querySelectorAll('#visualizer-container .node:not(.nullptr)');
+            if (v1 === 'Selection Sort') {
+                for (let i = 0; i < n - 1; i++) {
+                    let minIdx = i;
+                    const nodes = document.querySelectorAll('#visualizer-container .node:not(.nullptr)');
+                    nodes[minIdx].classList.add('anim-highlight-yellow');
                     
-                    // Highlight elements being compared
-                    currentNodes[j].classList.add('anim-highlight-yellow');
-                    currentNodes[j+1].classList.add('anim-highlight-yellow');
-                    await sleep(700);
-                    await checkPause();
+                    for (let j = i + 1; j < n; j++) {
+                        nodes[j].classList.add('anim-highlight-yellow');
+                        await sleep(400);
+                        await checkPause();
+                        
+                        if (parseInt(structureData[j]) < parseInt(structureData[minIdx])) {
+                            nodes[minIdx].classList.remove('anim-highlight-yellow');
+                            nodes[minIdx].style.borderColor = '';
+                            minIdx = j;
+                            nodes[minIdx].classList.add('anim-highlight-yellow');
+                            nodes[minIdx].style.borderColor = '#3b82f6';
+                        } else {
+                            nodes[j].classList.remove('anim-highlight-yellow');
+                        }
+                    }
                     
-                    if (parseInt(structureData[j]) > parseInt(structureData[j+1])) {
-                        // Flash green for swap and physical move
-                        currentNodes[j].classList.remove('anim-highlight-yellow');
-                        currentNodes[j+1].classList.remove('anim-highlight-yellow');
+                    if (minIdx !== i) {
+                        let temp = structureData[i];
+                        structureData[i] = structureData[minIdx];
+                        structureData[minIdx] = temp;
                         
-                        currentNodes[j].classList.add('anim-swap-right');
-                        currentNodes[j+1].classList.add('anim-swap-left');
+                        nodes[i].textContent = structureData[i];
+                        nodes[minIdx].textContent = structureData[minIdx];
                         
-                        await sleep(800);
+                        nodes[i].style.backgroundColor = '#10b981';
+                        nodes[minIdx].style.backgroundColor = '#10b981';
+                        await sleep(600);
+                        nodes[i].style.backgroundColor = '';
+                        nodes[minIdx].style.backgroundColor = '';
+                    }
+                    nodes[i].style.borderColor = '';
+                    nodes[minIdx].style.borderColor = '';
+                    nodes[minIdx].classList.remove('anim-highlight-yellow');
+                    nodes[i].classList.remove('anim-highlight-yellow');
+                }
+            } else if (v1 === 'Insertion Sort') {
+                for (let i = 1; i < n; i++) {
+                    let key = parseInt(structureData[i]);
+                    let j = i - 1;
+                    const nodes = document.querySelectorAll('#visualizer-container .node:not(.nullptr)');
+                    
+                    nodes[i].classList.add('anim-highlight-yellow');
+                    await sleep(500);
+                    
+                    while (j >= 0 && parseInt(structureData[j]) > key) {
+                        nodes[j].classList.add('anim-highlight-yellow');
+                        await sleep(400);
+                        await checkPause();
                         
-                        // Swap data in array
-                        let temp = structureData[j];
-                        structureData[j] = structureData[j+1];
-                        structureData[j+1] = temp;
+                        structureData[j + 1] = structureData[j];
+                        nodes[j + 1].textContent = structureData[j + 1];
                         
-                        // Update text in DOM visually after animation finishes
-                        currentNodes[j].textContent = structureData[j];
-                        currentNodes[j+1].textContent = structureData[j+1];
+                        nodes[j].classList.remove('anim-highlight-yellow');
+                        j = j - 1;
+                    }
+                    structureData[j + 1] = key;
+                    nodes[j + 1].textContent = key;
+                    nodes[j + 1].style.backgroundColor = '#10b981';
+                    await sleep(500);
+                    nodes[j + 1].style.backgroundColor = '';
+                    nodes[i].classList.remove('anim-highlight-yellow');
+                }
+            } else if (v1 === 'Quick Sort') {
+                async function quickSortLogic(arr, low, high) {
+                    if (low < high) {
+                        let pi = await partition(arr, low, high);
+                        await quickSortLogic(arr, low, pi - 1);
+                        await quickSortLogic(arr, pi + 1, high);
+                    }
+                }
+                async function partition(arr, low, high) {
+                    const nodes = document.querySelectorAll('#visualizer-container .node:not(.nullptr)');
+                    let pivot = parseInt(arr[high]);
+                    nodes[high].style.borderColor = '#ef4444';
+                    let i = low - 1;
+                    
+                    for (let j = low; j <= high - 1; j++) {
+                        nodes[j].classList.add('anim-highlight-yellow');
+                        await sleep(300);
+                        await checkPause();
                         
-                        currentNodes[j].classList.remove('anim-swap-right');
-                        currentNodes[j+1].classList.remove('anim-swap-left');
-                    } else {
-                        // Remove highlight if no swap
-                        currentNodes[j].classList.remove('anim-highlight-yellow');
-                        currentNodes[j+1].classList.remove('anim-highlight-yellow');
+                        if (parseInt(arr[j]) < pivot) {
+                            i++;
+                            let temp = arr[i];
+                            arr[i] = arr[j];
+                            arr[j] = temp;
+                            
+                            nodes[i].textContent = arr[i];
+                            nodes[j].textContent = arr[j];
+                        }
+                        nodes[j].classList.remove('anim-highlight-yellow');
+                    }
+                    
+                    let temp = arr[i+1];
+                    arr[i+1] = arr[high];
+                    arr[high] = temp;
+                    
+                    nodes[i+1].textContent = arr[i+1];
+                    nodes[high].textContent = arr[high];
+                    
+                    nodes[high].style.borderColor = '';
+                    nodes[i+1].style.backgroundColor = '#10b981';
+                    await sleep(400);
+                    nodes[i+1].style.backgroundColor = '';
+                    
+                    return i + 1;
+                }
+                await quickSortLogic(structureData, 0, n - 1);
+            } else {
+                // Bubble Sort Visualization
+                for (let i = 0; i < n - 1; i++) {
+                    for (let j = 0; j < n - i - 1; j++) {
+                        const currentNodes = document.querySelectorAll('#visualizer-container .node:not(.nullptr)');
+                        
+                        currentNodes[j].classList.add('anim-highlight-yellow');
+                        currentNodes[j+1].classList.add('anim-highlight-yellow');
+                        await sleep(700);
+                        await checkPause();
+                        
+                        if (parseInt(structureData[j]) > parseInt(structureData[j+1])) {
+                            currentNodes[j].classList.remove('anim-highlight-yellow');
+                            currentNodes[j+1].classList.remove('anim-highlight-yellow');
+                            
+                            currentNodes[j].classList.add('anim-swap-right');
+                            currentNodes[j+1].classList.add('anim-swap-left');
+                            
+                            await sleep(800);
+                            
+                            let temp = structureData[j];
+                            structureData[j] = structureData[j+1];
+                            structureData[j+1] = temp;
+                            
+                            currentNodes[j].textContent = structureData[j];
+                            currentNodes[j+1].textContent = structureData[j+1];
+                            
+                            currentNodes[j].classList.remove('anim-swap-right');
+                            currentNodes[j+1].classList.remove('anim-swap-left');
+                        } else {
+                            currentNodes[j].classList.remove('anim-highlight-yellow');
+                            currentNodes[j+1].classList.remove('anim-highlight-yellow');
+                        }
                     }
                 }
             }
@@ -615,10 +954,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function runScript() {
-        if (isExecuting) return;
+        if (isExecuting && !isPaused) return;
         
+        executionId++;
+        const currentExecId = executionId;
+        
+        if (isPaused) {
+            isPaused = false;
+            btnPause.textContent = '⏸ Pause';
+            btnPause.classList.remove('primary');
+            btnPause.classList.add('secondary');
+        }
+
         const blocks = document.querySelectorAll('.workspace-block');
         if (blocks.length === 0) return;
+
+        // Reset visualization data to start fresh on Run
+        if (currentStructure.includes('graph')) {
+            structureData = { vertices: [], edges: [] };
+        } else if (currentStructure.includes('tree')) {
+            structureData = null;
+        } else {
+            structureData = [];
+        }
+        renderVisualizer();
 
         isExecuting = true;
         btnRun.disabled = true;
@@ -626,6 +985,8 @@ document.addEventListener('DOMContentLoaded', () => {
         stepIndex = 0; 
 
         for (let i = 0; i < blocks.length; i++) {
+            if (currentExecId !== executionId) return;
+
             const block = blocks[i];
             
             blocks.forEach(b => b.classList.remove('executing'));
@@ -640,16 +1001,21 @@ document.addEventListener('DOMContentLoaded', () => {
             let val = vals.length === 0 ? null : (vals.length === 1 ? vals[0] : vals);
             
             await sleep(400); 
+            if (currentExecId !== executionId) return;
             await checkPause();
+            if (currentExecId !== executionId) return;
             await executeBlockAction(blockId, val);
+            if (currentExecId !== executionId) return;
             await sleep(400); 
         }
 
-        blocks.forEach(b => b.classList.remove('executing'));
-        isExecuting = false;
-        btnRun.disabled = false;
-        btnStep.disabled = false;
-        stepIndex = 0;
+        if (currentExecId === executionId) {
+            blocks.forEach(b => b.classList.remove('executing'));
+            isExecuting = false;
+            btnRun.disabled = false;
+            btnStep.disabled = false;
+            stepIndex = 0;
+        }
     }
 
     async function stepScript() {
@@ -711,7 +1077,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     btnClearVis.addEventListener('click', () => {
-        structureData = [];
+        if (currentStructure.includes('graph')) {
+            structureData = { vertices: [], edges: [] };
+        } else if (currentStructure.includes('tree')) {
+            structureData = null;
+        } else {
+            structureData = [];
+        }
         renderVisualizer();
         stepIndex = 0;
         document.querySelectorAll('.workspace-block').forEach(b => b.classList.remove('executing'));
