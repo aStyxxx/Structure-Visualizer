@@ -564,3 +564,69 @@ body {
         min-height: 300px;
     }
 }
+
+/* --- Tree Layout --- */
+.tree-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+}
+.tree-node-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px;
+    position: relative;
+}
+.tree-node-wrapper.empty {
+    visibility: hidden;
+}
+.tree-children {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    position: relative;
+}
+/* Connect parent to children horizontal line */
+.tree-children::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 25%;
+    right: 25%;
+    border-top: 2px solid var(--accent-primary);
+    height: 20px;
+}
+/* Vertical line from parent down */
+.tree-node-wrapper > .tree-children::after {
+    content: '';
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    width: 2px;
+    height: 20px;
+    background: var(--accent-primary);
+}
+/* Vertical line down to child */
+.tree-children > .tree-node-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    width: 2px;
+    height: 20px;
+    background: var(--accent-primary);
+}
+
+/* --- Graph Layout --- */
+.graph-container {
+    position: relative;
+    width: 600px;
+    height: 400px;
+    margin: 0 auto;
+}
+.graph-node {
+    z-index: 10;
+}

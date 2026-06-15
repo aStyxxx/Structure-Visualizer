@@ -29,14 +29,28 @@ document.addEventListener('DOMContentLoaded', () => {
     let stepIndex = 0;
 
     // --- Block Definitions & Code ---
-    const blockTypes = [
-        { id: 'add_head', label: 'add_head', type: 'add', hasInput: true },
-        { id: 'add_tail', label: 'add_tail', type: 'add', hasInput: true },
-        { id: 'remove_head', label: 'remove_head', type: 'remove', hasInput: false },
-        { id: 'remove_tail', label: 'remove_tail', type: 'remove', hasInput: false },
-        { id: 'print', label: 'print', type: 'action', hasInput: false },
-        { id: 'sort', label: 'sort', type: 'action', hasInput: false, hasSelect: true, options: ['Bubble Sort'] }
-    ];
+    const blockTypes = {
+        'linked-list': [
+            { id: 'add_head', label: 'add_head', type: 'add', inputs: ['val'] },
+            { id: 'add_tail', label: 'add_tail', type: 'add', inputs: ['val'] },
+            { id: 'insert_at', label: 'insert_at', type: 'add', inputs: ['index', 'val'] },
+            { id: 'remove_head', label: 'remove_head', type: 'remove' },
+            { id: 'remove_tail', label: 'remove_tail', type: 'remove' },
+            { id: 'reverse', label: 'reverse', type: 'action' },
+            { id: 'print', label: 'print', type: 'action' },
+            { id: 'sort', label: 'sort', type: 'action', hasSelect: true, options: ['Bubble Sort'] }
+        ],
+        'graph': [
+            { id: 'add_vertex', label: 'add_vertex', type: 'add', inputs: ['val'] },
+            { id: 'add_edge', label: 'add_edge', type: 'add', inputs: ['u', 'v'] },
+            { id: 'bfs', label: 'bfs', type: 'action', inputs: ['start'] },
+            { id: 'dfs', label: 'dfs', type: 'action', inputs: ['start'] }
+        ],
+        'tree': [
+            { id: 'insert', label: 'insert', type: 'add', inputs: ['val'] },
+            { id: 'search', label: 'search', type: 'action', inputs: ['val'] }
+        ]
+    };
 
     const blockCodes = {
         'singly-linked-list': {
@@ -80,9 +94,17 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- Render Palette ---
+    function getCategory(struct) {
+        if (struct.includes('list')) return 'linked-list';
+        if (struct.includes('graph')) return 'graph';
+        if (struct.includes('tree')) return 'tree';
+        return 'linked-list';
+    }
+
     function renderPalette() {
         paletteContainer.innerHTML = '';
-        blockTypes.forEach(b => {
+        const cat = getCategory(currentStructure);
+        blockTypes[cat].forEach(b => {
             const blockObj = document.createElement('div');
             blockObj.className = `block ${b.type}`;
             
@@ -110,13 +132,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const textNode1 = document.createTextNode(b.label + '(');
             blockObj.appendChild(textNode1);
 
-            if (b.hasInput) {
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.className = 'block-input palette-input';
-                input.placeholder = 'val';
-                input.addEventListener('click', e => e.stopPropagation()); // prevent block click
-                blockObj.appendChild(input);
+            if (b.inputs) {
+                b.inputs.forEach((inpName, i) => {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'block-input palette-input';
+                    input.placeholder = inpName;
+                    input.addEventListener('click', e => e.stopPropagation());
+                    blockObj.appendChild(input);
+                    if (i < b.inputs.length - 1) {
+                        blockObj.appendChild(document.createTextNode(', '));
+                    }
+                });
             }
 
             if (b.hasSelect) {
@@ -137,10 +164,15 @@ document.addEventListener('DOMContentLoaded', () => {
             blockObj.appendChild(textNode2);
 
             blockObj.addEventListener('click', () => {
-                let val = '';
-                if (b.hasInput) val = blockObj.querySelector('input')?.value || '';
-                if (b.hasSelect) val = blockObj.querySelector('select')?.value || b.options[0];
-                addBlockToWorkspace(b, val);
+                let vals = [];
+                if (b.inputs) {
+                    const inputs = blockObj.querySelectorAll('input');
+                    inputs.forEach(inp => vals.push(inp.value));
+                }
+                if (b.hasSelect) {
+                    vals.push(blockObj.querySelector('select')?.value || b.options[0]);
+                }
+                addBlockToWorkspace(b, vals);
             });
 
             paletteContainer.appendChild(blockObj);
@@ -148,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Workspace Logic ---
-    function addBlockToWorkspace(blockDef, defaultVal) {
+    function addBlockToWorkspace(blockDef, defaultVals) {
         const emptyText = workspaceContainer.querySelector('.empty-text');
         if (emptyText) emptyText.remove();
 
@@ -159,23 +191,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const textNode1 = document.createTextNode(blockDef.label + '(');
         blockObj.appendChild(textNode1);
 
-        if (blockDef.hasInput) {
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.className = 'block-input';
-            input.value = defaultVal;
-            blockObj.appendChild(input);
+        if (blockDef.inputs) {
+            blockDef.inputs.forEach((inpName, i) => {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'block-input';
+                input.value = Array.isArray(defaultVals) ? (defaultVals[i] || '') : (defaultVals || '');
+                blockObj.appendChild(input);
+                if (i < blockDef.inputs.length - 1) {
+                    blockObj.appendChild(document.createTextNode(', '));
+                }
+            });
         }
 
         if (blockDef.hasSelect) {
             const select = document.createElement('select');
             select.className = 'block-input';
             select.style.width = 'auto';
+            const sVal = Array.isArray(defaultVals) ? defaultVals[defaultVals.length - 1] : defaultVals;
             blockDef.options.forEach(opt => {
                 const option = document.createElement('option');
                 option.value = opt;
                 option.textContent = opt;
-                if (opt === defaultVal) option.selected = true;
+                if (opt === sVal) option.selected = true;
                 select.appendChild(option);
             });
             blockObj.appendChild(select);
@@ -270,36 +308,172 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderVisualizer(animatedIndex = -1, animationClass = '') {
         visualizerContainer.innerHTML = '';
         
-        if (structureData.length === 0) {
+        const isEmptyList = currentStructure.includes('list') && Array.isArray(structureData) && structureData.length === 0;
+        const isEmptyGraph = currentStructure.includes('graph') && (!structureData || !structureData.vertices || structureData.vertices.length === 0);
+        const isEmptyTree = currentStructure.includes('tree') && !structureData;
+
+        if (isEmptyGraph || isEmptyTree) {
             visualizerPlaceholderContainer.style.display = 'flex';
             return;
         } else {
             visualizerPlaceholderContainer.style.display = 'none';
         }
 
-        structureData.forEach((val, index) => {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'node-wrapper';
+        if (currentStructure.includes('list')) {
+            // Render HEAD
+            const headWrapper = document.createElement('div');
+            headWrapper.className = 'node-wrapper';
+            const headNode = document.createElement('div');
+            headNode.className = 'node nullptr';
+            headNode.textContent = 'HEAD';
+            headNode.style.borderRadius = '8px';
+            headWrapper.appendChild(headNode);
             
-            if (index === animatedIndex) {
-                wrapper.classList.add(animationClass);
-            }
-            
-            const node = document.createElement('div');
-            node.className = 'node';
-            node.textContent = val;
-            
-            wrapper.appendChild(node);
-            
-            if (currentStructure.includes('linked-list') && index < structureData.length - 1) {
+            const headArrow = document.createElement('div');
+            headArrow.className = 'arrow';
+            if (currentStructure === 'doubly-linked-list') headArrow.classList.add('double');
+            headWrapper.appendChild(headArrow);
+            visualizerContainer.appendChild(headWrapper);
+
+            // Render Nodes
+            structureData.forEach((val, index) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'node-wrapper';
+                
+                if (index === animatedIndex) {
+                    wrapper.classList.add(animationClass);
+                }
+                
+                const node = document.createElement('div');
+                node.className = 'node';
+                node.textContent = val;
+                
+                wrapper.appendChild(node);
+                
                 const arrow = document.createElement('div');
                 arrow.className = 'arrow';
                 if (currentStructure === 'doubly-linked-list') arrow.classList.add('double');
                 wrapper.appendChild(arrow);
+                
+                visualizerContainer.appendChild(wrapper);
+            });
+            
+            // Render Tail/NULL
+            const endWrapper = document.createElement('div');
+            endWrapper.className = 'node-wrapper';
+            const endNode = document.createElement('div');
+            endNode.className = 'node nullptr';
+            
+            if (currentStructure.includes('circular')) {
+                endNode.textContent = 'HEAD';
+                endNode.style.borderRadius = '8px';
+            } else {
+                endNode.textContent = 'NULL';
+                endNode.style.border = '2px dashed var(--text-muted)';
+                endNode.style.background = 'transparent';
+                endNode.style.color = 'var(--text-muted)';
             }
             
-            visualizerContainer.appendChild(wrapper);
-        });
+            endWrapper.appendChild(endNode);
+            visualizerContainer.appendChild(endWrapper);
+            
+        } else if (currentStructure.includes('graph')) {
+            const graphContainer = document.createElement('div');
+            graphContainer.className = 'graph-container';
+            
+            const n = structureData.vertices.length;
+            const radius = 120;
+            const center = { x: 300, y: 150 }; // approx center of visualizer
+            
+            const positions = {};
+            
+            // SVG for edges
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.className = 'graph-edges';
+            svg.style.position = 'absolute';
+            svg.style.top = '0';
+            svg.style.left = '0';
+            svg.style.width = '100%';
+            svg.style.height = '100%';
+            
+            structureData.vertices.forEach((v, i) => {
+                const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
+                const x = center.x + radius * Math.cos(angle);
+                const y = center.y + radius * Math.sin(angle);
+                positions[v] = { x, y };
+                
+                const el = document.createElement('div');
+                el.className = 'node graph-node';
+                el.textContent = v;
+                el.style.position = 'absolute';
+                el.style.left = `${x}px`;
+                el.style.top = `${y}px`;
+                graphContainer.appendChild(el);
+            });
+            
+            structureData.edges.forEach(e => {
+                const p1 = positions[e.u];
+                const p2 = positions[e.v];
+                if (p1 && p2) {
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', p1.x + 25);
+                    line.setAttribute('y1', p1.y + 25);
+                    line.setAttribute('x2', p2.x + 25);
+                    line.setAttribute('y2', p2.y + 25);
+                    line.setAttribute('stroke', 'var(--accent-primary)');
+                    line.setAttribute('stroke-width', '2');
+                    svg.appendChild(line);
+                }
+            });
+            
+            graphContainer.appendChild(svg);
+            visualizerContainer.appendChild(graphContainer);
+            
+        } else if (currentStructure.includes('tree')) {
+            const treeContainer = document.createElement('div');
+            treeContainer.className = 'tree-container';
+            
+            function buildTreeDOM(node) {
+                if (!node) return null;
+                const wrapper = document.createElement('div');
+                wrapper.className = 'tree-node-wrapper';
+                
+                const el = document.createElement('div');
+                el.className = 'node';
+                el.textContent = node.val;
+                wrapper.appendChild(el);
+                
+                if (node.left || node.right) {
+                    const children = document.createElement('div');
+                    children.className = 'tree-children';
+                    
+                    const leftChild = buildTreeDOM(node.left);
+                    const rightChild = buildTreeDOM(node.right);
+                    
+                    if (leftChild) children.appendChild(leftChild);
+                    else {
+                        const empty = document.createElement('div');
+                        empty.className = 'tree-node-wrapper empty';
+                        empty.style.width = '50px';
+                        children.appendChild(empty);
+                    }
+                    
+                    if (rightChild) children.appendChild(rightChild);
+                    else {
+                        const empty = document.createElement('div');
+                        empty.className = 'tree-node-wrapper empty';
+                        empty.style.width = '50px';
+                        children.appendChild(empty);
+                    }
+                    
+                    wrapper.appendChild(children);
+                }
+                return wrapper;
+            }
+            
+            treeContainer.appendChild(buildTreeDOM(structureData));
+            visualizerContainer.appendChild(treeContainer);
+        }
     }
 
     function sleep(ms) {
@@ -313,14 +487,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function executeBlockAction(blockId, val) {
-        const nodes = document.querySelectorAll('#visualizer-container .node');
+        const nodes = document.querySelectorAll('#visualizer-container .node:not(.nullptr)');
+        let v1 = Array.isArray(val) ? val[0] : val;
+        let v2 = Array.isArray(val) ? val[1] : null;
 
         if (blockId === 'add_head') {
-            structureData.unshift(val || '0');
+            structureData.unshift(v1 || '0');
             renderVisualizer(0, 'anim-enter');
             await sleep(700);
         } else if (blockId === 'add_tail') {
-            structureData.push(val || '0');
+            structureData.push(v1 || '0');
             renderVisualizer(structureData.length - 1, 'anim-enter');
             await sleep(700);
         } else if (blockId === 'remove_head') {
@@ -337,6 +513,57 @@ document.addEventListener('DOMContentLoaded', () => {
                 structureData.pop();
                 renderVisualizer();
             }
+        } else if (blockId === 'insert_at') {
+            let index = parseInt(v1);
+            let value = v2 || '0';
+            if (!isNaN(index) && index >= 0 && index <= structureData.length) {
+                structureData.splice(index, 0, value);
+                renderVisualizer(index, 'anim-enter');
+                await sleep(700);
+            }
+        } else if (blockId === 'reverse') {
+            if (structureData.length > 1) {
+                const arrows = document.querySelectorAll('#visualizer-container .arrow');
+                for(let i = 0; i < arrows.length; i++) {
+                    arrows[i].style.transition = 'transform 0.4s ease';
+                    arrows[i].style.transform = 'rotate(180deg)';
+                    await sleep(400);
+                    await checkPause();
+                }
+                structureData.reverse();
+                renderVisualizer();
+            }
+        } else if (blockId === 'add_vertex') {
+            if (!structureData.vertices) structureData = { vertices: [], edges: [] };
+            if (!structureData.vertices.includes(v1)) {
+                structureData.vertices.push(v1);
+                renderVisualizer(-1, 'anim-enter');
+                await sleep(500);
+            }
+        } else if (blockId === 'add_edge') {
+            if (!structureData.vertices) structureData = { vertices: [], edges: [] };
+            structureData.edges.push({u: v1, v: v2});
+            renderVisualizer();
+            await sleep(500);
+        } else if (blockId === 'insert') {
+            // Tree insert
+            if (!structureData) {
+                structureData = { val: v1, left: null, right: null };
+            } else {
+                // simple insert placeholder
+                let curr = structureData;
+                while (curr) {
+                    if (parseInt(v1) < parseInt(curr.val)) {
+                        if (!curr.left) { curr.left = { val: v1, left: null, right: null }; break; }
+                        curr = curr.left;
+                    } else {
+                        if (!curr.right) { curr.right = { val: v1, left: null, right: null }; break; }
+                        curr = curr.right;
+                    }
+                }
+            }
+            renderVisualizer();
+            await sleep(700);
         } else if (blockId === 'print') {
             for (let i = 0; i < nodes.length; i++) {
                 nodes[i].classList.add('anim-highlight-yellow');
@@ -348,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let n = structureData.length;
             for (let i = 0; i < n - 1; i++) {
                 for (let j = 0; j < n - i - 1; j++) {
-                    const currentNodes = document.querySelectorAll('#visualizer-container .node');
+                    const currentNodes = document.querySelectorAll('#visualizer-container .node:not(.nullptr)');
                     
                     // Highlight elements being compared
                     currentNodes[j].classList.add('anim-highlight-yellow');
@@ -406,9 +633,11 @@ document.addEventListener('DOMContentLoaded', () => {
             block.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
             const blockId = block.dataset.blockId;
-            let val = null;
-            if (block.querySelector('input')) val = block.querySelector('input').value;
-            if (block.querySelector('select')) val = block.querySelector('select').value;
+            let vals = [];
+            block.querySelectorAll('input').forEach(inp => vals.push(inp.value));
+            const sel = block.querySelector('select');
+            if (sel) vals.push(sel.value);
+            let val = vals.length === 0 ? null : (vals.length === 1 ? vals[0] : vals);
             
             await sleep(400); 
             await checkPause();
@@ -444,9 +673,11 @@ document.addEventListener('DOMContentLoaded', () => {
         block.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
         const blockId = block.dataset.blockId;
-        let val = null;
-        if (block.querySelector('input')) val = block.querySelector('input').value;
-        if (block.querySelector('select')) val = block.querySelector('select').value;
+        let vals = [];
+        block.querySelectorAll('input').forEach(inp => vals.push(inp.value));
+        const sel = block.querySelector('select');
+        if (sel) vals.push(sel.value);
+        let val = vals.length === 0 ? null : (vals.length === 1 ? vals[0] : vals);
         
         await sleep(300);
         await executeBlockAction(blockId, val);
@@ -500,8 +731,18 @@ document.addEventListener('DOMContentLoaded', () => {
             currentStructure = item.getAttribute('data-structure');
             visualizerPlaceholderText.textContent = `Visualizing: ${item.textContent}`;
             
-            structureData = [];
+            if (currentStructure.includes('graph')) {
+                structureData = { vertices: [], edges: [] };
+            } else if (currentStructure.includes('tree')) {
+                structureData = null;
+            } else {
+                structureData = [];
+            }
             renderVisualizer();
+            renderPalette();
+            workspaceContainer.innerHTML = '<p class="empty-text">Click a block above to add it here...</p>';
+            stepIndex = 0;
+            document.querySelectorAll('.workspace-block').forEach(b => b.classList.remove('executing'));
         });
     });
 
