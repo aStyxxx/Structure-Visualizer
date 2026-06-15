@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Structure Visualizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar glass-panel">
+            <h1 class="logo">Struct<span>Vis</span></h1>
+            <nav class="nav-menu">
+                <div class="nav-group">
+                    <h3>Linked Lists</h3>
+                    <ul>
+                        <li class="active" data-structure="singly-linked-list">Singly Linked List</li>
+                        <li data-structure="doubly-linked-list">Doubly Linked List</li>
+                        <li data-structure="circular-linked-list">Circular Linked List</li>
+                    </ul>
+                </div>
+                <div class="nav-group">
+                    <h3>Graphs</h3>
+                    <ul>
+                        <li data-structure="directed-graph">Directed Graph</li>
+                        <li data-structure="undirected-graph">Undirected Graph</li>
+                    </ul>
+                </div>
+                <div class="nav-group">
+                    <h3>Trees</h3>
+                    <ul>
+                        <li data-structure="binary-search-tree">Binary Search Tree</li>
+                        <li data-structure="avl-tree">AVL Tree</li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Visualization Area -->
+        <main class="main-content">
+            <div class="visualization-area glass-panel">
+                <div class="canvas-placeholder">
+                    <p>Visualizing: Singly Linked List</p>
+                </div>
+                <div id="visualizer-container"></div>
+            </div>
+            
+            <!-- Playback Controls -->
+            <div class="controls-panel glass-panel">
+                <div class="button-group">
+                    <button class="btn primary" id="btn-run">▶ Run</button>
+                    <button class="btn secondary" id="btn-pause">⏸ Pause</button>
+                    <button class="btn secondary" id="btn-step">⏭ Step</button>
+                    <button class="btn ghost" id="btn-clear-vis">⏹ Clear Vis</button>
+                    <button class="btn ghost" id="btn-clear-script">🗑 Clear Script</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Scratch-like Blocks Panel -->
+        <aside class="blocks-panel glass-panel">
+            <div class="blocks-header">
+                <h3>Blocks Palette</h3>
+            </div>
+            
+            <div class="palette" id="block-palette">
+                <!-- Blocks injected via JS -->
+            </div>
+
+            <div class="workspace-header">
+                <h3>Script Workspace</h3>
+            </div>
+            
+            <div class="workspace" id="script-workspace">
+                <p class="empty-text">Click a block above to add it here...</p>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Code View Modal -->
+    <div id="code-modal" class="modal">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h2 id="modal-title">Code</h2>
+                <span class="close-modal" id="close-modal">&times;</span>
+            </div>
+            <div class="language-selector" style="margin: 1rem 0;">
+                <select id="modal-language-select">
+                    <option value="cpp">C++</option>
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
+                    <option value="javascript">JavaScript</option>
+                </select>
+            </div>
+            <div id="language-note" style="display: none; background: rgba(59, 130, 246, 0.2); padding: 0.8rem; border-left: 4px solid #3b82f6; margin-bottom: 1rem; border-radius: 4px; font-size: 0.85rem; line-height: 1.4;"></div>
+            <div class="code-editor">
+                <pre><code id="modal-code-snippet">Loading...</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
