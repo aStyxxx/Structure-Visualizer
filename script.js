@@ -127,6 +127,59 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial apply
     applyTranslations();
 
+    // --- Sidebar Collapse ---
+    document.querySelectorAll('.nav-group h3').forEach(header => {
+        header.addEventListener('click', () => {
+            header.parentElement.classList.toggle('collapsed');
+        });
+    });
+
+    // --- Canvas Zoom & Pan ---
+    let zoomLevel = 1;
+    let panX = 0;
+    let panY = 0;
+    let isDraggingCanvas = false;
+    let startPanX = 0;
+    let startPanY = 0;
+
+    function applyCanvasTransform() {
+        visualizerContainer.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
+    }
+
+    document.getElementById('btn-zoom-in').addEventListener('click', () => {
+        zoomLevel = Math.min(zoomLevel + 0.2, 3);
+        applyCanvasTransform();
+    });
+    
+    document.getElementById('btn-zoom-out').addEventListener('click', () => {
+        zoomLevel = Math.max(zoomLevel - 0.2, 0.2);
+        applyCanvasTransform();
+    });
+    
+    document.getElementById('btn-zoom-reset').addEventListener('click', () => {
+        zoomLevel = 1;
+        panX = 0;
+        panY = 0;
+        applyCanvasTransform();
+    });
+
+    visualizerContainer.addEventListener('mousedown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'BUTTON') return;
+        isDraggingCanvas = true;
+        startPanX = e.clientX - panX;
+        startPanY = e.clientY - panY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!isDraggingCanvas) return;
+        panX = e.clientX - startPanX;
+        panY = e.clientY - startPanY;
+        applyCanvasTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+        isDraggingCanvas = false;
+    });
 
     // --- Block Definitions & Code ---
     const blockTypes = {

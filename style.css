@@ -74,9 +74,26 @@ body {
 .nav-group h3 {
     font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
     color: var(--text-muted);
+    letter-spacing: 1px;
     margin-bottom: 0.75rem;
+    padding-left: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1rem;
+}
+.nav-group h3::after {
+    content: '▼';
+    font-size: 0.6rem;
+    transition: transform 0.2s;
+}
+.nav-group.collapsed h3::after {
+    transform: rotate(-90deg);
+}
+.nav-group.collapsed ul {
+    display: none;
 }
 
 .nav-menu ul {
@@ -125,12 +142,18 @@ body {
 }
 
 .canvas-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     color: var(--text-muted);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    pointer-events: none;
+    z-index: 1000;
+}
+.canvas-placeholder.hidden {
+    display: none;
 }
 
 .controls-panel {
@@ -241,8 +264,13 @@ body {
     flex-direction: column;
     gap: 0.75rem;
     border-bottom: 2px solid var(--panel-border);
-    max-height: 40%;
+    flex: 0 0 35%;
     overflow-y: auto;
+}
+
+.palette .block-input {
+    pointer-events: none;
+    opacity: 0.8;
 }
 
 .workspace {
@@ -250,8 +278,9 @@ body {
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.75rem;
     overflow-y: auto;
+    position: relative;
     background: rgba(0, 0, 0, 0.1);
 }
 
@@ -636,4 +665,27 @@ body {
 }
 .graph-node {
     z-index: 10;
+}
+
+/* --- Canvas Controls --- */
+.canvas-controls {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 10;
+    display: flex;
+    gap: 5px;
+}
+.canvas-controls button {
+    min-width: 30px;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    border: 1px solid var(--panel-border);
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.canvas-controls button:hover {
+    background: rgba(255, 255, 255, 0.2);
 }

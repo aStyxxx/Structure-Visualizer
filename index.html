@@ -46,7 +46,12 @@
 
         <!-- Main Visualization Area -->
         <main class="main-content">
-            <div class="visualization-area glass-panel">
+            <div class="visualization-area glass-panel" style="position: relative; overflow: hidden;">
+                <div class="canvas-controls">
+                    <button id="btn-zoom-in" title="Zoom In">+</button>
+                    <button id="btn-zoom-out" title="Zoom Out">-</button>
+                    <button id="btn-zoom-reset" title="Reset View">O</button>
+                </div>
                 <div class="canvas-placeholder">
                     <p>Visualizing: Singly Linked List</p>
                 </div>
