@@ -621,8 +621,8 @@ document.addEventListener('DOMContentLoaded', () => {
             visualizerPlaceholderContainer.style.display = 'none';
         }
 
-        if (currentStructure.includes('list')) {
-            // Render Nodes
+        if (currentStructure === 'singly-linked-list' || currentStructure === 'doubly-linked-list') {
+            // Render Linear Nodes
             structureData.forEach((val, index) => {
                 const wrapper = document.createElement('div');
                 wrapper.className = 'node-wrapper';
@@ -646,76 +646,104 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             
             // Render Tail/NULL
-            if (!currentStructure.includes('circular')) {
-                const endWrapper = document.createElement('div');
-                endWrapper.className = 'node-wrapper';
-                const endNode = document.createElement('div');
-                endNode.className = 'node nullptr';
-                endNode.textContent = 'NULL';
-                endNode.style.border = '2px dashed rgba(255,255,255,0.15)';
-                endNode.style.background = 'transparent';
-                endNode.style.color = 'rgba(255,255,255,0.2)';
-                endNode.style.boxShadow = 'none';
-                
-                endWrapper.appendChild(endNode);
-                visualizerContainer.appendChild(endWrapper);
-            } else if (structureData.length > 0) {
-                // Render circular link
-                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                svg.style.position = 'absolute';
-                svg.style.top = '0';
-                svg.style.left = '0';
-                svg.style.width = '100%';
-                svg.style.height = '100%';
-                svg.style.pointerEvents = 'none';
-                
-                const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-                const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
-                marker.setAttribute('id', 'circ-arrow');
-                marker.setAttribute('viewBox', '0 0 10 10');
-                marker.setAttribute('refX', '10');
-                marker.setAttribute('refY', '5');
-                marker.setAttribute('markerWidth', '6');
-                marker.setAttribute('markerHeight', '6');
-                marker.setAttribute('orient', 'auto-start-reverse');
-                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                path.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z');
-                path.setAttribute('fill', 'var(--accent-primary)');
-                marker.appendChild(path);
-                defs.appendChild(marker);
-                svg.appendChild(defs);
+            const endWrapper = document.createElement('div');
+            endWrapper.className = 'node-wrapper';
+            const endNode = document.createElement('div');
+            endNode.className = 'node nullptr';
+            endNode.textContent = 'NULL';
+            endNode.style.border = '2px dashed rgba(255,255,255,0.15)';
+            endNode.style.background = 'transparent';
+            endNode.style.color = 'rgba(255,255,255,0.2)';
+            endNode.style.boxShadow = 'none';
+            
+            endWrapper.appendChild(endNode);
+            visualizerContainer.appendChild(endWrapper);
 
-                requestAnimationFrame(() => {
-                    const nodes = visualizerContainer.querySelectorAll('.node-wrapper');
-                    if(nodes.length > 0) {
-                        const first = nodes[0].getBoundingClientRect();
-                        const last = nodes[nodes.length - 1].getBoundingClientRect();
-                        const containerRect = visualizerContainer.getBoundingClientRect();
-                        
-                        const startX = last.left - containerRect.left + last.width / 2;
-                        const startY = last.bottom - containerRect.top;
-                        
-                        const endX = first.left - containerRect.left + first.width / 2;
-                        const endY = first.bottom - containerRect.top;
-                        
-                        const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                        const curveDepth = Math.min(100, nodes.length * 20);
-                        const d = `M ${startX} ${startY} Q ${startX} ${startY + curveDepth}, ${(startX + endX)/2} ${startY + curveDepth} Q ${endX} ${endY + curveDepth}, ${endX} ${endY + 15}`;
-                        pathEl.setAttribute('d', d);
-                        pathEl.setAttribute('stroke', 'var(--accent-primary)');
-                        pathEl.setAttribute('stroke-width', '2');
-                        pathEl.setAttribute('fill', 'none');
-                        pathEl.setAttribute('marker-end', 'url(#circ-arrow)');
-                        
-                        svg.appendChild(pathEl);
-                        
-                        // Hide last right arrow
-                        const lastArrow = nodes[nodes.length - 1].querySelector('.arrow');
-                        if(lastArrow) lastArrow.style.visibility = 'hidden';
-                    }
-                });
-                visualizerContainer.appendChild(svg);
+        } else if (currentStructure === 'circular-linked-list') {
+            const graphContainer = document.createElement('div');
+            graphContainer.className = 'graph-container';
+            const n = structureData.length;
+            
+            if (n === 0) return; // handled by isEmptyList
+
+            const radius = Math.max(100, n * 25);
+            const center = { x: Math.max(300, radius + 50), y: Math.max(150, radius + 50) };
+            
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.className = 'graph-edges';
+            svg.style.position = 'absolute';
+            svg.style.top = '0';
+            svg.style.left = '0';
+            svg.style.width = '100%';
+            svg.style.height = '100%';
+            svg.style.minWidth = `${center.x * 2}px`;
+            svg.style.minHeight = `${center.y * 2}px`;
+
+            const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+            const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+            marker.setAttribute('id', 'circ-arrow');
+            marker.setAttribute('viewBox', '0 0 10 10');
+            marker.setAttribute('refX', '10');
+            marker.setAttribute('refY', '5');
+            marker.setAttribute('markerWidth', '6');
+            marker.setAttribute('markerHeight', '6');
+            marker.setAttribute('orient', 'auto-start-reverse');
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z');
+            path.setAttribute('fill', 'var(--accent-primary)');
+            marker.appendChild(path);
+            defs.appendChild(marker);
+            svg.appendChild(defs);
+
+            const positions = [];
+            structureData.forEach((val, i) => {
+                const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
+                const x = center.x + radius * Math.cos(angle);
+                const y = center.y + radius * Math.sin(angle);
+                positions.push({x, y});
+
+                const el = document.createElement('div');
+                el.className = 'node graph-node';
+                if (i === animatedIndex) el.classList.add(animationClass);
+                el.textContent = val;
+                el.style.position = 'absolute';
+                el.style.left = `${x}px`;
+                el.style.top = `${y}px`;
+                graphContainer.appendChild(el);
+            });
+
+            for (let i = 0; i < n; i++) {
+                const p1 = positions[i];
+                const p2 = positions[(i + 1) % n];
+                
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                // Adjusting to center of node (assumes node is 60x60 -> +30)
+                let x1 = p1.x + 30; 
+                let y1 = p1.y + 30;
+                let x2 = p2.x + 30;
+                let y2 = p2.y + 30;
+                
+                const dx = x2 - x1;
+                const dy = y2 - y1;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist > 0) {
+                    x1 = x1 + (dx / dist) * 35; 
+                    y1 = y1 + (dy / dist) * 35;
+                    x2 = x2 - (dx / dist) * 35;
+                    y2 = y2 - (dy / dist) * 35;
+                    line.setAttribute('marker-end', 'url(#circ-arrow)');
+                }
+                
+                line.setAttribute('x1', x1);
+                line.setAttribute('y1', y1);
+                line.setAttribute('x2', x2);
+                line.setAttribute('y2', y2);
+                line.setAttribute('stroke', 'var(--accent-primary)');
+                line.setAttribute('stroke-width', '2');
+                svg.appendChild(line);
             }
+            graphContainer.appendChild(svg);
+            visualizerContainer.appendChild(graphContainer);
         } else if (currentStructure.includes('graph')) {
             const graphContainer = document.createElement('div');
             graphContainer.className = 'graph-container';
