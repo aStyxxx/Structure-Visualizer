@@ -97,12 +97,18 @@
                 <h2 id="modal-title">Code</h2>
                 <span class="close-modal" id="close-modal">&times;</span>
             </div>
-            <div class="language-selector" style="margin: 1rem 0;">
+            <div class="language-selector" style="margin: 1rem 0; display: flex; gap: 10px;">
                 <select id="modal-language-select">
                     <option value="cpp">C++</option>
                     <option value="python">Python</option>
                     <option value="java">Java</option>
                     <option value="javascript">JavaScript</option>
+                </select>
+                <select id="modal-algorithm-select" style="display: none;">
+                    <option value="Bubble Sort">Bubble Sort</option>
+                    <option value="Selection Sort">Selection Sort</option>
+                    <option value="Insertion Sort">Insertion Sort</option>
+                    <option value="Quick Sort">Quick Sort</option>
                 </select>
             </div>
             <div id="language-note" style="display: none; background: rgba(59, 130, 246, 0.2); padding: 0.8rem; border-left: 4px solid #3b82f6; margin-bottom: 1rem; border-radius: 4px; font-size: 0.85rem; line-height: 1.4;"></div>

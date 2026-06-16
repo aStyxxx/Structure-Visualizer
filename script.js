@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalTitle = document.getElementById('modal-title');
     const modalCodeSnippet = document.getElementById('modal-code-snippet');
     const modalLangSelect = document.getElementById('modal-language-select');
+    const modalAlgoSelect = document.getElementById('modal-algorithm-select');
 
     // --- State ---
     let currentStructure = 'singly-linked-list';
@@ -238,10 +239,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 'javascript': 'print() {\n    let temp = this.head;\n    let str = "";\n    while(temp) {\n        str += temp.data + " -> ";\n        temp = temp.next;\n    }\n    console.log(str + "null");\n}'
             },
             'sort': {
-                'cpp': '// Bubble sort implementation\nvoid bubbleSort() {\n    if(!head) return;\n    bool swapped;\n    Node* ptr1;\n    Node* lptr = nullptr;\n    do {\n        swapped = false;\n        ptr1 = head;\n        while (ptr1->next != lptr) {\n            if (ptr1->data > ptr1->next->data) {\n                swap(ptr1->data, ptr1->next->data);\n                swapped = true;\n            }\n            ptr1 = ptr1->next;\n        }\n        lptr = ptr1;\n    } while (swapped);\n}',
-                'python': '# Bubble sort\ndef sort(self):\n    if not self.head: return\n    swapped = True\n    while swapped:\n        swapped = False\n        current = self.head\n        while current.next:\n            if current.data > current.next.data:\n                current.data, current.next.data = current.next.data, current.data\n                swapped = True\n            current = current.next',
-                'java': '// Bubble sort\nvoid sort() {\n    if(head == null) return;\n    boolean swapped;\n    Node current;\n    do {\n        swapped = false;\n        current = head;\n        while (current.next != null) {\n            if (current.data > current.next.data) {\n                int t = current.data;\n                current.data = current.next.data;\n                current.next.data = t;\n                swapped = true;\n            }\n            current = current.next;\n        }\n    } while (swapped);\n}',
-                'javascript': '// Bubble sort\nsort() {\n    if(!this.head) return;\n    let swapped;\n    do {\n        swapped = false;\n        let current = this.head;\n        while (current.next) {\n            if (current.data > current.next.data) {\n                let t = current.data;\n                current.data = current.next.data;\n                current.next.data = t;\n                swapped = true;\n            }\n            current = current.next;\n        }\n    } while (swapped);\n}'
+                'Bubble Sort': {
+                    'cpp': '// Bubble Sort\nvoid bubbleSort() {\n    if(!head) return;\n    bool swapped;\n    Node* ptr1;\n    Node* lptr = nullptr;\n    do {\n        swapped = false;\n        ptr1 = head;\n        while (ptr1->next != lptr) {\n            if (ptr1->data > ptr1->next->data) {\n                swap(ptr1->data, ptr1->next->data);\n                swapped = true;\n            }\n            ptr1 = ptr1->next;\n        }\n        lptr = ptr1;\n    } while (swapped);\n}',
+                    'python': '# Bubble Sort\ndef bubble_sort(self):\n    if not self.head: return\n    swapped = True\n    while swapped:\n        swapped = False\n        current = self.head\n        while current.next:\n            if current.data > current.next.data:\n                current.data, current.next.data = current.next.data, current.data\n                swapped = True\n            current = current.next',
+                    'java': '// Bubble Sort\nvoid bubbleSort() {\n    if(head == null) return;\n    boolean swapped;\n    Node current;\n    do {\n        swapped = false;\n        current = head;\n        while (current.next != null) {\n            if (current.data > current.next.data) {\n                int t = current.data; current.data = current.next.data; current.next.data = t;\n                swapped = true;\n            }\n            current = current.next;\n        }\n    } while (swapped);\n}',
+                    'javascript': '// Bubble Sort\nbubbleSort() {\n    if(!this.head) return;\n    let swapped;\n    do {\n        swapped = false;\n        let current = this.head;\n        while (current.next) {\n            if (current.data > current.next.data) {\n                let t = current.data; current.data = current.next.data; current.next.data = t;\n                swapped = true;\n            }\n            current = current.next;\n        }\n    } while (swapped);\n}'
+                },
+                'Selection Sort': {
+                    'cpp': '// Selection Sort\nvoid selectionSort() {\n    Node* temp = head;\n    while (temp) {\n        Node* min = temp;\n        Node* r = temp->next;\n        while (r) {\n            if (min->data > r->data) min = r;\n            r = r->next;\n        }\n        swap(temp->data, min->data);\n        temp = temp->next;\n    }\n}',
+                    'python': '# Selection Sort\ndef selection_sort(self):\n    temp = self.head\n    while temp:\n        min_node = temp\n        r = temp.next\n        while r:\n            if min_node.data > r.data: min_node = r\n            r = r.next\n        temp.data, min_node.data = min_node.data, temp.data\n        temp = temp.next',
+                    'java': '// Selection Sort\nvoid selectionSort() {\n    Node temp = head;\n    while (temp != null) {\n        Node min = temp;\n        Node r = temp.next;\n        while (r != null) {\n            if (min.data > r.data) min = r;\n            r = r.next;\n        }\n        int x = temp.data; temp.data = min.data; min.data = x;\n        temp = temp.next;\n    }\n}',
+                    'javascript': '// Selection Sort\nselectionSort() {\n    let temp = this.head;\n    while (temp) {\n        let min = temp;\n        let r = temp.next;\n        while (r) {\n            if (min.data > r.data) min = r;\n            r = r.next;\n        }\n        let x = temp.data; temp.data = min.data; min.data = x;\n        temp = temp.next;\n    }\n}'
+                },
+                'Insertion Sort': {
+                    'cpp': '// Insertion Sort\nvoid insertionSort() {\n    if (!head || !head->next) return;\n    Node* sorted = nullptr;\n    Node* current = head;\n    while (current != nullptr) {\n        Node* next = current->next;\n        if (sorted == nullptr || sorted->data >= current->data) {\n            current->next = sorted;\n            sorted = current;\n        } else {\n            Node* temp = sorted;\n            while (temp->next != nullptr && temp->next->data < current->data) temp = temp->next;\n            current->next = temp->next;\n            temp->next = current;\n        }\n        current = next;\n    }\n    head = sorted;\n}',
+                    'python': '# Insertion Sort\ndef insertion_sort(self):\n    if not self.head or not self.head.next: return\n    sorted_head = None\n    current = self.head\n    while current:\n        nxt = current.next\n        if not sorted_head or sorted_head.data >= current.data:\n            current.next = sorted_head\n            sorted_head = current\n        else:\n            temp = sorted_head\n            while temp.next and temp.next.data < current.data:\n                temp = temp.next\n            current.next = temp.next\n            temp.next = current\n        current = nxt\n    self.head = sorted_head',
+                    'java': '// Insertion Sort\nvoid insertionSort() {\n    if (head == null || head.next == null) return;\n    Node sorted = null;\n    Node current = head;\n    while (current != null) {\n        Node next = current.next;\n        if (sorted == null || sorted.data >= current.data) {\n            current.next = sorted;\n            sorted = current;\n        } else {\n            Node temp = sorted;\n            while (temp.next != null && temp.next.data < current.data) temp = temp.next;\n            current.next = temp.next;\n            temp.next = current;\n        }\n        current = next;\n    }\n    head = sorted;\n}',
+                    'javascript': '// Insertion Sort\ninsertionSort() {\n    if (!this.head || !this.head.next) return;\n    let sorted = null;\n    let current = this.head;\n    while (current) {\n        let next = current.next;\n        if (!sorted || sorted.data >= current.data) {\n            current.next = sorted;\n            sorted = current;\n        } else {\n            let temp = sorted;\n            while (temp.next && temp.next.data < current.data) temp = temp.next;\n            current.next = temp.next;\n            temp.next = current;\n        }\n        current = next;\n    }\n    this.head = sorted;\n}'
+                },
+                'Quick Sort': {
+                    'cpp': '// Quick Sort (Value Swapping)\nNode* partition(Node* head, Node* tail) {\n    Node* pivot = head;\n    Node* curr = head->next;\n    Node* prev = head;\n    while (curr != tail->next) {\n        if (curr->data < pivot->data) {\n            swap(prev->next->data, curr->data);\n            prev = prev->next;\n        }\n        curr = curr->next;\n    }\n    swap(pivot->data, prev->data);\n    return prev;\n}\n\nvoid quickSortRec(Node* head, Node* tail) {\n    if (!head || head == tail) return;\n    Node* pivot = partition(head, tail);\n    if (pivot != head) {\n        Node* temp = head;\n        while (temp->next != pivot) temp = temp->next;\n        quickSortRec(head, temp);\n    }\n    quickSortRec(pivot->next, tail);\n}',
+                    'python': '# Quick Sort (Value Swapping)\ndef partition(head, tail):\n    pivot = head\n    curr = head.next\n    prev = head\n    while curr != tail.next:\n        if curr.data < pivot.data:\n            prev.next.data, curr.data = curr.data, prev.next.data\n            prev = prev.next\n        curr = curr.next\n    pivot.data, prev.data = prev.data, pivot.data\n    return prev\n\ndef quick_sort_rec(head, tail):\n    if not head or head == tail: return\n    pivot = partition(head, tail)\n    if pivot != head:\n        temp = head\n        while temp.next != pivot: temp = temp.next\n        quick_sort_rec(head, temp)\n    quick_sort_rec(pivot.next, tail)',
+                    'java': '// Quick Sort (Value Swapping)\nNode partition(Node head, Node tail) {\n    Node pivot = head;\n    Node curr = head.next;\n    Node prev = head;\n    while (curr != tail.next) {\n        if (curr.data < pivot.data) {\n            int temp = prev.next.data; prev.next.data = curr.data; curr.data = temp;\n            prev = prev.next;\n        }\n        curr = curr.next;\n    }\n    int temp = pivot.data; pivot.data = prev.data; prev.data = temp;\n    return prev;\n}\n\nvoid quickSortRec(Node head, Node tail) {\n    if (head == null || head == tail) return;\n    Node pivot = partition(head, tail);\n    if (pivot != head) {\n        Node temp = head;\n        while (temp.next != pivot) temp = temp.next;\n        quickSortRec(head, temp);\n    }\n    quickSortRec(pivot.next, tail);\n}',
+                    'javascript': '// Quick Sort (Value Swapping)\npartition(head, tail) {\n    let pivot = head;\n    let curr = head.next;\n    let prev = head;\n    while (curr !== tail.next) {\n        if (curr.data < pivot.data) {\n            let temp = prev.next.data; prev.next.data = curr.data; curr.data = temp;\n            prev = prev.next;\n        }\n        curr = curr.next;\n    }\n    let temp = pivot.data; pivot.data = prev.data; prev.data = temp;\n    return prev;\n}\n\nquickSortRec(head, tail) {\n    if (!head || head === tail) return;\n    let pivot = this.partition(head, tail);\n    if (pivot !== head) {\n        let temp = head;\n        while (temp.next !== pivot) temp = temp.next;\n        this.quickSortRec(head, temp);\n    }\n    this.quickSortRec(pivot.next, tail);\n}'
+                }
             }
         }
     };
@@ -431,8 +452,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateModalCode() {
         if (!currentModalBlockId) return;
         const lang = modalLangSelect.value;
+        const algo = modalAlgoSelect.value;
         
-        // Show/hide pointer note for high-level languages
+        // Show algorithm select only for sort block
+        if (currentModalBlockId === 'sort') {
+            modalAlgoSelect.style.display = 'block';
+        } else {
+            modalAlgoSelect.style.display = 'none';
+        }
+        
         if (lang === 'python' || lang === 'javascript' || lang === 'java') {
             languageNote.style.display = 'block';
             languageNote.innerHTML = getEducationalNoteHtml(lang);
@@ -442,10 +470,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let code = `// Implementation for ${currentModalBlockId} in ${currentStructure}\n// Coming soon...`;
         
-        if (blockCodes[currentStructure] && blockCodes[currentStructure][currentModalBlockId] && blockCodes[currentStructure][currentModalBlockId][lang]) {
-            code = blockCodes[currentStructure][currentModalBlockId][lang];
+        if (blockCodes[currentStructure] && blockCodes[currentStructure][currentModalBlockId]) {
+            if (currentModalBlockId === 'sort') {
+                code = blockCodes[currentStructure][currentModalBlockId][algo] ? blockCodes[currentStructure][currentModalBlockId][algo][lang] : '// Not implemented';
+            } else {
+                code = blockCodes[currentStructure][currentModalBlockId][lang] || '// Not implemented';
+            }
         } else if (currentStructure === 'doubly-linked-list' && blockCodes['singly-linked-list'][currentModalBlockId]) {
-             code = `// Similar to Singly Linked List, but update prev pointers too.\n` + blockCodes['singly-linked-list'][currentModalBlockId][lang];
+            if (currentModalBlockId === 'sort') {
+                code = `// Similar to Singly Linked List.\n` + (blockCodes['singly-linked-list'][currentModalBlockId][algo][lang] || '');
+            } else {
+                code = `// Similar to Singly Linked List, but update prev pointers too.\n` + (blockCodes['singly-linked-list'][currentModalBlockId][lang] || '');
+            }
         }
 
         modalCodeSnippet.textContent = code;
@@ -453,6 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     closeModalBtn.addEventListener('click', () => modal.classList.remove('active'));
     modalLangSelect.addEventListener('change', updateModalCode);
+    modalAlgoSelect.addEventListener('change', updateModalCode);
     window.addEventListener('click', (e) => {
         if (e.target === modal) modal.classList.remove('active');
     });
