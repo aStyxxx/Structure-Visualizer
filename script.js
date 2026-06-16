@@ -65,6 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
             'empty_workspace': 'Натисніть на блок вище, щоб додати його сюди...',
             'bfs_desc': 'BFS (Пошук в ширину) обходить граф рівень за рівнем, використовуючи Чергу (Queue).',
             'dfs_desc': 'DFS (Пошук в глибину) йде вглиб графа настільки далеко, наскільки це можливо, використовуючи Стек (Stack).',
+            'categories': { 'linkedLists': 'Списки', 'graphs': 'Графи', 'trees': 'Дерева' },
+            'palette': 'Блоки',
+            'workspace': 'Робоча область',
             'singly-linked-list': 'Однозв\'язний список',
             'doubly-linked-list': 'Двозв\'язний список',
             'circular-linked-list': 'Кільцевий список',
@@ -101,7 +104,79 @@ document.addEventListener('DOMContentLoaded', () => {
                 visualizerPlaceholderText.textContent = `${t.visualizing}: ${t[struct] || item.textContent}`;
             }
         });
+        // Home Page updates
+        const homeSubtitle = document.getElementById('home-subtitle');
+        if (homeSubtitle) {
+            homeSubtitle.textContent = currentLang === 'uk' ? 'Інтерактивний візуалізатор структур даних' : 'Interactive Data Structure Visualizer';
+            document.getElementById('home-desc-en').style.display = currentLang === 'en' ? 'block' : 'none';
+            document.getElementById('home-desc-uk').style.display = currentLang === 'uk' ? 'block' : 'none';
+            document.getElementById('home-btn-text').textContent = currentLang === 'uk' ? 'Спробувати візуалізатор' : 'Try Visualizer';
+            
+            document.getElementById('home-lang-en').classList.toggle('active', currentLang === 'en');
+            document.getElementById('home-lang-uk').classList.toggle('active', currentLang === 'uk');
+            
+            if (currentLang === 'en') {
+                document.getElementById('home-lang-en').style.fontWeight = 'bold';
+                document.getElementById('home-lang-en').style.color = 'var(--text-main)';
+                document.getElementById('home-lang-uk').style.fontWeight = 'normal';
+                document.getElementById('home-lang-uk').style.color = 'var(--text-muted)';
+            } else {
+                document.getElementById('home-lang-uk').style.fontWeight = 'bold';
+                document.getElementById('home-lang-uk').style.color = 'var(--text-main)';
+                document.getElementById('home-lang-en').style.fontWeight = 'normal';
+                document.getElementById('home-lang-en').style.color = 'var(--text-muted)';
+            }
+        }
     }
+
+    window.setLang = function(lang) {
+        if (lang === 'en') {
+            document.getElementById('lang-en').click();
+        } else {
+            document.getElementById('lang-uk').click();
+        }
+    };
+
+    window.startVisualizer = function() {
+        const homePage = document.getElementById('home-page');
+        const appContainer = document.getElementById('app-container');
+        
+        // Trigger home page fold-away
+        homePage.classList.add('anim-out');
+        
+        // Wait for the fold-away animation
+        setTimeout(() => {
+            homePage.style.display = 'none';
+            appContainer.style.display = 'flex';
+            
+            // Force browser reflow to apply display:flex before adding loaded class
+            void appContainer.offsetWidth;
+            
+            // Add loaded class to trigger main app components sliding in
+            appContainer.classList.add('loaded');
+            renderVisualizer();
+        }, 500); // 500ms aligns closely with the 0.6s css transition
+    };
+
+    window.goHome = function() {
+        const homePage = document.getElementById('home-page');
+        const appContainer = document.getElementById('app-container');
+        
+        // Trigger main app sliding out
+        appContainer.classList.remove('loaded');
+        
+        // Wait for sliding out to finish
+        setTimeout(() => {
+            appContainer.style.display = 'none';
+            homePage.style.display = 'flex';
+            
+            // Force browser reflow
+            void homePage.offsetWidth;
+            
+            // Trigger home page unfolding
+            homePage.classList.remove('anim-out');
+        }, 600); // 600ms aligns with sliding animations
+    };
 
     document.getElementById('lang-en').addEventListener('click', () => {
         currentLang = 'en';
@@ -424,12 +499,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const languageNote = document.getElementById('language-note');
-    let noteLanguage = 'ua'; // default to Ukrainian
-
-    window.toggleNoteLanguage = function() {
-        noteLanguage = noteLanguage === 'ua' ? 'en' : 'ua';
-        updateModalCode();
-    };
+    const modalDescription = document.getElementById('modal-description');
 
     function getEducationalNoteHtml(progLang) {
         const langName = progLang === 'python' ? 'Python' : progLang === 'java' ? 'Java' : 'JavaScript';
@@ -438,13 +508,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let textUA = `<strong>💡 Навчальна замітка:</strong> ${langName} використовує <em>посилання на об'єкти</em> замість явних вказівників на пам'ять (як у C++). Проте концептуально структура даних (вузли, що посилаються один на одного) працює абсолютно так само. Стрілочки у нашій візуалізації ідеально відображають ці посилання!`;
 
-        const toggleText = noteLanguage === 'ua' ? 'EN' : 'UA';
-        const content = noteLanguage === 'ua' ? textUA : textEN;
+        const content = currentLang === 'uk' ? textUA : textEN;
 
         return `
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                 <div>${content}</div>
-                <button onclick="toggleNoteLanguage()" style="background:var(--panel-bg); border:1px solid var(--panel-border); color:var(--text-main); cursor:pointer; font-size:0.7rem; padding: 2px 6px; border-radius: 4px; flex-shrink:0; margin-left:15px;" title="Switch language / Перемкнути мову">${toggleText}</button>
             </div>
         `;
     }
@@ -485,6 +553,50 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         modalCodeSnippet.textContent = code;
+
+        const modalDesc = document.getElementById('modal-description');
+        if (modalDesc) {
+            modalDesc.innerHTML = getAlgorithmDescription(currentModalBlockId, algo);
+        }
+    }
+
+    function getAlgorithmDescription(blockId, algo) {
+        const descEn = {
+            'add_head': 'Adds a new node to the beginning of the list. Time Complexity: O(1).',
+            'add_tail': 'Adds a new node to the end of the list. Time Complexity: O(n) without a tail pointer, O(1) with a tail pointer.',
+            'insert_at': 'Inserts a new node at the specified index. Time Complexity: O(n).',
+            'remove_head': 'Removes the first node of the list. Time Complexity: O(1).',
+            'remove_tail': 'Removes the last node. Time Complexity: O(n) for singly linked, O(1) for doubly linked if tail pointer exists.',
+            'reverse': 'Reverses the direction of all pointers in the list. Time Complexity: O(n).',
+            'print': 'Iterates through the list to display all elements. Time Complexity: O(n).',
+            'sort': `Sorts the list using ${algo || 'the chosen algorithm'}.`,
+            'add_vertex': 'Adds a new vertex to the graph. Time Complexity: O(1).',
+            'add_edge': 'Adds a directed or undirected edge between two vertices. Time Complexity: O(1) for adjacency list.',
+            'bfs': 'Breadth-First Search. Explores the graph layer by layer using a Queue. Time Complexity: O(V + E).',
+            'dfs': 'Depth-First Search. Explores as far as possible along each branch before backtracking using a Stack (or recursion). Time Complexity: O(V + E).',
+            'insert': 'Inserts a new value into the tree. Time Complexity: O(log n) for balanced trees, O(n) for skewed trees.',
+            'remove': 'Removes a value from the tree. Time Complexity: O(log n) for balanced trees.',
+            'search': 'Searches for a value in the tree. Time Complexity: O(log n) for balanced trees.'
+        };
+        const descUk = {
+            'add_head': 'Додає новий вузол на початок списку. Часова складність: O(1).',
+            'add_tail': 'Додає новий вузол в кінець списку. Часова складність: O(n) без вказівника на хвіст, O(1) з вказівником.',
+            'insert_at': 'Вставляє новий вузол за вказаним індексом. Часова складність: O(n).',
+            'remove_head': 'Видаляє перший вузол списку. Часова складність: O(1).',
+            'remove_tail': 'Видаляє останній вузол. Часова складність: O(n) для однозв\'язного, O(1) для двозв\'язного (якщо є вказівник на хвіст).',
+            'reverse': 'Змінює напрямок всіх вказівників у списку на протилежний. Часова складність: O(n).',
+            'print': 'Проходить по списку для виводу всіх елементів. Часова складність: O(n).',
+            'sort': `Сортує список використовуючи ${algo || 'обраний алгоритм'}.`,
+            'add_vertex': 'Додає нову вершину до графа. Часова складність: O(1).',
+            'add_edge': 'Додає орієнтоване або неорієнтоване ребро між двома вершинами. Часова складність: O(1) (для списків суміжності).',
+            'bfs': 'Пошук в ширину. Обходить граф рівень за рівнем за допомогою Черги. Часова складність: O(V + E).',
+            'dfs': 'Пошук в глибину. Йде вглиб графа настільки далеко, наскільки це можливо (за допомогою Стека або рекурсії). Часова складність: O(V + E).',
+            'insert': 'Вставляє нове значення в дерево. Часова складність: O(log n) для збалансованих дерев, O(n) для незбалансованих.',
+            'remove': 'Видаляє значення з дерева. Часова складність: O(log n) для збалансованих дерев.',
+            'search': 'Шукає значення в дереві. Часова складність: O(log n) для збалансованих дерев.'
+        };
+        const dict = currentLang === 'uk' ? descUk : descEn;
+        return dict[blockId] || (currentLang === 'uk' ? 'Пояснення відсутнє.' : 'No description available.');
     }
 
     closeModalBtn.addEventListener('click', () => modal.classList.remove('active'));
@@ -547,14 +659,70 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 endWrapper.appendChild(endNode);
                 visualizerContainer.appendChild(endWrapper);
+            } else if (structureData.length > 0) {
+                // Render circular link
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.style.position = 'absolute';
+                svg.style.top = '0';
+                svg.style.left = '0';
+                svg.style.width = '100%';
+                svg.style.height = '100%';
+                svg.style.pointerEvents = 'none';
+                
+                const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+                const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+                marker.setAttribute('id', 'circ-arrow');
+                marker.setAttribute('viewBox', '0 0 10 10');
+                marker.setAttribute('refX', '10');
+                marker.setAttribute('refY', '5');
+                marker.setAttribute('markerWidth', '6');
+                marker.setAttribute('markerHeight', '6');
+                marker.setAttribute('orient', 'auto-start-reverse');
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z');
+                path.setAttribute('fill', 'var(--accent-primary)');
+                marker.appendChild(path);
+                defs.appendChild(marker);
+                svg.appendChild(defs);
+
+                requestAnimationFrame(() => {
+                    const nodes = visualizerContainer.querySelectorAll('.node-wrapper');
+                    if(nodes.length > 0) {
+                        const first = nodes[0].getBoundingClientRect();
+                        const last = nodes[nodes.length - 1].getBoundingClientRect();
+                        const containerRect = visualizerContainer.getBoundingClientRect();
+                        
+                        const startX = last.left - containerRect.left + last.width / 2;
+                        const startY = last.bottom - containerRect.top;
+                        
+                        const endX = first.left - containerRect.left + first.width / 2;
+                        const endY = first.bottom - containerRect.top;
+                        
+                        const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        const curveDepth = Math.min(100, nodes.length * 20);
+                        const d = `M ${startX} ${startY} Q ${startX} ${startY + curveDepth}, ${(startX + endX)/2} ${startY + curveDepth} Q ${endX} ${endY + curveDepth}, ${endX} ${endY + 15}`;
+                        pathEl.setAttribute('d', d);
+                        pathEl.setAttribute('stroke', 'var(--accent-primary)');
+                        pathEl.setAttribute('stroke-width', '2');
+                        pathEl.setAttribute('fill', 'none');
+                        pathEl.setAttribute('marker-end', 'url(#circ-arrow)');
+                        
+                        svg.appendChild(pathEl);
+                        
+                        // Hide last right arrow
+                        const lastArrow = nodes[nodes.length - 1].querySelector('.arrow');
+                        if(lastArrow) lastArrow.style.visibility = 'hidden';
+                    }
+                });
+                visualizerContainer.appendChild(svg);
             }
         } else if (currentStructure.includes('graph')) {
             const graphContainer = document.createElement('div');
             graphContainer.className = 'graph-container';
             
             const n = structureData.vertices.length;
-            const radius = 120;
-            const center = { x: 300, y: 150 }; // approx center of visualizer
+            const radius = Math.max(120, n * 20);
+            const center = { x: Math.max(300, radius + 50), y: Math.max(150, radius + 50) };
             
             const positions = {};
             
@@ -566,6 +734,27 @@ document.addEventListener('DOMContentLoaded', () => {
             svg.style.left = '0';
             svg.style.width = '100%';
             svg.style.height = '100%';
+            svg.style.minWidth = `${center.x * 2}px`;
+            svg.style.minHeight = `${center.y * 2}px`;
+            
+            // Directed arrow marker
+            if (currentStructure === 'directed-graph') {
+                const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+                const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+                marker.setAttribute('id', 'graph-arrow');
+                marker.setAttribute('viewBox', '0 0 10 10');
+                marker.setAttribute('refX', '10');
+                marker.setAttribute('refY', '5');
+                marker.setAttribute('markerWidth', '6');
+                marker.setAttribute('markerHeight', '6');
+                marker.setAttribute('orient', 'auto-start-reverse');
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z');
+                path.setAttribute('fill', 'var(--accent-primary)');
+                marker.appendChild(path);
+                defs.appendChild(marker);
+                svg.appendChild(defs);
+            }
             
             structureData.vertices.forEach((v, i) => {
                 const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
@@ -587,10 +776,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 const p2 = positions[e.v];
                 if (p1 && p2) {
                     const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                    line.setAttribute('x1', p1.x + 25);
-                    line.setAttribute('y1', p1.y + 25);
-                    line.setAttribute('x2', p2.x + 25);
-                    line.setAttribute('y2', p2.y + 25);
+                    let x1 = p1.x + 25;
+                    let y1 = p1.y + 25;
+                    let x2 = p2.x + 25;
+                    let y2 = p2.y + 25;
+                    
+                    if (currentStructure === 'directed-graph') {
+                        const dx = x2 - x1;
+                        const dy = y2 - y1;
+                        const dist = Math.sqrt(dx*dx + dy*dy);
+                        if (dist > 0) {
+                            // Shorten by node radius (25px) + border (approx 28px)
+                            x2 = x2 - (dx / dist) * 28;
+                            y2 = y2 - (dy / dist) * 28;
+                            line.setAttribute('marker-end', 'url(#graph-arrow)');
+                        }
+                    }
+                    
+                    line.setAttribute('x1', x1);
+                    line.setAttribute('y1', y1);
+                    line.setAttribute('x2', x2);
+                    line.setAttribute('y2', y2);
                     line.setAttribute('stroke', 'var(--accent-primary)');
                     line.setAttribute('stroke-width', '2');
                     svg.appendChild(line);
@@ -698,9 +904,24 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (blockId === 'bfs' || blockId === 'dfs') {
             if (!structureData.vertices || structureData.vertices.length === 0) return;
             let startNode = v1 || structureData.vertices[0];
+            
+            const visualizerText = document.createElement('p');
+            visualizerText.style.position = 'absolute';
+            visualizerText.style.top = '10px';
+            visualizerText.style.fontWeight = 'bold';
+            visualizerText.style.color = 'var(--text-main)';
+            visualizerContainer.appendChild(visualizerText);
+
             if (!structureData.vertices.includes(startNode)) {
-                alert(`Vertex ${startNode} not found!`);
+                visualizerText.textContent = currentLang === 'uk' ? `Помилка: Вершина ${startNode} не знайдена!` : `Error: Vertex ${startNode} not found!`;
+                visualizerText.style.color = '#ef4444';
+                await sleep(2000);
+                visualizerText.remove();
                 return;
+            } else {
+                visualizerText.textContent = currentLang === 'uk' ? `Початок ${blockId.toUpperCase()} з вершини ${startNode}` : `Starting ${blockId.toUpperCase()} from node ${startNode}`;
+                visualizerText.style.color = '#10b981';
+                setTimeout(() => visualizerText.remove(), 3000);
             }
             
             const statusContainer = document.createElement('div');
@@ -776,6 +997,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else if (blockId === 'add_edge') {
             if (!structureData.vertices) structureData = { vertices: [], edges: [] };
+            
+            const visualizerText = document.createElement('p');
+            visualizerText.style.position = 'absolute';
+            visualizerText.style.top = '10px';
+            visualizerText.style.fontWeight = 'bold';
+            visualizerText.style.color = '#ef4444';
+            
+            if (!structureData.vertices.includes(v1) || !structureData.vertices.includes(v2)) {
+                visualizerText.textContent = currentLang === 'uk' ? `Помилка: Вершини ${v1} або ${v2} не існують!` : `Error: Vertices ${v1} or ${v2} do not exist!`;
+                visualizerContainer.appendChild(visualizerText);
+                await sleep(2000);
+                visualizerText.remove();
+                return;
+            }
+            
             structureData.edges.push({u: v1, v: v2});
             renderVisualizer();
             await sleep(500);
