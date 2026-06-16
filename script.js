@@ -626,9 +626,38 @@ document.addEventListener('DOMContentLoaded', () => {
             structureData.forEach((val, index) => {
                 const wrapper = document.createElement('div');
                 wrapper.className = 'node-wrapper';
+                wrapper.style.position = 'relative';
                 
                 if (index === animatedIndex) {
                     wrapper.classList.add(animationClass);
+                }
+                
+                // Add Head/Tail indicators
+                if (index === 0) {
+                    const label = document.createElement('div');
+                    label.textContent = 'Head';
+                    label.style.position = 'absolute';
+                    label.style.top = '-25px';
+                    label.style.left = '0';
+                    label.style.width = '100%';
+                    label.style.textAlign = 'center';
+                    label.style.fontSize = '0.8rem';
+                    label.style.color = '#10b981';
+                    label.style.fontWeight = 'bold';
+                    wrapper.appendChild(label);
+                }
+                if (index === structureData.length - 1) {
+                    const label = document.createElement('div');
+                    label.textContent = 'Tail';
+                    label.style.position = 'absolute';
+                    label.style.bottom = '-25px';
+                    label.style.left = '0';
+                    label.style.width = '100%';
+                    label.style.textAlign = 'center';
+                    label.style.fontSize = '0.8rem';
+                    label.style.color = '#ef4444';
+                    label.style.fontWeight = 'bold';
+                    wrapper.appendChild(label);
                 }
                 
                 const node = document.createElement('div');
@@ -701,6 +730,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 const x = center.x + radius * Math.cos(angle);
                 const y = center.y + radius * Math.sin(angle);
                 positions.push({x, y});
+
+                // Add Head/Tail indicators
+                if (i === 0 || i === n - 1) {
+                    const label = document.createElement('div');
+                    label.textContent = i === 0 ? 'Head' : 'Tail';
+                    label.style.position = 'absolute';
+                    label.style.left = `${x}px`;
+                    label.style.top = i === 0 ? `${y - 25}px` : `${y + 65}px`;
+                    label.style.width = '60px'; // approximate node width
+                    label.style.textAlign = 'center';
+                    label.style.fontSize = '0.85rem';
+                    label.style.color = i === 0 ? '#10b981' : '#ef4444';
+                    label.style.fontWeight = 'bold';
+                    graphContainer.appendChild(label);
+                }
 
                 const el = document.createElement('div');
                 el.className = 'node graph-node';
@@ -1283,8 +1327,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             currentNodes[j].classList.remove('anim-highlight-yellow');
                             currentNodes[j+1].classList.remove('anim-highlight-yellow');
                             
-                            currentNodes[j].classList.add('anim-swap-right');
-                            currentNodes[j+1].classList.add('anim-swap-left');
+                            const isCircular = currentStructure === 'circular-linked-list';
+                            if (!isCircular) {
+                                currentNodes[j].classList.add('anim-swap-right');
+                                currentNodes[j+1].classList.add('anim-swap-left');
+                            }
                             
                             await sleep(800);
                             
@@ -1295,8 +1342,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             currentNodes[j].textContent = structureData[j];
                             currentNodes[j+1].textContent = structureData[j+1];
                             
-                            currentNodes[j].classList.remove('anim-swap-right');
-                            currentNodes[j+1].classList.remove('anim-swap-left');
+                            if (!isCircular) {
+                                currentNodes[j].classList.remove('anim-swap-right');
+                                currentNodes[j+1].classList.remove('anim-swap-left');
+                            }
                         } else {
                             currentNodes[j].classList.remove('anim-highlight-yellow');
                             currentNodes[j+1].classList.remove('anim-highlight-yellow');
