@@ -92,6 +92,13 @@
 
         <!-- Main Visualization Area -->
         <main class="main-content">
+            <!-- Panel Toggles -->
+            <button id="toggle-sidebar" class="panel-toggle left" title="Toggle Sidebar">◀</button>
+            <div style="position: absolute; right: -15px; top: 50%; transform: translateY(-50%); z-index: 50; display: flex; flex-direction: column; gap: 5px;">
+                <button id="toggle-palette" class="panel-toggle right-split" title="Toggle Palette">▶ P</button>
+                <button id="toggle-workspace" class="panel-toggle right-split" title="Toggle Workspace">▶ W</button>
+            </div>
+            
             <!-- Playback Controls -->
             <div class="controls-panel glass-panel">
                 <div class="button-group">
@@ -118,7 +125,7 @@
 
         <!-- Scratch-like Blocks Panel -->
         <aside class="blocks-panel glass-panel">
-            <div class="blocks-column">
+            <div class="blocks-column" id="col-palette">
                 <div class="blocks-header">
                     <h3>Blocks Palette</h3>
                 </div>
@@ -127,7 +134,7 @@
                 </div>
             </div>
 
-            <div class="blocks-column">
+            <div class="blocks-column" id="col-workspace">
                 <div class="workspace-header">
                     <h3>Script Workspace</h3>
                 </div>
