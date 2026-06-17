@@ -44,6 +44,13 @@
                 <span id="home-lang-en" class="active" style="color: var(--text-main); font-weight: bold;" onclick="setLang('en')">EN</span> / 
                 <span id="home-lang-uk" onclick="setLang('uk')">UK</span>
             </div>
+            
+            <!-- Buy Me A Coffee -->
+            <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);">
+                <a href="https://www.buymeacoffee.com/structvis" target="_blank" style="text-decoration: none; display: flex; align-items: center; gap: 8px; background: #FFDD00; color: #000000; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                    ☕ <span id="coffee-text">Buy Me a Coffee</span>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -85,18 +92,6 @@
 
         <!-- Main Visualization Area -->
         <main class="main-content">
-            <div class="visualization-area glass-panel" style="position: relative; overflow: hidden;">
-                <div class="canvas-controls">
-                    <button id="btn-zoom-in" title="Zoom In">+</button>
-                    <button id="btn-zoom-out" title="Zoom Out">-</button>
-                    <button id="btn-zoom-reset" title="Reset View">O</button>
-                </div>
-                <div class="canvas-placeholder">
-                    <p>Visualizing: Singly Linked List</p>
-                </div>
-                <div id="visualizer-container"></div>
-            </div>
-            
             <!-- Playback Controls -->
             <div class="controls-panel glass-panel">
                 <div class="button-group">
@@ -107,54 +102,76 @@
                     <button class="btn ghost" id="btn-clear-script">🗑 Clear Script</button>
                 </div>
             </div>
+
+            <div class="visualization-area glass-panel" style="position: relative; overflow: hidden; height: 350px;">
+                <div class="canvas-controls">
+                    <button id="btn-zoom-in" title="Zoom In">+</button>
+                    <button id="btn-zoom-out" title="Zoom Out">-</button>
+                    <button id="btn-zoom-reset" title="Reset View">O</button>
+                </div>
+                <div class="canvas-placeholder">
+                    <p>Visualizing: Singly Linked List</p>
+                </div>
+                <div id="visualizer-container"></div>
+            </div>
         </main>
 
         <!-- Scratch-like Blocks Panel -->
         <aside class="blocks-panel glass-panel">
-            <div class="blocks-header">
-                <h3>Blocks Palette</h3>
-            </div>
-            
-            <div class="palette" id="block-palette">
-                <!-- Blocks injected via JS -->
+            <div class="blocks-column">
+                <div class="blocks-header">
+                    <h3>Blocks Palette</h3>
+                </div>
+                <div class="palette" id="block-palette">
+                    <!-- Blocks injected via JS -->
+                </div>
             </div>
 
-            <div class="workspace-header">
-                <h3>Script Workspace</h3>
-            </div>
-            
-            <div class="workspace" id="script-workspace">
-                <p class="empty-text">Click a block above to add it here...</p>
+            <div class="blocks-column">
+                <div class="workspace-header">
+                    <h3>Script Workspace</h3>
+                </div>
+                <div class="workspace" id="script-workspace">
+                    <p class="empty-text">Click a block above to add it here...</p>
+                </div>
             </div>
         </aside>
     </div>
 
     <!-- Code View Modal -->
     <div id="code-modal" class="modal">
-        <div class="modal-content glass-panel">
+        <div class="modal-content glass-panel" style="display: flex; flex-direction: column;">
             <div class="modal-header">
                 <h2 id="modal-title">Code</h2>
                 <span class="close-modal" id="close-modal">&times;</span>
             </div>
-            <div class="language-selector" style="margin: 1rem 0; display: flex; gap: 10px;">
-                <select id="modal-language-select">
-                    <option value="cpp">C++</option>
-                    <option value="python">Python</option>
-                    <option value="java">Java</option>
-                    <option value="javascript">JavaScript</option>
-                </select>
-                <select id="modal-algorithm-select" style="display: none;">
-                    <option value="Bubble Sort">Bubble Sort</option>
-                    <option value="Selection Sort">Selection Sort</option>
-                    <option value="Insertion Sort">Insertion Sort</option>
-                    <option value="Quick Sort">Quick Sort</option>
-                </select>
+            <div class="modal-body" style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
+                <!-- Left Column: Code -->
+                <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column;">
+                    <div class="language-selector" style="margin-bottom: 1rem; display: flex; gap: 10px;">
+                        <select id="modal-language-select">
+                            <option value="cpp">C++</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                            <option value="javascript">JavaScript</option>
+                        </select>
+                        <select id="modal-algorithm-select" style="display: none;">
+                            <option value="Bubble Sort">Bubble Sort</option>
+                            <option value="Selection Sort">Selection Sort</option>
+                            <option value="Insertion Sort">Insertion Sort</option>
+                            <option value="Quick Sort">Quick Sort</option>
+                        </select>
+                    </div>
+                    <div class="code-editor" style="flex: 1;">
+                        <pre><code id="modal-code-snippet"></code></pre>
+                    </div>
+                </div>
+                <!-- Right Column: Explanation -->
+                <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column;">
+                    <div id="language-note" style="display: none; background: rgba(59, 130, 246, 0.2); padding: 0.8rem; border-left: 4px solid #3b82f6; margin-bottom: 1rem; border-radius: 4px; font-size: 0.85rem; line-height: 1.4;"></div>
+                    <div id="modal-description" style="padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 0.9rem; line-height: 1.5; color: var(--text-main); flex: 1;"></div>
+                </div>
             </div>
-            <div id="language-note" style="display: none; background: rgba(59, 130, 246, 0.2); padding: 0.8rem; border-left: 4px solid #3b82f6; margin-bottom: 1rem; border-radius: 4px; font-size: 0.85rem; line-height: 1.4;"></div>
-            <div class="code-editor">
-                <pre><code id="modal-code-snippet"></code></pre>
-            </div>
-            <div id="modal-description" style="margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 0.9rem; line-height: 1.5; color: var(--text-main);"></div>
         </div>
     </div>
 

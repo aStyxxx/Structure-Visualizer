@@ -257,6 +257,54 @@ document.addEventListener('DOMContentLoaded', () => {
         isDraggingCanvas = false;
     });
 
+    // Touch support for Pan and Pinch-to-Zoom
+    let initialTouchDist = null;
+    let initialZoom = 1;
+
+    document.querySelector('.visualization-area').addEventListener('touchstart', (e) => {
+        if (e.target.tagName === 'BUTTON') return;
+        if (e.touches.length === 1) {
+            isDraggingCanvas = true;
+            startPanX = e.touches[0].clientX - panX;
+            startPanY = e.touches[0].clientY - panY;
+        } else if (e.touches.length === 2) {
+            isDraggingCanvas = false;
+            initialTouchDist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            initialZoom = zoomLevel;
+        }
+    }, { passive: false });
+
+    window.addEventListener('touchmove', (e) => {
+        if (isDraggingCanvas && e.touches.length === 1) {
+            panX = e.touches[0].clientX - startPanX;
+            panY = e.touches[0].clientY - startPanY;
+            applyCanvasTransform();
+        } else if (e.touches.length === 2 && initialTouchDist) {
+            e.preventDefault(); // Prevent browser zoom/scroll
+            const currentDist = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            const scale = currentDist / initialTouchDist;
+            zoomLevel = Math.max(0.2, Math.min(initialZoom * scale, 3));
+            applyCanvasTransform();
+        }
+    }, { passive: false });
+
+    window.addEventListener('touchend', (e) => {
+        if (e.touches.length === 0) {
+            isDraggingCanvas = false;
+            initialTouchDist = null;
+        } else if (e.touches.length === 1) {
+            startPanX = e.touches[0].clientX - panX;
+            startPanY = e.touches[0].clientY - panY;
+            isDraggingCanvas = true;
+        }
+    });
+
     // --- Block Definitions & Code ---
     const blockTypes = {
         'linked-list': [
@@ -384,7 +432,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (b.inputs) {
                 b.inputs.forEach((inpName, i) => {
                     const input = document.createElement('input');
-                    input.type = 'text';
+                    input.type = 'number';
+                    input.step = 'any';
                     input.className = 'block-input palette-input';
                     input.placeholder = inpName;
                     input.addEventListener('click', e => e.stopPropagation());
@@ -443,7 +492,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (blockDef.inputs) {
             blockDef.inputs.forEach((inpName, i) => {
                 const input = document.createElement('input');
-                input.type = 'text';
+                input.type = 'number';
+                input.step = 'any';
                 input.className = 'block-input';
                 input.value = Array.isArray(defaultVals) ? (defaultVals[i] || '') : (defaultVals || '');
                 blockObj.appendChild(input);
@@ -955,21 +1005,61 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (blockId === 'insert_at') {
             let index = parseInt(v1);
             let value = v2 || '0';
-            if (!isNaN(index) && index >= 0 && index <= structureData.length) {
-                structureData.splice(index, 0, value);
-                renderVisualizer(index, 'anim-enter');
-                await sleep(700);
+            if (isNaN(index) || index < 0 || index > structureData.length) {
+                const visualizerText = document.createElement('p');
+                visualizerText.style.position = 'absolute';
+                visualizerText.style.top = '10px';
+                visualizerText.style.fontWeight = 'bold';
+                visualizerText.style.color = '#ef4444';
+                visualizerText.textContent = currentLang === 'uk' ? `Помилка: Неможливо вставити на позицію ${index} (допустимо 0-${structureData.length})` : `Error: Cannot insert at position ${index} (valid range 0-${structureData.length})`;
+                visualizerContainer.appendChild(visualizerText);
+                await sleep(2500);
+                visualizerText.remove();
+                return;
             }
+            structureData.splice(index, 0, value);
+            renderVisualizer(index, 'anim-enter');
+            await sleep(700);
         } else if (blockId === 'reverse') {
             if (structureData.length > 1) {
-                const arrows = document.querySelectorAll('#visualizer-container .arrow');
-                for(let i = 0; i < arrows.length; i++) {
-                    arrows[i].style.transition = 'transform 0.4s ease';
-                    arrows[i].style.transform = 'rotate(180deg)';
-                    await sleep(400);
-                    await checkPause();
+                // Swap Head/Tail labels visually
+                const allLabels = document.querySelectorAll('#visualizer-container div');
+                allLabels.forEach(label => {
+                    if (label.textContent === 'Head') {
+                        label.textContent = 'Tail';
+                        label.style.color = '#ef4444';
+                    } else if (label.textContent === 'Tail') {
+                        label.textContent = 'Head';
+                        label.style.color = '#10b981';
+                    }
+                });
+
+                if (currentStructure === 'circular-linked-list') {
+                    const lines = document.querySelectorAll('#visualizer-container svg line');
+                    for (let i = 0; i < lines.length; i++) {
+                        let x1 = lines[i].getAttribute('x1');
+                        let y1 = lines[i].getAttribute('y1');
+                        let x2 = lines[i].getAttribute('x2');
+                        let y2 = lines[i].getAttribute('y2');
+                        lines[i].style.transition = 'all 0.4s ease';
+                        lines[i].setAttribute('x1', x2);
+                        lines[i].setAttribute('y1', y2);
+                        lines[i].setAttribute('x2', x1);
+                        lines[i].setAttribute('y2', y1);
+                        await sleep(200);
+                        await checkPause();
+                    }
+                } else {
+                    const arrows = document.querySelectorAll('#visualizer-container .arrow');
+                    for(let i = 0; i < arrows.length; i++) {
+                        arrows[i].style.transition = 'transform 0.4s ease';
+                        arrows[i].style.transform = 'rotate(180deg)';
+                        await sleep(400);
+                        await checkPause();
+                    }
                 }
-                await sleep(600); // Give user time to see the arrows flipped
+                
+                await sleep(800); // Give user time to see the arrows flipped
                 structureData.reverse();
                 renderVisualizer();
             }

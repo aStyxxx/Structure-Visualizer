@@ -215,6 +215,7 @@ body {
     flex-grow: 1;
     position: relative;
     overflow: hidden;
+    touch-action: none;
     background-image: 
         linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
@@ -315,12 +316,21 @@ body {
 
 /* --- Blocks Panel (Scratch-like) --- */
 .blocks-panel {
-    width: 320px;
+    width: 600px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 1rem;
     flex-shrink: 0;
     overflow: hidden;
     background: rgba(25, 28, 41, 0.8);
+    padding: 0 1rem;
+}
+
+.blocks-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .blocks-header, .workspace-header {
@@ -339,13 +349,10 @@ body {
 }
 
 .palette {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    border-bottom: 2px solid var(--panel-border);
-    flex: 0 0 35%;
+    flex: 1;
     overflow-y: auto;
+    padding: 1rem;
+    border-bottom: 1px solid var(--panel-border);
 }
 
 .palette .block-input {
@@ -354,14 +361,11 @@ body {
 }
 
 .workspace {
-    flex-grow: 1;
+    flex: 1;
     padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
     overflow-y: auto;
     position: relative;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .empty-text {
@@ -806,7 +810,9 @@ body {
         width: 100%;
         max-height: none;
         flex: none;
+        flex-direction: column;
         overflow: visible;
+        padding: 0;
     }
     .palette {
         flex: none;
