@@ -7,7 +7,18 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const paletteContainer = document.getElementById('block-palette');
     const workspaceContainer = document.getElementById('script-workspace');
+    const blocksPanel = document.querySelector('.blocks-panel');
+    const paletteColumn = document.querySelector('.palette-column');
+    const workspaceColumn = document.querySelector('.workspace-column');
+    const blocksResizer = document.getElementById('blocks-resizer');
+    const paletteCloseBtn = document.getElementById('palette-close-btn');
+    const paletteShowBtn = document.getElementById('palette-show-btn');
     
+    const sidebar = document.getElementById('sidebar');
+    const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
+    const sidebarShowBtn = document.getElementById('sidebar-show-btn');
+    const appContainer = document.getElementById('app-container');
+
     const btnRun = document.getElementById('btn-run');
     const btnStep = document.getElementById('btn-step');
     const btnPause = document.getElementById('btn-pause');
@@ -210,6 +221,147 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // --- Sidebar Toggle ---
+    function initSidebarToggle() {
+        if (!sidebar || !sidebarCloseBtn || !sidebarShowBtn || !appContainer) return;
+
+        sidebarCloseBtn.addEventListener('click', () => {
+            appContainer.classList.add('is-sidebar-hidden');
+            sidebarShowBtn.style.display = 'block';
+        });
+
+        sidebarShowBtn.addEventListener('click', () => {
+            appContainer.classList.remove('is-sidebar-hidden');
+            sidebarShowBtn.style.display = 'none';
+        });
+    }
+
+    // --- Palette Toggle ---
+    function initPaletteToggle() {
+        if (!blocksPanel || !paletteCloseBtn || !paletteShowBtn) return;
+
+        paletteCloseBtn.addEventListener('click', () => {
+            blocksPanel.dataset.savedWidth = blocksPanel.offsetWidth;
+            blocksPanel.style.width = (workspaceColumn.offsetWidth + 32) + 'px';
+            blocksPanel.classList.add('is-palette-hidden');
+            paletteCloseBtn.style.display = 'none';
+            paletteShowBtn.style.display = 'block';
+        });
+
+        paletteShowBtn.addEventListener('click', () => {
+            blocksPanel.style.width = blocksPanel.dataset.savedWidth ? blocksPanel.dataset.savedWidth + 'px' : '';
+            blocksPanel.classList.remove('is-palette-hidden');
+            paletteCloseBtn.style.display = 'block';
+            paletteShowBtn.style.display = 'none';
+        });
+    }
+
+    // --- Blocks Panel Resize ---
+    function initBlocksPanelResize() {
+        if (!blocksPanel || !paletteColumn || !workspaceColumn || !blocksResizer) return;
+
+        const minColumnWidth = 180;
+        const resizeStep = 20;
+        let startX = 0;
+        let startPaletteWidth = 0;
+        let totalResizableWidth = 0;
+
+        const setPaletteWidth = (width, totalWidth = paletteColumn.offsetWidth + workspaceColumn.offsetWidth) => {
+            if (totalWidth <= 0) return;
+
+            const maxPaletteWidth = Math.max(minColumnWidth, totalWidth - minColumnWidth);
+            const nextWidth = Math.min(Math.max(width, minColumnWidth), maxPaletteWidth);
+            blocksPanel.style.setProperty('--palette-column-width', `${nextWidth}px`);
+            blocksResizer.setAttribute('aria-valuenow', Math.round((nextWidth / totalWidth) * 100));
+        };
+
+        const stopResize = () => {
+            blocksPanel.classList.remove('is-resizing');
+            document.body.classList.remove('is-resizing-blocks');
+            window.removeEventListener('pointermove', resize);
+            window.removeEventListener('pointerup', stopResize);
+            window.removeEventListener('pointercancel', stopResize);
+        };
+
+        const resize = (event) => {
+            const delta = event.clientX - startX;
+            setPaletteWidth(startPaletteWidth + delta, totalResizableWidth);
+        };
+
+        blocksResizer.setAttribute('aria-valuemin', '0');
+        blocksResizer.setAttribute('aria-valuemax', '100');
+        blocksResizer.setAttribute('aria-valuenow', '50');
+
+        blocksResizer.addEventListener('pointerdown', (event) => {
+            event.preventDefault();
+            startX = event.clientX;
+            startPaletteWidth = paletteColumn.offsetWidth;
+            totalResizableWidth = paletteColumn.offsetWidth + workspaceColumn.offsetWidth;
+
+            blocksPanel.classList.add('is-resizing');
+            document.body.classList.add('is-resizing-blocks');
+            blocksResizer.setPointerCapture?.(event.pointerId);
+            window.addEventListener('pointermove', resize);
+            window.addEventListener('pointerup', stopResize);
+            window.addEventListener('pointercancel', stopResize);
+        });
+
+        blocksResizer.addEventListener('keydown', (event) => {
+            if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+
+            event.preventDefault();
+            const direction = event.key === 'ArrowLeft' ? -1 : 1;
+            setPaletteWidth(paletteColumn.offsetWidth + direction * resizeStep);
+        });
+
+        window.addEventListener('resize', () => {
+            setPaletteWidth(paletteColumn.offsetWidth);
+        });
+    }
+
+    // --- Main Panel Resize ---
+    function initMainPanelResize() {
+        const mainResizer = document.getElementById('main-resizer');
+        if (!blocksPanel || !mainResizer) return;
+
+        let startX = 0;
+        let startPanelWidth = 0;
+
+        const resize = (event) => {
+            const delta = startX - event.clientX;
+            const minWidth = blocksPanel.classList.contains('is-palette-hidden') ? 200 : 400;
+            const maxWidth = window.innerWidth - 300;
+            
+            let nextWidth = startPanelWidth + delta;
+            nextWidth = Math.min(Math.max(nextWidth, minWidth), maxWidth);
+            
+            blocksPanel.style.width = nextWidth + 'px';
+        };
+
+        const stopResize = () => {
+            document.body.classList.remove('is-resizing-main');
+            window.removeEventListener('pointermove', resize);
+            window.removeEventListener('pointerup', stopResize);
+            window.removeEventListener('pointercancel', stopResize);
+            
+            if (!blocksPanel.classList.contains('is-palette-hidden')) {
+                blocksPanel.dataset.savedWidth = blocksPanel.offsetWidth;
+            }
+        };
+
+        mainResizer.addEventListener('pointerdown', (event) => {
+            event.preventDefault();
+            startX = event.clientX;
+            startPanelWidth = blocksPanel.offsetWidth;
+
+            document.body.classList.add('is-resizing-main');
+            mainResizer.setPointerCapture?.(event.pointerId);
+            window.addEventListener('pointermove', resize);
+            window.addEventListener('pointerup', stopResize);
+            window.addEventListener('pointercancel', stopResize);
+        });
+    }
+
     // --- Canvas Zoom & Pan ---
     let zoomLevel = 1;
     let panX = 0;
@@ -313,6 +465,18 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('mouseup', () => {
         isDraggingCanvas = false;
     });
+
+    // Mouse Wheel Zoom
+    document.querySelector('.visualization-area').addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const zoomStep = 0.1;
+        if (e.deltaY < 0) {
+            zoomLevel = Math.min(zoomLevel + zoomStep, 3);
+        } else {
+            zoomLevel = Math.max(zoomLevel - zoomStep, 0.2);
+        }
+        applyCanvasTransform();
+    }, { passive: false });
 
     // Touch support for Pan and Pinch-to-Zoom
     let initialTouchDist = null;
@@ -1673,4 +1837,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderPalette();
+    initSidebarToggle();
+    initPaletteToggle();
+    initBlocksPanelResize();
+    initMainPanelResize();
 });
