@@ -391,6 +391,63 @@ document.addEventListener('DOMContentLoaded', () => {
         applyCanvasTransform();
     });
 
+    // Panel Toggles
+    const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+    const togglePaletteBtn = document.getElementById('toggle-palette');
+    const toggleWorkspaceBtn = document.getElementById('toggle-workspace');
+    
+    const sidebar = document.querySelector('.sidebar');
+    const colPalette = document.getElementById('col-palette');
+    const colWorkspace = document.getElementById('col-workspace');
+    const blocksPanel = document.querySelector('.blocks-panel');
+
+    function autoFit() {
+        zoomLevel = 1;
+        panX = 0;
+        panY = 0;
+        applyCanvasTransform();
+        if (!isExecuting) {
+            renderVisualizer();
+        }
+    }
+
+    if (toggleSidebarBtn) {
+        toggleSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            toggleSidebarBtn.textContent = sidebar.classList.contains('collapsed') ? '▶' : '◀';
+            setTimeout(autoFit, 450); // wait for transition
+        });
+    }
+
+    function checkBlocksPanelCollapsed() {
+        if (colPalette.classList.contains('collapsed') && colWorkspace.classList.contains('collapsed')) {
+            blocksPanel.classList.add('collapsed');
+        } else {
+            blocksPanel.classList.remove('collapsed');
+        }
+        setTimeout(autoFit, 450);
+    }
+
+    if (togglePaletteBtn) {
+        togglePaletteBtn.addEventListener('click', () => {
+            colPalette.classList.toggle('collapsed');
+            togglePaletteBtn.textContent = colPalette.classList.contains('collapsed') ? '◀ P' : '▶ P';
+            checkBlocksPanelCollapsed();
+        });
+    }
+
+    if (toggleWorkspaceBtn) {
+        toggleWorkspaceBtn.addEventListener('click', () => {
+            colWorkspace.classList.toggle('collapsed');
+            toggleWorkspaceBtn.textContent = colWorkspace.classList.contains('collapsed') ? '◀ W' : '▶ W';
+            checkBlocksPanelCollapsed();
+        });
+    }
+
+    window.addEventListener('resize', () => {
+        if (!isExecuting) renderVisualizer();
+    });
+
     visualizerContainer.addEventListener('mousedown', (e) => {
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'BUTTON') return;
         isDraggingCanvas = true;
@@ -910,7 +967,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (n === 0) return; // handled by isEmptyList
 
             const radius = Math.max(100, n * 25);
-            const center = { x: Math.max(300, radius + 50), y: Math.max(150, radius + 50) };
+            const cw = visualizerContainer.clientWidth;
+            const ch = visualizerContainer.clientHeight;
+            const center = { x: Math.max(cw / 2 || 300, radius + 50), y: Math.max(ch / 2 || 150, radius + 50) };
             
             const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             svg.className = 'graph-edges';
@@ -1008,7 +1067,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const n = structureData.vertices.length;
             const radius = Math.max(120, n * 20);
-            const center = { x: Math.max(300, radius + 50), y: Math.max(150, radius + 50) };
+            const cw = visualizerContainer.clientWidth;
+            const ch = visualizerContainer.clientHeight;
+            const center = { x: Math.max(cw / 2 || 300, radius + 50), y: Math.max(ch / 2 || 150, radius + 50) };
             
             const positions = {};
             

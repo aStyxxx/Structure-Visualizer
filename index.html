@@ -114,6 +114,8 @@
 
         <!-- Main Visualization Area -->
         <main class="main-content">
+            <!-- Panel Toggles -->
+
             <!-- Playback Controls -->
             <div class="controls-panel glass-panel">
                 <div class="button-group">
@@ -144,11 +146,18 @@
 
         <!-- Scratch-like Blocks Panel -->
         <aside class="blocks-panel glass-panel" id="blocks-panel">
-            <div class="blocks-column palette-column">
-                <div class="blocks-header" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h3>Blocks Palette</h3>
+            <!-- Palette Show Button (When Hidden) -->
+            <button class="palette-show-btn glass-panel" id="palette-show-btn" type="button"
+                aria-label="Show Blocks Palette" title="Show Blocks Palette"
+                style="display: none; position: absolute; left: 0px; top: 0px; z-index: 50; width: 53px; height: 53px; padding: 0; text-align: center; line-height: 42px; border-radius: 8px; cursor: pointer; font-size: 1.5rem; color: var(--text-muted); background: var(--panel-bg); box-shadow: -2px 0 5px rgba(0,0,0,0.2);">‹</button>
+
+            <div class="blocks-column palette-column" id="col-palette">
+                <div class="blocks-header"
+                    style="display: flex; justify-content: flex-start; align-items: center; gap: 8px;">
                     <button class="palette-close-btn" id="palette-close-btn" type="button"
-                        aria-label="Hide Blocks Palette" title="Hide Blocks Palette">‹</button>
+                        aria-label="Hide Blocks Palette" title="Hide Blocks Palette"
+                        style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.5rem; line-height: 1; padding: 0 5px;">›</button>
+                    <h3>Blocks Palette</h3>
                 </div>
                 <div class="palette" id="block-palette">
                     <!-- Blocks injected via JS -->
@@ -158,12 +167,10 @@
             <div class="blocks-resizer" id="blocks-resizer" role="separator" aria-label="Resize blocks panels"
                 tabindex="0"></div>
 
-            <div class="blocks-column workspace-column">
+            <div class="blocks-column workspace-column" id="col-workspace">
                 <div class="workspace-header"
                     style="display: flex; justify-content: space-between; align-items: center;">
                     <h3>Script Workspace</h3>
-                    <button class="palette-show-btn" id="palette-show-btn" type="button"
-                        aria-label="Show Blocks Palette" title="Show Blocks Palette" style="display: none;">›</button>
                 </div>
                 <div class="workspace" id="script-workspace">
                     <p class="empty-text">Click a block above to add it here...</p>
