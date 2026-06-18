@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Structure Visualizer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
     <!-- Home Page -->
     <div id="home-page" class="home-container" style="display: flex;">
         <div class="home-content glass-panel">
-            <h1 class="logo" style="font-size: 3.5rem; margin-bottom: 1rem; text-align: center;">Struct<span>Vis</span></h1>
-            <h2 id="home-subtitle" style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Interactive Data Structure Visualizer</h2>
-            
+            <h1 class="logo" style="font-size: 3.5rem; margin-bottom: 1rem; text-align: center;">Struct<span>Vis</span>
+            </h1>
+            <h2 id="home-subtitle" style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+                Interactive Data Structure Visualizer</h2>
+
             <div id="home-desc-en" class="home-description">
-                <p>Welcome to StructVis! This tool is designed to help you understand how fundamental data structures work under the hood.</p>
+                <p>Welcome to StructVis! This tool is designed to help you understand how fundamental data structures
+                    work under the hood.</p>
                 <p>Features include:</p>
                 <ul style="list-style-position: inside; margin-bottom: 1.5rem; color: var(--text-muted);">
                     <li>Interactive visual tracing of operations</li>
@@ -23,9 +31,10 @@
                     <li>Block-based script building for algorithms</li>
                 </ul>
             </div>
-            
+
             <div id="home-desc-uk" class="home-description" style="display: none;">
-                <p>Вітаємо у StructVis! Цей інструмент створено для того, щоб допомогти вам зрозуміти, як фундаментальні структури даних працюють зсередини.</p>
+                <p>Вітаємо у StructVis! Цей інструмент створено для того, щоб допомогти вам зрозуміти, як фундаментальні
+                    структури даних працюють зсередини.</p>
                 <p>Можливості включають:</p>
                 <ul style="list-style-position: inside; margin-bottom: 1.5rem; color: var(--text-muted);">
                     <li>Інтерактивне візуальне відстеження операцій</li>
@@ -35,19 +44,23 @@
             </div>
 
             <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
-                <button class="btn btn-primary" onclick="startVisualizer()" style="font-size: 1.2rem; padding: 0.8rem 2rem;">
+                <button class="btn btn-primary" onclick="startVisualizer()"
+                    style="font-size: 1.2rem; padding: 0.8rem 2rem;">
                     <span id="home-btn-text">Try Visualizer</span>
                 </button>
             </div>
-            
-            <div class="lang-toggle" style="position: absolute; top: 20px; right: 20px; font-size: 1rem; cursor: pointer;">
-                <span id="home-lang-en" class="active" style="color: var(--text-main); font-weight: bold;" onclick="setLang('en')">EN</span> / 
+
+            <div class="lang-toggle"
+                style="position: absolute; top: 20px; right: 20px; font-size: 1rem; cursor: pointer;">
+                <span id="home-lang-en" class="active" style="color: var(--text-main); font-weight: bold;"
+                    onclick="setLang('en')">EN</span> /
                 <span id="home-lang-uk" onclick="setLang('uk')">UK</span>
             </div>
-            
+
             <!-- Buy Me A Coffee -->
             <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);">
-                <a href="https://www.buymeacoffee.com/structvis" target="_blank" style="text-decoration: none; display: flex; align-items: center; gap: 8px; background: #FFDD00; color: #000000; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                <a href="https://www.buymeacoffee.com/structvis" target="_blank"
+                    style="text-decoration: none; display: flex; align-items: center; gap: 8px; background: #FFDD00; color: #000000; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
                     ☕ <span id="coffee-text">Buy Me a Coffee</span>
                 </a>
             </div>
@@ -56,13 +69,12 @@
 
     <!-- Main App -->
     <div class="app-container" id="app-container" style="display: none;">
-        <aside class="sidebar glass-panel">
+        <aside class="sidebar glass-panel" id="sidebar">
             <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center;">
                 <h1 class="logo" style="cursor: pointer;" onclick="goHome()">Struct<span>Vis</span></h1>
-                <div class="lang-toggle" style="font-size: 0.8rem; color: var(--text-muted); cursor: pointer;">
-                    <span id="lang-en" class="active" style="color: var(--text-main); font-weight: bold;">EN</span> / 
-                    <span id="lang-uk">UK</span>
-                </div>
+                <button class="sidebar-close-btn" id="sidebar-close-btn" type="button" aria-label="Hide Sidebar"
+                    title="Hide Sidebar"
+                    style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.5rem; line-height: 1; padding: 0 5px; margin-left: 5px;">‹</button>
             </div>
             <nav class="nav-menu">
                 <div class="nav-group collapsed">
@@ -88,7 +100,17 @@
                     </ul>
                 </div>
             </nav>
+            <div class="lang-toggle"
+                style="margin-top: auto; text-align: center; font-size: 0.8rem; color: var(--text-muted); cursor: pointer; padding-top: 1rem;">
+                <span id="lang-en" class="active" style="color: var(--text-main); font-weight: bold;">EN</span>
+                /
+                <span id="lang-uk">UK</span>
+            </div>
         </aside>
+
+        <button class="sidebar-show-btn glass-panel" id="sidebar-show-btn" type="button" aria-label="Show Sidebar"
+            title="Show Sidebar"
+            style="display: none; position: absolute; left: 0; top: 1.5rem; z-index: 50; padding: 0.5rem 0.5rem 0.5rem 1rem; border-radius: 0 8px 8px 0; cursor: pointer; font-size: 1.5rem; color: var(--text-muted); border-left: none; background: var(--panel-bg);">›</button>
 
         <!-- Main Visualization Area -->
         <main class="main-content">
@@ -116,20 +138,32 @@
             </div>
         </main>
 
+        <!-- Main Panel Resizer -->
+        <div class="main-resizer" id="main-resizer" role="separator" aria-label="Resize blocks panel" tabindex="0">
+        </div>
+
         <!-- Scratch-like Blocks Panel -->
-        <aside class="blocks-panel glass-panel">
-            <div class="blocks-column">
-                <div class="blocks-header">
+        <aside class="blocks-panel glass-panel" id="blocks-panel">
+            <div class="blocks-column palette-column">
+                <div class="blocks-header" style="display: flex; justify-content: space-between; align-items: center;">
                     <h3>Blocks Palette</h3>
+                    <button class="palette-close-btn" id="palette-close-btn" type="button"
+                        aria-label="Hide Blocks Palette" title="Hide Blocks Palette">‹</button>
                 </div>
                 <div class="palette" id="block-palette">
                     <!-- Blocks injected via JS -->
                 </div>
             </div>
 
-            <div class="blocks-column">
-                <div class="workspace-header">
+            <div class="blocks-resizer" id="blocks-resizer" role="separator" aria-label="Resize blocks panels"
+                tabindex="0"></div>
+
+            <div class="blocks-column workspace-column">
+                <div class="workspace-header"
+                    style="display: flex; justify-content: space-between; align-items: center;">
                     <h3>Script Workspace</h3>
+                    <button class="palette-show-btn" id="palette-show-btn" type="button"
+                        aria-label="Show Blocks Palette" title="Show Blocks Palette" style="display: none;">›</button>
                 </div>
                 <div class="workspace" id="script-workspace">
                     <p class="empty-text">Click a block above to add it here...</p>
@@ -168,8 +202,12 @@
                 </div>
                 <!-- Right Column: Explanation -->
                 <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column;">
-                    <div id="language-note" style="display: none; background: rgba(59, 130, 246, 0.2); padding: 0.8rem; border-left: 4px solid #3b82f6; margin-bottom: 1rem; border-radius: 4px; font-size: 0.85rem; line-height: 1.4;"></div>
-                    <div id="modal-description" style="padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 0.9rem; line-height: 1.5; color: var(--text-main); flex: 1;"></div>
+                    <div id="language-note"
+                        style="display: none; background: rgba(59, 130, 246, 0.2); padding: 0.8rem; border-left: 4px solid #3b82f6; margin-bottom: 1rem; border-radius: 4px; font-size: 0.85rem; line-height: 1.4;">
+                    </div>
+                    <div id="modal-description"
+                        style="padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 0.9rem; line-height: 1.5; color: var(--text-main); flex: 1;">
+                    </div>
                 </div>
             </div>
         </div>
@@ -177,4 +215,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
