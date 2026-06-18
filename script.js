@@ -238,19 +238,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Palette Toggle ---
     function initPaletteToggle() {
-        if (!blocksPanel || !paletteCloseBtn || !paletteShowBtn) return;
+        const mainContent = document.querySelector('.main-content');
+        if (!blocksPanel || !paletteCloseBtn || !paletteShowBtn || !mainContent || !paletteColumn) return;
 
         paletteCloseBtn.addEventListener('click', () => {
-            blocksPanel.dataset.savedWidth = blocksPanel.offsetWidth;
-            blocksPanel.style.width = (workspaceColumn.offsetWidth + 32) + 'px';
+            const paletteWidth = paletteColumn.offsetWidth;
+            blocksPanel.style.width = ''; // clear any old inline widths just in case
+            
+            const currentMainWidth = mainContent.offsetWidth;
+            blocksPanel.dataset.hiddenPaletteWidth = paletteWidth;
+            mainContent.style.flex = `0 0 ${currentMainWidth + paletteWidth}px`;
+            
             blocksPanel.classList.add('is-palette-hidden');
+            paletteColumn.classList.add('collapsed');
             paletteCloseBtn.style.display = 'none';
             paletteShowBtn.style.display = 'block';
         });
 
         paletteShowBtn.addEventListener('click', () => {
-            blocksPanel.style.width = blocksPanel.dataset.savedWidth ? blocksPanel.dataset.savedWidth + 'px' : '';
             blocksPanel.classList.remove('is-palette-hidden');
+            paletteColumn.classList.remove('collapsed');
+            
+            const paletteWidthToRestore = parseFloat(blocksPanel.dataset.hiddenPaletteWidth) || 200;
+            const currentMainWidth = mainContent.offsetWidth;
+            mainContent.style.flex = `0 0 ${Math.max(300, currentMainWidth - paletteWidthToRestore)}px`;
+            
             paletteCloseBtn.style.display = 'block';
             paletteShowBtn.style.display = 'none';
         });
@@ -260,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function initBlocksPanelResize() {
         if (!blocksPanel || !paletteColumn || !workspaceColumn || !blocksResizer) return;
 
-        const minColumnWidth = 180;
+        const minColumnWidth = 200;
         const resizeStep = 20;
         let startX = 0;
         let startPaletteWidth = 0;
@@ -322,20 +334,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Main Panel Resize ---
     function initMainPanelResize() {
         const mainResizer = document.getElementById('main-resizer');
-        if (!blocksPanel || !mainResizer) return;
+        const mainContent = document.querySelector('.main-content');
+        if (!blocksPanel || !mainResizer || !mainContent) return;
 
         let startX = 0;
-        let startPanelWidth = 0;
+        let startMainWidth = 0;
 
         const resize = (event) => {
-            const delta = startX - event.clientX;
-            const minWidth = blocksPanel.classList.contains('is-palette-hidden') ? 200 : 400;
-            const maxWidth = window.innerWidth - 300;
+            const delta = event.clientX - startX;
+            const minBlocksWidth = blocksPanel.classList.contains('is-palette-hidden') ? 200 : 400;
             
-            let nextWidth = startPanelWidth + delta;
-            nextWidth = Math.min(Math.max(nextWidth, minWidth), maxWidth);
+            const sidebarWidth = appContainer.classList.contains('is-sidebar-hidden') ? 0 : sidebar.offsetWidth;
+            const resizerWidth = mainResizer.offsetWidth || 8;
             
-            blocksPanel.style.width = nextWidth + 'px';
+            const maxMainWidth = window.innerWidth - sidebarWidth - minBlocksWidth - resizerWidth;
+            const minMainWidth = 300;
+            
+            let nextWidth = startMainWidth + delta;
+            nextWidth = Math.min(Math.max(nextWidth, minMainWidth), maxMainWidth);
+            
+            mainContent.style.flex = `0 0 ${nextWidth}px`;
         };
 
         const stopResize = () => {
@@ -343,16 +361,12 @@ document.addEventListener('DOMContentLoaded', () => {
             window.removeEventListener('pointermove', resize);
             window.removeEventListener('pointerup', stopResize);
             window.removeEventListener('pointercancel', stopResize);
-            
-            if (!blocksPanel.classList.contains('is-palette-hidden')) {
-                blocksPanel.dataset.savedWidth = blocksPanel.offsetWidth;
-            }
         };
 
         mainResizer.addEventListener('pointerdown', (event) => {
             event.preventDefault();
             startX = event.clientX;
-            startPanelWidth = blocksPanel.offsetWidth;
+            startMainWidth = mainContent.offsetWidth;
 
             document.body.classList.add('is-resizing-main');
             mainResizer.setPointerCapture?.(event.pointerId);
@@ -391,16 +405,6 @@ document.addEventListener('DOMContentLoaded', () => {
         applyCanvasTransform();
     });
 
-    // Panel Toggles
-    const toggleSidebarBtn = document.getElementById('toggle-sidebar');
-    const togglePaletteBtn = document.getElementById('toggle-palette');
-    const toggleWorkspaceBtn = document.getElementById('toggle-workspace');
-    
-    const sidebar = document.querySelector('.sidebar');
-    const colPalette = document.getElementById('col-palette');
-    const colWorkspace = document.getElementById('col-workspace');
-    const blocksPanel = document.querySelector('.blocks-panel');
-
     function autoFit() {
         zoomLevel = 1;
         panX = 0;
@@ -409,39 +413,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!isExecuting) {
             renderVisualizer();
         }
-    }
-
-    if (toggleSidebarBtn) {
-        toggleSidebarBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-            toggleSidebarBtn.textContent = sidebar.classList.contains('collapsed') ? '▶' : '◀';
-            setTimeout(autoFit, 450); // wait for transition
-        });
-    }
-
-    function checkBlocksPanelCollapsed() {
-        if (colPalette.classList.contains('collapsed') && colWorkspace.classList.contains('collapsed')) {
-            blocksPanel.classList.add('collapsed');
-        } else {
-            blocksPanel.classList.remove('collapsed');
-        }
-        setTimeout(autoFit, 450);
-    }
-
-    if (togglePaletteBtn) {
-        togglePaletteBtn.addEventListener('click', () => {
-            colPalette.classList.toggle('collapsed');
-            togglePaletteBtn.textContent = colPalette.classList.contains('collapsed') ? '◀ P' : '▶ P';
-            checkBlocksPanelCollapsed();
-        });
-    }
-
-    if (toggleWorkspaceBtn) {
-        toggleWorkspaceBtn.addEventListener('click', () => {
-            colWorkspace.classList.toggle('collapsed');
-            toggleWorkspaceBtn.textContent = colWorkspace.classList.contains('collapsed') ? '◀ W' : '▶ W';
-            checkBlocksPanelCollapsed();
-        });
     }
 
     window.addEventListener('resize', () => {
