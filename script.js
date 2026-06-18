@@ -245,9 +245,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const paletteWidth = paletteColumn.offsetWidth;
             blocksPanel.style.width = ''; // clear any old inline widths just in case
             
-            const currentMainWidth = mainContent.offsetWidth;
+            const currentBlocksWidth = blocksPanel.offsetWidth;
             blocksPanel.dataset.hiddenPaletteWidth = paletteWidth;
-            mainContent.style.flex = `0 0 ${currentMainWidth + paletteWidth}px`;
+            blocksPanel.style.flex = `0 0 ${currentBlocksWidth - paletteWidth}px`;
             
             blocksPanel.classList.add('is-palette-hidden');
             paletteColumn.classList.add('collapsed');
@@ -260,8 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
             paletteColumn.classList.remove('collapsed');
             
             const paletteWidthToRestore = parseFloat(blocksPanel.dataset.hiddenPaletteWidth) || 200;
-            const currentMainWidth = mainContent.offsetWidth;
-            mainContent.style.flex = `0 0 ${Math.max(300, currentMainWidth - paletteWidthToRestore)}px`;
+            const currentBlocksWidth = blocksPanel.offsetWidth;
+            blocksPanel.style.flex = `0 0 ${currentBlocksWidth + paletteWidthToRestore}px`;
             
             paletteCloseBtn.style.display = 'block';
             paletteShowBtn.style.display = 'none';
@@ -338,22 +338,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!blocksPanel || !mainResizer || !mainContent) return;
 
         let startX = 0;
-        let startMainWidth = 0;
+        let startBlocksWidth = 0;
 
         const resize = (event) => {
             const delta = event.clientX - startX;
             const minBlocksWidth = blocksPanel.classList.contains('is-palette-hidden') ? 200 : 400;
+            const maxBlocksWidth = window.innerWidth - 300 - (appContainer.classList.contains('is-sidebar-hidden') ? 0 : sidebar.offsetWidth) - (mainResizer.offsetWidth || 8);
             
-            const sidebarWidth = appContainer.classList.contains('is-sidebar-hidden') ? 0 : sidebar.offsetWidth;
-            const resizerWidth = mainResizer.offsetWidth || 8;
+            let nextWidth = startBlocksWidth - delta;
+            nextWidth = Math.min(Math.max(nextWidth, minBlocksWidth), maxBlocksWidth);
             
-            const maxMainWidth = window.innerWidth - sidebarWidth - minBlocksWidth - resizerWidth;
-            const minMainWidth = 300;
-            
-            let nextWidth = startMainWidth + delta;
-            nextWidth = Math.min(Math.max(nextWidth, minMainWidth), maxMainWidth);
-            
-            mainContent.style.flex = `0 0 ${nextWidth}px`;
+            blocksPanel.style.flex = `0 0 ${nextWidth}px`;
         };
 
         const stopResize = () => {
@@ -366,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mainResizer.addEventListener('pointerdown', (event) => {
             event.preventDefault();
             startX = event.clientX;
-            startMainWidth = mainContent.offsetWidth;
+            startBlocksWidth = blocksPanel.offsetWidth;
 
             document.body.classList.add('is-resizing-main');
             mainResizer.setPointerCapture?.(event.pointerId);
@@ -1032,6 +1027,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             graphContainer.appendChild(svg);
             visualizerContainer.appendChild(graphContainer);
+            
+            // Auto-scale if graph is larger than container
+            const reqWidth = center.x * 2;
+            const reqHeight = center.y * 2;
+            const cw2 = visualizerContainer.clientWidth;
+            const ch2 = visualizerContainer.clientHeight;
+            if (reqWidth > cw2 || reqHeight > ch2) {
+                zoomLevel = Math.min(cw2 / reqWidth, ch2 / reqHeight) * 0.95;
+                applyCanvasTransform();
+            }
         } else if (currentStructure.includes('graph')) {
             const graphContainer = document.createElement('div');
             graphContainer.className = 'graph-container';
@@ -1094,30 +1099,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 const p2 = positions[e.v];
                 if (p1 && p2) {
                     const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                    let x1 = p1.x + 25;
-                    let y1 = p1.y + 25;
-                    let x2 = p2.x + 25;
-                    let y2 = p2.y + 25;
+                    let x1 = p1.x + 30;
+                    let y1 = p1.y + 30;
+                    let x2 = p2.x + 30;
+                    let y2 = p2.y + 30;
                     
-                    if (currentStructure === 'directed-graph') {
-                        const dx = x2 - x1;
-                        const dy = y2 - y1;
-                        const dist = Math.sqrt(dx*dx + dy*dy);
-                        if (dist > 0) {
-                            // Shorten by node radius (25px) + border (approx 28px)
-                            x2 = x2 - (dx / dist) * 28;
-                            y2 = y2 - (dy / dist) * 28;
+                    const dx = x2 - x1;
+                    const dy = y2 - y1;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    
+                    if (dist > 0) {
+                        if (currentStructure === 'directed-graph') {
+                            x1 = x1 + (dx / dist) * 35;
+                            y1 = y1 + (dy / dist) * 35;
+                            x2 = x2 - (dx / dist) * 35;
+                            y2 = y2 - (dy / dist) * 35;
                             line.setAttribute('marker-end', 'url(#graph-arrow)');
                         }
+                        line.setAttribute('x1', x1);
+                        line.setAttribute('y1', y1);
+                        line.setAttribute('x2', x2);
+                        line.setAttribute('y2', y2);
+                        line.setAttribute('stroke', 'var(--accent-primary)');
+                        line.setAttribute('stroke-width', '2');
+                        svg.appendChild(line);
+                    } else {
+                        // Self-loop
+                        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        // Start slightly left of top-center, loop up and right, end slightly right of top-center
+                        path.setAttribute('d', `M ${x1 - 10} ${y1 - 30} C ${x1 - 40} ${y1 - 90}, ${x1 + 40} ${y1 - 90}, ${x1 + 10} ${y1 - 30}`);
+                        path.setAttribute('fill', 'none');
+                        path.setAttribute('stroke', 'var(--accent-primary)');
+                        path.setAttribute('stroke-width', '2');
+                        if (currentStructure === 'directed-graph') {
+                            path.setAttribute('marker-end', 'url(#graph-arrow)');
+                        }
+                        svg.appendChild(path);
                     }
-                    
-                    line.setAttribute('x1', x1);
-                    line.setAttribute('y1', y1);
-                    line.setAttribute('x2', x2);
-                    line.setAttribute('y2', y2);
-                    line.setAttribute('stroke', 'var(--accent-primary)');
-                    line.setAttribute('stroke-width', '2');
-                    svg.appendChild(line);
                 }
             });
             
