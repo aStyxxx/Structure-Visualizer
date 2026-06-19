@@ -488,11 +488,14 @@ body {
     width: 0 !important;
     max-width: 0 !important;
     min-width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
-    opacity: 0 !important;
-    border: none !important;
     flex: 0 0 0 !important;
+    overflow: hidden !important;
+    border: none !important;
+    opacity: 0 !important;
 }
 
 .palette-column {
@@ -1069,6 +1072,20 @@ body.is-resizing-main .blocks-panel {
         flex-direction: column;
         height: auto;
         overflow: auto;
+    }
+
+    /* Reset layout offsets for mobile */
+    .app-container.is-sidebar-hidden .main-content {
+        margin-left: 0 !important;
+    }
+    
+    .blocks-panel.is-palette-hidden {
+        padding-left: 0 !important;
+        padding-top: 48px !important;
+    }
+
+    .main-content {
+        width: 100% !important;
     }
 
     body {
