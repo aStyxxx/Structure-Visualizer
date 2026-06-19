@@ -227,12 +227,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         sidebarCloseBtn.addEventListener('click', () => {
             appContainer.classList.add('is-sidebar-hidden');
-            sidebarShowBtn.style.display = 'block';
         });
 
         sidebarShowBtn.addEventListener('click', () => {
             appContainer.classList.remove('is-sidebar-hidden');
-            sidebarShowBtn.style.display = 'none';
         });
     }
 
