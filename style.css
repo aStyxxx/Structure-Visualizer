@@ -685,6 +685,10 @@ body.is-resizing-main .blocks-panel {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.1s, box-shadow 0.1s;
     width: fit-content;
+    max-width: 100%;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    word-break: break-word;
     position: relative;
 }
 
@@ -728,6 +732,9 @@ body.is-resizing-main .blocks-panel {
     padding: 0.2rem 0.4rem;
     margin: 0 0.5rem;
     width: 50px;
+    max-width: 100%;
+    min-width: 20px;
+    flex-shrink: 1;
     font-family: inherit;
     font-weight: bold;
     color: #000;
