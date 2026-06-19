@@ -148,12 +148,34 @@ body {
 }
 
 .sidebar.collapsed {
-    width: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    opacity: 0 !important;
-    border: none !important;
-    overflow: hidden;
+    width: 0;
+    padding: 0;
+    border: none;
+    opacity: 0;
+}
+
+.sidebar-show-btn {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 1.5rem;
+    z-index: 500;
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    border-left: none;
+    background: var(--panel-bg);
+}
+
+@media (max-width: 768px) {
+    .sidebar.collapsed {
+        display: none;
+    }
+    .sidebar-show-btn {
+        display: block;
+    }
 }
 
 .logo {

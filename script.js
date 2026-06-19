@@ -283,8 +283,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const maxPaletteWidth = Math.max(minColumnWidth, totalWidth - minColumnWidth);
             const nextWidth = Math.min(Math.max(width, minColumnWidth), maxPaletteWidth);
-            blocksPanel.style.setProperty('--palette-column-width', `${nextWidth}px`);
-            blocksResizer.setAttribute('aria-valuenow', Math.round((nextWidth / totalWidth) * 100));
+            
+            const percentage = (nextWidth / totalWidth) * 100;
+            blocksPanel.style.setProperty('--palette-column-width', `${percentage}%`);
+            blocksResizer.setAttribute('aria-valuenow', Math.round(percentage));
         };
 
         const stopResize = () => {
@@ -342,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const resize = (event) => {
             const delta = event.clientX - startX;
-            const minBlocksWidth = blocksPanel.classList.contains('is-palette-hidden') ? 200 : 400;
+            const minBlocksWidth = blocksPanel.classList.contains('is-palette-hidden') ? 240 : 440;
             const maxBlocksWidth = window.innerWidth - 300 - (appContainer.classList.contains('is-sidebar-hidden') ? 0 : sidebar.offsetWidth) - (mainResizer.offsetWidth || 8);
             
             let nextWidth = startBlocksWidth - delta;

@@ -43,11 +43,17 @@
                 </ul>
             </div>
 
-            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem; margin-top: 2rem;">
                 <button class="btn btn-primary" onclick="startVisualizer()"
                     style="font-size: 1.2rem; padding: 0.8rem 2rem;">
                     <span id="home-btn-text">Try Visualizer</span>
                 </button>
+
+                <!-- Buy Me A Coffee -->
+                <a href="https://www.buymeacoffee.com/structvis" target="_blank"
+                    style="text-decoration: none; display: flex; align-items: center; gap: 8px; background: #FFDD00; color: #000000; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                    ☕ <span id="coffee-text">Buy Me a Coffee</span>
+                </a>
             </div>
 
             <div class="lang-toggle"
@@ -55,14 +61,6 @@
                 <span id="home-lang-en" class="active" style="color: var(--text-main); font-weight: bold;"
                     onclick="setLang('en')">EN</span> /
                 <span id="home-lang-uk" onclick="setLang('uk')">UK</span>
-            </div>
-
-            <!-- Buy Me A Coffee -->
-            <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);">
-                <a href="https://www.buymeacoffee.com/structvis" target="_blank"
-                    style="text-decoration: none; display: flex; align-items: center; gap: 8px; background: #FFDD00; color: #000000; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 0.9rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s;">
-                    ☕ <span id="coffee-text">Buy Me a Coffee</span>
-                </a>
             </div>
         </div>
     </div>
@@ -72,9 +70,7 @@
         <aside class="sidebar glass-panel" id="sidebar">
             <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center;">
                 <h1 class="logo" style="cursor: pointer;" onclick="goHome()">Struct<span>Vis</span></h1>
-                <button class="sidebar-close-btn" id="sidebar-close-btn" type="button" aria-label="Hide Sidebar"
-                    title="Hide Sidebar"
-                    style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.5rem; line-height: 1; padding: 0 5px; margin-left: 5px;">‹</button>
+                <button class="sidebar-close-btn" id="sidebar-close-btn" type="button" aria-label="Hide Sidebar" title="Hide Sidebar"><</button>
             </div>
             <nav class="nav-menu">
                 <div class="nav-group collapsed">
@@ -108,9 +104,7 @@
             </div>
         </aside>
 
-        <button class="sidebar-show-btn glass-panel" id="sidebar-show-btn" type="button" aria-label="Show Sidebar"
-            title="Show Sidebar"
-            style="display: none; position: absolute; left: 0; top: 1.5rem; z-index: 50; padding: 0.5rem 0.5rem 0.5rem 1rem; border-radius: 0 8px 8px 0; cursor: pointer; font-size: 1.5rem; color: var(--text-muted); border-left: none; background: var(--panel-bg);">›</button>
+        <button class="sidebar-show-btn glass-panel" id="sidebar-show-btn" type="button" aria-label="Show Sidebar" title="Show Sidebar">></button>
 
         <!-- Main Visualization Area -->
         <main class="main-content">
