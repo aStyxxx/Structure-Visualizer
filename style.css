@@ -476,7 +476,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    min-width: 200px;
+    min-width: 330px;
     container-type: inline-size;
     transition: width 0.4s ease, max-width 0.4s ease, opacity 0.4s ease, padding 0.4s ease, margin 0.4s ease;
 }
@@ -501,12 +501,12 @@ body {
 
 .palette-column {
     flex: 0 0 var(--palette-column-width);
-    min-width: 200px;
+    min-width: 330px;
 }
 
 .workspace-column {
     flex: 1 1 0;
-    min-width: 200px;
+    min-width: 330px;
 }
 
 .blocks-panel.is-palette-hidden {
@@ -655,6 +655,7 @@ body.is-resizing-main .blocks-panel {
     flex: 1;
     padding: 1rem;
     overflow-y: auto;
+    overflow-x: auto;
     position: relative;
     background: rgba(0, 0, 0, 0.2);
     display: flex;
@@ -674,11 +675,11 @@ body.is-resizing-main .blocks-panel {
 .block {
     display: inline-flex;
     align-items: center;
-    padding: clamp(0.25rem, 3cqw, 0.5rem) clamp(0.5rem, 6cqw, 1rem);
+    padding: 0.5rem 1rem;
     margin-bottom: 0.75rem;
     border-radius: 8px;
     font-family: 'Fira Code', monospace;
-    font-size: clamp(0.55rem, 5cqw, 0.85rem);
+    font-size: 0.85rem;
     font-weight: 600;
     color: #fff;
     cursor: pointer;
@@ -690,6 +691,7 @@ body.is-resizing-main .blocks-panel {
     flex-wrap: nowrap;
     white-space: nowrap;
     box-sizing: border-box;
+    overflow: hidden;
     position: relative;
 }
 
@@ -730,17 +732,19 @@ body.is-resizing-main .blocks-panel {
     background: rgba(255, 255, 255, 0.9);
     border: none;
     border-radius: 4px;
-    padding: clamp(0.1rem, 2cqw, 0.2rem) clamp(0.2rem, 3cqw, 0.4rem);
-    margin: 0 clamp(0.2rem, 3cqw, 0.5rem);
-    width: clamp(20px, 15cqw, 50px);
+    padding: 0.2rem 0.4rem;
+    margin: 0 0.5rem;
+    width: 45px;
     max-width: 100%;
-    flex-shrink: 1;
+    min-width: 40px;
+    flex-shrink: 0;
     font-family: inherit;
-    font-size: clamp(0.5rem, 5cqw, 0.85rem);
+    font-size: 0.85rem;
     font-weight: bold;
     color: #000;
     outline: none;
     text-align: center;
+    text-overflow: ellipsis;
 }
 
 .block-input:focus {
@@ -749,8 +753,8 @@ body.is-resizing-main .blocks-panel {
 
 /* Delete button on workspace blocks */
 .block-delete {
-    margin-left: clamp(4px, 3cqw, 10px);
-    font-size: clamp(0.7rem, 6cqw, 1.2rem);
+    margin-left: 10px;
+    font-size: 1.2rem;
     line-height: 1;
     opacity: 0.5;
     border: none;

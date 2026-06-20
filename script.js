@@ -270,7 +270,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function initBlocksPanelResize() {
         if (!blocksPanel || !paletteColumn || !workspaceColumn || !blocksResizer) return;
 
-        const minColumnWidth = 200;
+        const minPaletteWidth = 330;
+        const minWorkspaceWidth = 330;
         const resizeStep = 20;
         let startX = 0;
         let startPaletteWidth = 0;
@@ -279,8 +280,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const setPaletteWidth = (width, totalWidth = paletteColumn.offsetWidth + workspaceColumn.offsetWidth) => {
             if (totalWidth <= 0) return;
 
-            const maxPaletteWidth = Math.max(minColumnWidth, totalWidth - minColumnWidth);
-            const nextWidth = Math.min(Math.max(width, minColumnWidth), maxPaletteWidth);
+            const maxPaletteWidth = Math.max(minPaletteWidth, totalWidth - minWorkspaceWidth);
+            const nextWidth = Math.min(Math.max(width, minPaletteWidth), maxPaletteWidth);
             
             const percentage = (nextWidth / totalWidth) * 100;
             blocksPanel.style.setProperty('--palette-column-width', `${percentage}%`);
@@ -342,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const resize = (event) => {
             const delta = event.clientX - startX;
-            const minBlocksWidth = blocksPanel.classList.contains('is-palette-hidden') ? 240 : 440;
+            const minBlocksWidth = blocksPanel.classList.contains('is-palette-hidden') ? 330 : 668;
             const maxBlocksWidth = window.innerWidth - 300 - (appContainer.classList.contains('is-sidebar-hidden') ? 0 : sidebar.offsetWidth) - (mainResizer.offsetWidth || 8);
             
             let nextWidth = startBlocksWidth - delta;
@@ -682,6 +683,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.type = 'number';
                 input.step = 'any';
                 input.className = 'block-input';
+                input.placeholder = inpName;
                 input.value = Array.isArray(defaultVals) ? (defaultVals[i] || '') : (defaultVals || '');
                 blockObj.appendChild(input);
                 if (i < blockDef.inputs.length - 1) {
