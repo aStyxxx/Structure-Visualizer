@@ -667,7 +667,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Workspace Logic ---
-    function addBlockToWorkspace(blockDef, defaultVals) {
+    function saveScript() {
+        if (!workspaceContainer) return;
+        const blocks = Array.from(workspaceContainer.querySelectorAll('.workspace-block'));
+        const scriptData = blocks.map(block => {
+            const blockId = block.dataset.blockId;
+            const inputs = Array.from(block.querySelectorAll('input')).map(inp => inp.value);
+            const select = block.querySelector('select');
+            if (select) inputs.push(select.value);
+            return { id: blockId, values: inputs };
+        });
+        localStorage.setItem('structvis_script_' + currentStructure, JSON.stringify(scriptData));
+    }
+
+    function loadScript() {
+        workspaceContainer.innerHTML = '';
+        const saved = localStorage.getItem('structvis_script_' + currentStructure);
+        if (saved) {
+            try {
+                const scriptData = JSON.parse(saved);
+                if (scriptData.length > 0) {
+                    const category = currentStructure.includes('list') ? 'linked-list' : 
+                                     currentStructure.includes('tree') ? 'tree' : 'graph';
+                    scriptData.forEach(item => {
+                        const blockDef = blockTypes[category].find(b => b.id === item.id);
+                        if (blockDef) {
+                            addBlockToWorkspace(blockDef, item.values, true);
+                        }
+                    });
+                    return;
+                }
+            } catch(e) { console.error(e); }
+        }
+        const t = translations[currentLang];
+        workspaceContainer.innerHTML = `<p class="empty-text">${t.empty_workspace || 'Click a block above to add it here...'}</p>`;
+    }
+
+    function addBlockToWorkspace(blockDef, defaultVals, skipSave = false) {
         const emptyText = workspaceContainer.querySelector('.empty-text');
         if (emptyText) emptyText.remove();
 
@@ -711,20 +747,67 @@ document.addEventListener('DOMContentLoaded', () => {
         const textNode2 = document.createTextNode(')');
         blockObj.appendChild(textNode2);
 
+        // Controls wrapper
+        const controlsDiv = document.createElement('div');
+        controlsDiv.style.display = 'flex';
+        controlsDiv.style.alignItems = 'center';
+        controlsDiv.style.marginLeft = 'auto'; // push to the right
+
+        // Up button
+        const upBtn = document.createElement('button');
+        upBtn.className = 'block-action-btn';
+        upBtn.innerHTML = '&#9650;';
+        upBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const prev = blockObj.previousElementSibling;
+            if (prev && prev.classList.contains('workspace-block')) {
+                workspaceContainer.insertBefore(blockObj, prev);
+                saveScript();
+                stepIndex = 0;
+            }
+        });
+
+        // Down button
+        const downBtn = document.createElement('button');
+        downBtn.className = 'block-action-btn';
+        downBtn.innerHTML = '&#9660;';
+        downBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const next = blockObj.nextElementSibling;
+            if (next && next.classList.contains('workspace-block')) {
+                workspaceContainer.insertBefore(next, blockObj);
+                saveScript();
+                stepIndex = 0;
+            }
+        });
+
         // Delete button
         const delBtn = document.createElement('button');
         delBtn.className = 'block-delete';
-        delBtn.textContent = '×';
-        delBtn.addEventListener('click', () => {
+        delBtn.innerHTML = '&times;';
+        delBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             blockObj.remove();
             if (workspaceContainer.children.length === 0) {
-                workspaceContainer.innerHTML = '<p class="empty-text">Click a block above to add it here...</p>';
+                const t = translations[currentLang];
+                workspaceContainer.innerHTML = `<p class="empty-text">${t.empty_workspace || 'Click a block above to add it here...'}</p>`;
             }
+            saveScript();
             stepIndex = 0; // reset step index
         });
-        blockObj.appendChild(delBtn);
+        controlsDiv.appendChild(upBtn);
+        controlsDiv.appendChild(downBtn);
+        controlsDiv.appendChild(delBtn);
+        blockObj.appendChild(controlsDiv);
 
         workspaceContainer.appendChild(blockObj);
+        
+        blockObj.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('input', () => saveScript());
+            el.addEventListener('change', () => saveScript());
+        });
+
+        if (!skipSave) saveScript();
         stepIndex = 0; // reset step if we edit the script
     }
 
@@ -1182,8 +1265,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    let animationSpeedMultiplier = 1.0;
+    
+    document.getElementById('speed-slider').addEventListener('input', (e) => {
+        animationSpeedMultiplier = parseFloat(e.target.value);
+        document.getElementById('speed-label').textContent = `Speed: ${animationSpeedMultiplier}x`;
+    });
+
     function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+        return new Promise(resolve => setTimeout(resolve, ms / animationSpeedMultiplier));
     }
 
     async function checkPause() {
@@ -1800,8 +1890,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     btnClearScript.addEventListener('click', () => {
-        workspaceContainer.innerHTML = '<p class="empty-text">Click a block above to add it here...</p>';
+        const t = translations[currentLang];
+        workspaceContainer.innerHTML = `<p class="empty-text">${t.empty_workspace || 'Click a block above to add it here...'}</p>`;
         stepIndex = 0;
+        saveScript();
     });
 
     // --- Init ---
@@ -1822,13 +1914,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             renderVisualizer();
             renderPalette();
-            workspaceContainer.innerHTML = '<p class="empty-text">Click a block above to add it here...</p>';
+            loadScript();
             stepIndex = 0;
             document.querySelectorAll('.workspace-block').forEach(b => b.classList.remove('executing'));
         });
     });
 
     renderPalette();
+    loadScript();
     initSidebarToggle();
     initPaletteToggle();
     initBlocksPanelResize();

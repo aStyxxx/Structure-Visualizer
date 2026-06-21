@@ -121,7 +121,12 @@
                     <button class="btn secondary" id="btn-pause">⏸ Pause</button>
                     <button class="btn secondary" id="btn-step">⏭ Step</button>
                     <button class="btn ghost" id="btn-clear-vis">⏹ Clear Vis</button>
-                    <button class="btn ghost" id="btn-clear-script">🗑 Clear Script</button>
+                    <button class="btn ghost" id="btn-clear-script">🗑️ Clear Script</button>
+                </div>
+                <!-- Speed Slider -->
+                <div class="speed-control" style="display: flex; align-items: center; gap: 8px;">
+                    <span id="speed-label" style="color: var(--text-muted); font-size: 0.9rem; font-weight: bold;">Speed: 1x</span>
+                    <input type="range" id="speed-slider" min="0.25" max="4" step="0.25" value="1" style="width: 100px; cursor: pointer; accent-color: var(--primary);">
                 </div>
             </div>
 

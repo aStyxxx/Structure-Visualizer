@@ -764,8 +764,25 @@ body.is-resizing-main .blocks-panel {
     cursor: pointer;
 }
 
-.block-delete:hover {
+.block-action-btn {
+    margin-left: 4px;
+    font-size: 1.1rem;
+    line-height: 1;
+    opacity: 0.5;
+    border: none;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+}
+
+.block-delete:hover,
+.block-action-btn:hover {
     opacity: 1;
+}
+
+.block-action-btn:disabled {
+    opacity: 0.2;
+    cursor: default;
 }
 
 /* Code Modal */
@@ -862,6 +879,7 @@ body.is-resizing-main .blocks-panel {
 
 .node {
     min-width: 60px;
+    max-width: 60px;
     height: 60px;
     padding: 0 10px;
     background: var(--panel-bg);
@@ -876,6 +894,10 @@ body.is-resizing-main .blocks-panel {
     box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
     position: relative;
     z-index: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
 }
 
 .arrow {
