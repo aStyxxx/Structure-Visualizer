@@ -693,6 +693,7 @@ body.is-resizing-main .blocks-panel {
     box-sizing: border-box;
     overflow: hidden;
     position: relative;
+    flex-shrink: 0;
 }
 
 .block:hover {
