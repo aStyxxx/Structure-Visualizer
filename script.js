@@ -122,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('home-desc-en').style.display = currentLang === 'en' ? 'block' : 'none';
             document.getElementById('home-desc-uk').style.display = currentLang === 'uk' ? 'block' : 'none';
             document.getElementById('home-btn-text').textContent = currentLang === 'uk' ? 'Спробувати візуалізатор' : 'Try Visualizer';
+            document.getElementById('support-text').textContent = currentLang === 'uk' ? 'Підтримати (Monobank)' : 'Donate via Monobank';
             
             document.getElementById('home-lang-en').classList.toggle('active', currentLang === 'en');
             document.getElementById('home-lang-uk').classList.toggle('active', currentLang === 'uk');
