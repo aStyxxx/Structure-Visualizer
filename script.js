@@ -2624,7 +2624,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-<<<<<<< HEAD
     let animationSpeedMultiplier = 1.0;
     
     document.getElementById('speed-slider').addEventListener('input', (e) => {
@@ -2632,13 +2631,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('speed-label').textContent = `Speed: ${animationSpeedMultiplier}x`;
     });
 
-=======
     /**
      * Utility function that returns a Promise to pause execution.
      * @param {number} ms - Milliseconds to sleep.
      * @returns {Promise} A promise that resolves after the specified time.
      */
->>>>>>> 103f9e6 (Added new function explanations)
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms / animationSpeedMultiplier));
     }
