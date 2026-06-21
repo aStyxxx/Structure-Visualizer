@@ -734,9 +734,9 @@ body.is-resizing-main .blocks-panel {
     border-radius: 4px;
     padding: 0.2rem 0.4rem;
     margin: 0 0.5rem;
-    width: 45px;
+    width: 60px;
     max-width: 100%;
-    min-width: 40px;
+    min-width: 50px;
     flex-shrink: 0;
     font-family: inherit;
     font-size: 0.85rem;
@@ -1301,6 +1301,12 @@ body.is-resizing-main .blocks-panel {
         flex-direction: column;
         overflow: visible;
         padding: 0;
+    }
+
+    .palette-column, .workspace-column {
+        flex: none !important;
+        width: 100% !important;
+        min-width: 0;
     }
 
     .palette {
