@@ -70,11 +70,9 @@
         <aside class="sidebar glass-panel" id="sidebar">
             <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center;">
                 <h1 class="logo" style="cursor: pointer;" onclick="goHome()">Struct<span>Vis</span></h1>
-                <button class="sidebar-close-btn" id="sidebar-close-btn" type="button" aria-label="Hide Sidebar"
-                    title="Hide Sidebar">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M15 18l-6-6 6-6" />
+                <button class="sidebar-close-btn" id="sidebar-close-btn" type="button" aria-label="Hide Sidebar" title="Hide Sidebar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6"/>
                     </svg>
                 </button>
             </div>
@@ -110,8 +108,7 @@
             </div>
         </aside>
 
-        <button class="sidebar-show-btn glass-panel" id="sidebar-show-btn" type="button" aria-label="Show Sidebar"
-            title="Show Sidebar">></button>
+        <button class="sidebar-show-btn glass-panel" id="sidebar-show-btn" type="button" aria-label="Show Sidebar" title="Show Sidebar">></button>
 
         <!-- Main Visualization Area -->
         <main class="main-content">
@@ -187,12 +184,15 @@
 
     <!-- Code View Modal -->
     <div id="code-modal" class="modal">
-        <div class="modal-content glass-panel split-modal">
-            <!-- Left Column: Code -->
-            <div class="modal-left">
-                <div class="modal-left-header">
-                    <h2 id="modal-title" class="modal-title-accent">CODE</h2>
-                    <div class="language-selector">
+        <div class="modal-content glass-panel" style="display: flex; flex-direction: column;">
+            <div class="modal-header">
+                <h2 id="modal-title">Code</h2>
+                <span class="close-modal" id="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- Left Column: Code -->
+                <div class="modal-col-left">
+                    <div class="language-selector" style="margin-bottom: 1rem; display: flex; gap: 10px;">
                         <select id="modal-language-select">
                             <option value="cpp">C++</option>
                             <option value="python">Python</option>
@@ -206,23 +206,18 @@
                             <option value="Quick Sort">Quick Sort</option>
                         </select>
                     </div>
+                    <div class="code-editor" style="flex: 1;">
+                        <pre><code id="modal-code-snippet"></code></pre>
+                    </div>
                 </div>
-                <div class="code-editor">
-                    <pre><code id="modal-code-snippet"></code></pre>
-                </div>
-            </div>
-
-            <!-- Vertical Divider -->
-            <div class="modal-divider"></div>
-
-            <!-- Right Column: Explanation -->
-            <div class="modal-right">
-                <div class="modal-right-header">
-                    <span class="close-modal" id="close-modal">&times;</span>
-                </div>
-                <div id="language-note" class="language-note"></div>
-                <div class="modal-description-box">
-                    <div id="modal-description" class="modal-description-content"></div>
+                <!-- Right Column: Explanation -->
+                <div class="modal-col-right">
+                    <div id="language-note"
+                        style="display: none; background: rgba(59, 130, 246, 0.2); padding: 0.8rem; border-left: 4px solid #3b82f6; margin-bottom: 1rem; border-radius: 4px; font-size: 0.85rem; line-height: 1.4;">
+                    </div>
+                    <div id="modal-description"
+                        style="padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 0.9rem; line-height: 1.5; color: var(--text-main); flex: 1;">
+                    </div>
                 </div>
             </div>
         </div>
