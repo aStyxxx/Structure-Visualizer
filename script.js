@@ -1,5 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- UI Elements ---
+    // =========================================================
+    // 1. UI Elements (ЕЛЕМЕНТИ ІНТЕРФЕЙСУ)
+    // =========================================================
+    // Цей блок коду "чіпляється" за HTML-елементи сторінки за їхніми ID або класами.
+    // Наприклад, document.getElementById('btn-run') знаходить кнопку "Run" у HTML,
+    // щоб ми могли потім "слухати" кліки по ній (через addEventListener).
     const navItems = document.querySelectorAll('.nav-menu li');
     const visualizerPlaceholderContainer = document.querySelector('.canvas-placeholder');
     const visualizerPlaceholderText = document.querySelector('.canvas-placeholder p');
@@ -33,7 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalLangSelect = document.getElementById('modal-language-select');
     const modalAlgoSelect = document.getElementById('modal-algorithm-select');
 
-    // --- State ---
+    // =========================================================
+    // 2. State (ПОТОЧНИЙ СТАН ДОДАТКУ ТА ДАНІ)
+    // =========================================================
+    // Глобальні змінні, які зберігають важливу інформацію під час роботи сторінки.
+    // currentStructure - зберігає назву обраної структури (напр., 'singly-linked-list').
+    // structureData - найважливіша змінна! Тут лежать реальні дані (елементи списку, вершини графа).
+    // isExecuting - показує, чи зараз працює алгоритм (щоб блокувати кнопки).
     let currentStructure = 'singly-linked-list';
     let structureData = [];
     let isExecuting = false;
@@ -42,7 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let stepIndex = 0;
     let animationSpeedMultiplier = 1.0;
 
-    // --- Localization ---
+    // =========================================================
+    // 3. Localization (СЛОВНИК ТА ПЕРЕКЛАДИ)
+    // =========================================================
+    // Об'єкт `translations` містить словники для англійської ('en') та української ('uk') мов.
+    // Функція applyTranslations() просто бере слова звідси і вставляє їх у відповідні кнопки та заголовки.
     const translations = {
         'en': {
             'visualizing': 'Visualizing',
@@ -52,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'step': '⏭ Step',
             'clear_vis': '⏹ Clear Vis',
             'clear_script': '🗑 Clear Script',
-            'empty_workspace': 'Click a block above to add it here...',
+            'empty_workspace': 'Click a block in the palette to add it here...',
             'bfs_desc': 'BFS (Breadth-First Search) explores the graph layer by layer using a Queue.',
             'dfs_desc': 'DFS (Depth-First Search) explores the graph as deep as possible before backtracking using a Stack.',
             'singly-linked-list': 'Singly Linked List',
@@ -78,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'step': '⏭ Крок',
             'clear_vis': '⏹ Очистити Віз.',
             'clear_script': '🗑 Оч. Скрипт',
-            'empty_workspace': 'Натисніть на блок вище, щоб додати його сюди...',
+            'empty_workspace': 'Натисніть на блок у палітрі, щоб додати його сюди...',
             'bfs_desc': 'BFS (Пошук в ширину) обходить граф рівень за рівнем, використовуючи Чергу (Queue).',
             'dfs_desc': 'DFS (Пошук в глибину) йде вглиб графа настільки далеко, наскільки це можливо, використовуючи Стек (Stack).',
             'categories': { 'linkedLists': 'Списки', 'graphs': 'Графи', 'trees': 'Дерева' },
@@ -240,7 +255,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial apply
     applyTranslations();
 
-    // --- Sidebar Collapse ---
+    // =========================================================
+    // 4. Події меню та згортання панелей (Sidebar / Palette Toggle)
+    // =========================================================
+    // Цей розділ обробляє кліки по боковому меню. Він відкриває і закриває
+    // списки, дерева і графи, а також ховає або показує самі панелі екрану.
     document.querySelectorAll('.nav-group h3').forEach(header => {
         header.addEventListener('click', () => {
             header.parentElement.classList.toggle('collapsed');
@@ -292,7 +311,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Blocks Panel Resize ---
+    // =========================================================
+    // 5. Зміна розміру панелей мишкою (Drag-and-Drop Resize)
+    // =========================================================
+    // Ці функції "слухають" події натискання (mousedown), руху миші (mousemove) 
+    // та відпускання (mouseup) на розділювачі (resizer). Це дозволяє розширювати
+    // або звужувати колонку з блоками.
     function initBlocksPanelResize() {
         if (!blocksPanel || !paletteColumn || !workspaceColumn || !blocksResizer) return;
 
@@ -398,7 +422,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Canvas Zoom & Pan ---
+    // =========================================================
+    // 6. Масштабування та панорамування полотна (Canvas Zoom & Pan)
+    // =========================================================
+    // Цей код обробляє коліщатко миші (wheel) для зуму та затискання кнопки
+    // для перетягування (pan) усього контейнера з графами.
+    // Також тут є логіка для сенсорних екранів телефонів (touchstart/touchmove) 
+    // для жестів "щипком" (pinch-to-zoom) двома пальцями.
     let zoomLevel = 1;
     let panX = 0;
     let panY = 0;
@@ -519,7 +549,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Block Definitions & Code ---
+    // =========================================================
+    // 7. Словник усіх Блоків та Коду (Block Definitions & Code)
+    // =========================================================
+    // Тут описані всі можливі блоки, які є в програмі (їх колір, назва, поля вводу).
+    // А також об'єкт codeSnippets, який містить реальний код алгоритмів 
+    // різними мовами (C++, Python, Java, JS) для показу у модальному вікні.
     const blockTypes = {
         'linked-list': [
             { id: 'add_head', label: 'add_head', type: 'add', inputs: ['val'] },
@@ -601,10 +636,54 @@ document.addEventListener('DOMContentLoaded', () => {
                     'javascript': '// Quick Sort (Value Swapping)\npartition(head, tail) {\n    let pivot = head;\n    let curr = head.next;\n    let prev = head;\n    while (curr !== tail.next) {\n        if (curr.data < pivot.data) {\n            let temp = prev.next.data; prev.next.data = curr.data; curr.data = temp;\n            prev = prev.next;\n        }\n        curr = curr.next;\n    }\n    let temp = pivot.data; pivot.data = prev.data; prev.data = temp;\n    return prev;\n}\n\nquickSortRec(head, tail) {\n    if (!head || head === tail) return;\n    let pivot = this.partition(head, tail);\n    if (pivot !== head) {\n        let temp = head;\n        while (temp.next !== pivot) temp = temp.next;\n        this.quickSortRec(head, temp);\n    }\n    this.quickSortRec(pivot.next, tail);\n}'
                 }
             }
+        },
+        'circular-linked-list': {
+            'add_head': {
+                'cpp': 'void insertAtHead(int val) {\n    Node* newNode = new Node(val);\n    if (!head) { newNode->next = newNode; head = newNode; return; }\n    Node* temp = head;\n    while(temp->next != head) temp = temp->next;\n    newNode->next = head;\n    temp->next = newNode;\n    head = newNode;\n}',
+                'python': 'def add_head(self, data):\n    new_node = Node(data)\n    if not self.head:\n        new_node.next = new_node\n        self.head = new_node\n        return\n    temp = self.head\n    while temp.next != self.head:\n        temp = temp.next\n    new_node.next = self.head\n    temp.next = new_node\n    self.head = new_node',
+                'java': 'void insertAtHead(int val) {\n    Node newNode = new Node(val);\n    if (head == null) { newNode.next = newNode; head = newNode; return; }\n    Node temp = head;\n    while(temp.next != head) temp = temp.next;\n    newNode.next = head;\n    temp.next = newNode;\n    head = newNode;\n}',
+                'javascript': 'addHead(data) {\n    const newNode = new Node(data);\n    if (!this.head) { newNode.next = newNode; this.head = newNode; return; }\n    let temp = this.head;\n    while(temp.next !== this.head) temp = temp.next;\n    newNode.next = this.head;\n    temp.next = newNode;\n    this.head = newNode;\n}'
+            },
+            'add_tail': {
+                'cpp': 'void insertAtTail(int val) {\n    Node* newNode = new Node(val);\n    if (!head) { newNode->next = newNode; head = newNode; return; }\n    Node* temp = head;\n    while(temp->next != head) temp = temp->next;\n    temp->next = newNode;\n    newNode->next = head;\n}',
+                'python': 'def add_tail(self, data):\n    new_node = Node(data)\n    if not self.head:\n        new_node.next = new_node\n        self.head = new_node\n        return\n    temp = self.head\n    while temp.next != self.head:\n        temp = temp.next\n    temp.next = new_node\n    new_node.next = self.head',
+                'java': 'void insertAtTail(int val) {\n    Node newNode = new Node(val);\n    if (head == null) { newNode.next = newNode; head = newNode; return; }\n    Node temp = head;\n    while(temp.next != head) temp = temp.next;\n    temp.next = newNode;\n    newNode.next = head;\n}',
+                'javascript': 'addTail(data) {\n    const newNode = new Node(data);\n    if (!this.head) { newNode.next = newNode; this.head = newNode; return; }\n    let temp = this.head;\n    while(temp.next !== this.head) temp = temp.next;\n    temp.next = newNode;\n    newNode.next = this.head;\n}'
+            },
+            'remove_head': {
+                'cpp': 'void removeHead() {\n    if(!head) return;\n    if(head->next == head) { delete head; head = nullptr; return; }\n    Node* temp = head;\n    while(temp->next != head) temp = temp->next;\n    Node* toDelete = head;\n    head = head->next;\n    temp->next = head;\n    delete toDelete;\n}',
+                'python': 'def remove_head(self):\n    if not self.head: return\n    if self.head.next == self.head: self.head = None; return\n    temp = self.head\n    while temp.next != self.head: temp = temp.next\n    self.head = self.head.next\n    temp.next = self.head',
+                'java': 'void removeHead() {\n    if(head == null) return;\n    if(head.next == head) { head = null; return; }\n    Node temp = head;\n    while(temp.next != head) temp = temp.next;\n    head = head.next;\n    temp.next = head;\n}',
+                'javascript': 'removeHead() {\n    if(!this.head) return;\n    if(this.head.next === this.head) { this.head = null; return; }\n    let temp = this.head;\n    while(temp.next !== this.head) temp = temp.next;\n    this.head = this.head.next;\n    temp.next = this.head;\n}'
+            },
+            'remove_tail': {
+                'cpp': 'void removeTail() {\n    if(!head) return;\n    if(head->next == head) { delete head; head = nullptr; return; }\n    Node* temp = head;\n    while(temp->next->next != head) temp = temp->next;\n    delete temp->next;\n    temp->next = head;\n}',
+                'python': 'def remove_tail(self):\n    if not self.head: return\n    if self.head.next == self.head: self.head = None; return\n    temp = self.head\n    while temp.next.next != self.head: temp = temp.next\n    temp.next = self.head',
+                'java': 'void removeTail() {\n    if(head == null) return;\n    if(head.next == head) { head = null; return; }\n    Node temp = head;\n    while(temp.next.next != head) temp = temp.next;\n    temp.next = head;\n}',
+                'javascript': 'removeTail() {\n    if(!this.head) return;\n    if(this.head.next === this.head) { this.head = null; return; }\n    let temp = this.head;\n    while(temp.next.next !== this.head) temp = temp.next;\n    temp.next = this.head;\n}'
+            },
+            'print': {
+                'cpp': 'void print() {\n    if(!head) return;\n    Node* temp = head;\n    do {\n        cout << temp->data << " -> ";\n        temp = temp->next;\n    } while(temp != head);\n    cout << "(head)\\n";\n}',
+                'python': 'def print_list(self):\n    if not self.head: return\n    temp = self.head\n    while True:\n        print(temp.data, end=" -> ")\n        temp = temp.next\n        if temp == self.head: break\n    print("(head)")',
+                'java': 'void print() {\n    if(head == null) return;\n    Node temp = head;\n    do {\n        System.out.print(temp.data + " -> ");\n        temp = temp.next;\n    } while(temp != head);\n    System.out.println("(head)");\n}',
+                'javascript': 'print() {\n    if(!this.head) return;\n    let temp = this.head;\n    let str = "";\n    do {\n        str += temp.data + " -> ";\n        temp = temp.next;\n    } while(temp !== this.head);\n    console.log(str + "(head)");\n}'
+            },
+            'sort': {
+                'Bubble Sort': {
+                    'cpp': '// Bubble Sort in Circular List\nvoid bubbleSort() {\n    if(!head || head->next == head) return;\n    bool swapped;\n    Node* current;\n    Node* lptr = head;\n    do {\n        swapped = false;\n        current = head;\n        while (current->next != lptr) {\n            if (current->data > current->next->data) {\n                swap(current->data, current->next->data);\n                swapped = true;\n            }\n            current = current->next;\n        }\n        lptr = current;\n    } while (swapped && lptr != head->next);\n}',
+                    'python': '# Bubble Sort in Circular List\ndef bubble_sort(self):\n    if not self.head or self.head.next == self.head: return\n    swapped = True\n    lptr = self.head\n    while swapped:\n        swapped = False\n        current = self.head\n        while current.next != lptr:\n            if current.data > current.next.data:\n                current.data, current.next.data = current.next.data, current.data\n                swapped = True\n            current = current.next\n        lptr = current\n        if lptr == self.head.next: break',
+                    'java': '// Bubble Sort in Circular List\nvoid bubbleSort() {\n    if(head == null || head.next == head) return;\n    boolean swapped;\n    Node current;\n    Node lptr = head;\n    do {\n        swapped = false;\n        current = head;\n        while (current.next != lptr) {\n            if (current.data > current.next.data) {\n                int t = current.data; current.data = current.next.data; current.next.data = t;\n                swapped = true;\n            }\n            current = current.next;\n        }\n        lptr = current;\n    } while (swapped && lptr != head.next);\n}',
+                    'javascript': '// Bubble Sort in Circular List\nbubbleSort() {\n    if(!this.head || this.head.next === this.head) return;\n    let swapped;\n    let lptr = this.head;\n    do {\n        swapped = false;\n        let current = this.head;\n        while (current.next !== lptr) {\n            if (current.data > current.next.data) {\n                let t = current.data; current.data = current.next.data; current.next.data = t;\n                swapped = true;\n            }\n            current = current.next;\n        }\n        lptr = current;\n    } while (swapped && lptr !== this.head.next);\n}'
+                }
+            }
         }
     };
 
-    // --- Render Palette ---
+    // =========================================================
+    // 8. Відмальовка Палітри (Render Palette)
+    // =========================================================
+    // Ця функція дивиться, яка зараз структура (напр. Графи), і створює для
+    // лівої колонки тільки ті блоки, які стосуються Графів (додати ребро, BFS).
     function getCategory(struct) {
         if (struct.includes('list')) return 'linked-list';
         if (struct.includes('graph')) return 'graph';
@@ -691,7 +770,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Workspace Logic ---
+    // =========================================================
+    // 9. Робоча Область та Збереження (Workspace Logic & LocalStorage)
+    // =========================================================
+    // Тут знаходяться найважливіші функції для роботи з блоками користувача:
+    // - addBlockToWorkspace: Додає скопійований блок у праву частину і додає йому стрілочки.
+    // - saveScript: Перетворює всі зібрані блоки у текст (JSON) і зберігає у пам'ять браузера.
+    // - loadScript: Читає пам'ять і відновлює всі блоки при відкритті сторінки.
     function saveScript() {
         if (!workspaceContainer) return;
         const blocks = Array.from(workspaceContainer.querySelectorAll('.workspace-block'));
@@ -836,7 +921,12 @@ document.addEventListener('DOMContentLoaded', () => {
         stepIndex = 0; // reset step if we edit the script
     }
 
-    // --- Modal Logic ---
+    // =========================================================
+    // 10. Модальне Вікно з Кодом (Modal Logic)
+    // =========================================================
+    // Коли ви натискаєте на кнопку 'i' біля блоку, відкривається вікно.
+    // openModal() показує його і вибирає потрібний код (C++, Python і т.д.)
+    // з об'єкта codeSnippets, який ми описували вище.
     let currentModalBlockId = null;
 
     function openModal(blockId) {
@@ -909,6 +999,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getAlgorithmDescription(blockId, algo) {
+        let sortDescEn = '';
+        let sortDescUk = '';
+        if (blockId === 'sort') {
+            if (algo === 'Bubble Sort') {
+                sortDescEn = '<strong>Bubble Sort:</strong> Repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order. The pass through the list is repeated until the list is sorted. It is simple but highly inefficient for large lists. Time Complexity: O(n²).';
+                sortDescUk = '<strong>Сортування бульбашкою (Bubble Sort):</strong> Багаторазово проходить через список, порівнює сусідні елементи і міняє їх місцями, якщо вони розташовані у неправильному порядку. Проходи повторюються, поки список не буде відсортовано. Простий алгоритм, але дуже неефективний для великих списків. Часова складність: O(n²).';
+            } else if (algo === 'Selection Sort') {
+                sortDescEn = '<strong>Selection Sort:</strong> Divides the input list into two parts: a sorted sublist of items which is built up from left to right, and a sublist of the remaining unsorted items. It proceeds by finding the smallest element in the unsorted sublist, exchanging it with the leftmost unsorted element. Time Complexity: O(n²).';
+                sortDescUk = '<strong>Сортування вибором (Selection Sort):</strong> Ділить список на дві частини: відсортовану та невідсортовану. Алгоритм знаходить найменший елемент у невідсортованій частині та міняє його місцями з першим невідсортованим елементом, тим самим розширюючи відсортовану частину. Часова складність: O(n²).';
+            } else if (algo === 'Insertion Sort') {
+                sortDescEn = '<strong>Insertion Sort:</strong> Builds the final sorted list one item at a time. It takes each element from the input data and inserts it into its correct position within the already sorted part of the list. Much more efficient than bubble sort for small or mostly sorted data. Time Complexity: O(n²).';
+                sortDescUk = '<strong>Сортування вставкою (Insertion Sort):</strong> Будує фінальний відсортований список по одному елементу за раз. Бере кожен наступний елемент і вставляє його на правильне місце серед уже відсортованих елементів. Ефективніше за бульбашку для невеликих списків. Часова складність: O(n²).';
+            } else if (algo === 'Quick Sort') {
+                sortDescEn = '<strong>Quick Sort:</strong> A divide-and-conquer algorithm that picks an element as a pivot and partitions the given list around the picked pivot, such that elements smaller than pivot are placed before it, and elements greater are placed after it. Time Complexity: O(n log n) average, O(n²) worst case.';
+                sortDescUk = '<strong>Швидке сортування (Quick Sort):</strong> Алгоритм "розділяй і володарюй". Обирає опорний елемент (pivot) і розбиває список так, що менші елементи опиняються зліва від опорного, а більші — справа. Потім рекурсивно сортує обидві частини. Дуже швидкий на практиці. Часова складність: в середньому O(n log n), в гіршому O(n²).';
+            } else {
+                sortDescEn = `Sorts the list using ${algo || 'the chosen algorithm'}.`;
+                sortDescUk = `Сортує список використовуючи ${algo || 'обраний алгоритм'}.`;
+            }
+        }
+
         const descEn = {
             'add_head': 'Adds a new node to the beginning of the list. Time Complexity: O(1).',
             'add_tail': 'Adds a new node to the end of the list. Time Complexity: O(n) without a tail pointer, O(1) with a tail pointer.',
@@ -917,11 +1028,11 @@ document.addEventListener('DOMContentLoaded', () => {
             'remove_tail': 'Removes the last node. Time Complexity: O(n) for singly linked, O(1) for doubly linked if tail pointer exists.',
             'reverse': 'Reverses the direction of all pointers in the list. Time Complexity: O(n).',
             'print': 'Iterates through the list to display all elements. Time Complexity: O(n).',
-            'sort': `Sorts the list using ${algo || 'the chosen algorithm'}.`,
+            'sort': sortDescEn,
             'add_vertex': 'Adds a new vertex to the graph. Time Complexity: O(1).',
             'add_edge': 'Adds a directed or undirected edge between two vertices. Time Complexity: O(1) for adjacency list.',
-            'bfs': 'Breadth-First Search. Explores the graph layer by layer using a Queue. Time Complexity: O(V + E).',
-            'dfs': 'Depth-First Search. Explores as far as possible along each branch before backtracking using a Stack (or recursion). Time Complexity: O(V + E).',
+            'bfs': '<strong>Breadth-First Search (BFS):</strong> An algorithm for traversing or searching tree or graph data structures. It starts at the root node and explores all of the neighbor nodes at the present depth prior to moving on to the nodes at the next depth level. Uses a <strong>Queue (FIFO)</strong>. Great for finding the shortest path! Time Complexity: O(V + E).',
+            'dfs': '<strong>Depth-First Search (DFS):</strong> An algorithm for traversing or searching tree or graph data structures. Explores as far as possible along each branch before backtracking. Uses a <strong>Stack (LIFO)</strong> (or recursion). Great for exploring all possible paths or topological sorting! Time Complexity: O(V + E).',
             'insert': 'Inserts a new value into the tree. Time Complexity: O(log n) for balanced trees, O(n) for skewed trees.',
             'remove': 'Removes a value from the tree. Time Complexity: O(log n) for balanced trees.',
             'search': 'Searches for a value in the tree. Time Complexity: O(log n) for balanced trees.'
@@ -934,17 +1045,28 @@ document.addEventListener('DOMContentLoaded', () => {
             'remove_tail': 'Видаляє останній вузол. Часова складність: O(n) для однозв\'язного, O(1) для двозв\'язного (якщо є вказівник на хвіст).',
             'reverse': 'Змінює напрямок всіх вказівників у списку на протилежний. Часова складність: O(n).',
             'print': 'Проходить по списку для виводу всіх елементів. Часова складність: O(n).',
-            'sort': `Сортує список використовуючи ${algo || 'обраний алгоритм'}.`,
+            'sort': sortDescUk,
             'add_vertex': 'Додає нову вершину до графа. Часова складність: O(1).',
             'add_edge': 'Додає орієнтоване або неорієнтоване ребро між двома вершинами. Часова складність: O(1) (для списків суміжності).',
-            'bfs': 'Пошук в ширину. Обходить граф рівень за рівнем за допомогою Черги. Часова складність: O(V + E).',
-            'dfs': 'Пошук в глибину. Йде вглиб графа настільки далеко, наскільки це можливо (за допомогою Стека або рекурсії). Часова складність: O(V + E).',
+            'bfs': '<strong>Пошук в ширину (BFS):</strong> Алгоритм обходу графа. Починає з початкової вершини і спочатку відвідує <strong>всіх її сусідів</strong>, потім сусідів її сусідів і так далі, розширюючись "кільцями" як хвиля на воді. Використовує <strong>Чергу (Queue)</strong> для запам\'ятовування вершин. Ідеально підходить для пошуку <strong>найкоротшого шляху</strong> в незважених графах! Часова складність: O(V + E).',
+            'dfs': '<strong>Пошук в глибину (DFS):</strong> Алгоритм обходу графа. Йде вглиб одного шляху <strong>настільки далеко, наскільки це можливо</strong>. Коли доходить до тупика, "відкочується" (backtracking) назад до найближчого роздоріжжя і пробує інший шлях. Використовує <strong>Стек (Stack)</strong> (або рекурсію) для запам\'ятовування роздоріжжів. Ідеально підходить для пошуку всіх можливих шляхів або топологічного сортування! Часова складність: O(V + E).',
             'insert': 'Вставляє нове значення в дерево. Часова складність: O(log n) для збалансованих дерев, O(n) для незбалансованих.',
             'remove': 'Видаляє значення з дерева. Часова складність: O(log n) для збалансованих дерев.',
             'search': 'Шукає значення в дереві. Часова складність: O(log n) для збалансованих дерев.'
         };
         const dict = currentLang === 'uk' ? descUk : descEn;
-        return dict[blockId] || (currentLang === 'uk' ? 'Пояснення відсутнє.' : 'No description available.');
+        let result = dict[blockId] || (currentLang === 'uk' ? 'Пояснення відсутнє.' : 'No description available.');
+        
+        let suffix = '';
+        if (currentStructure === 'circular-linked-list') {
+             suffix = currentLang === 'uk' ? ' <br><br><i>Примітка: у циклічному списку останній вузол вказує назад на початок (head), замикаючи коло.</i>' 
+                                           : ' <br><br><i>Note: In a circular list, the last node points back to the head.</i>';
+        } else if (currentStructure === 'doubly-linked-list') {
+             suffix = currentLang === 'uk' ? ' <br><br><i>Примітка: у двозв\'язному списку кожен вузол має вказівники як на наступний (next), так і на попередній (prev) елементи.</i>' 
+                                           : ' <br><br><i>Note: In a doubly linked list, nodes have pointers to both next and previous.</i>';
+        }
+        
+        return result + suffix;
     }
 
     closeModalBtn.addEventListener('click', () => modal.classList.remove('active'));
@@ -954,7 +1076,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === modal) modal.classList.remove('active');
     });
 
-    // --- Visualization Logic ---
+    // =========================================================
+    // 11. Логіка Візуалізації (МАЛЮВАННЯ НА ЕКРАНІ)
+    // =========================================================
+    // Це найскладніший і найважливіший блок.
+    // - renderVisualizer(): повністю очищає полотно і малює всі кола, квадрати
+    //   та стрілочки заново, опираючись на поточні дані (structureData).
+    // Тут багато математики (Math.cos/Math.sin) для вираховування координат SVG ліній.
     function renderVisualizer(animatedIndex = -1, animationClass = '') {
         visualizerContainer.innerHTML = '';
         
@@ -1775,7 +1903,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-
+    // =========================================================
+    // 13. Движок Виконання Алгоритмів (EXECUTION ENGINE)
+    // =========================================================
+    // Цей код читає всі блоки з Робочої Області, перевіряє їхні назви
+    // (наприклад, 'add_head', 'sort', 'bfs') і виконує відповідні дії.
+    // Він використовує async/await для того, щоб чекати закінчення
+    // анімації (через await sleep(ms)) перед виконанням наступного блоку.
     async function runScript() {
         if (isExecuting && !isPaused) return;
         
@@ -1919,7 +2053,12 @@ document.addEventListener('DOMContentLoaded', () => {
         saveScript();
     });
 
-    // --- Init ---
+    // =========================================================
+    // 12. Ініціалізація (СТАРТ ПРОГРАМИ)
+    // =========================================================
+    // Цей код виконується найпершим при завантаженні сторінки (після перекладів).
+    // Він встановлює кліки на меню (наприклад, перемикання з Графів на Списки)
+    // і малює початкову пусту структуру.
     navItems.forEach(item => {
         item.addEventListener('click', () => {
             navItems.forEach(nav => nav.classList.remove('active'));
