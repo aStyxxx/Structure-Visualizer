@@ -626,6 +626,128 @@ document.addEventListener('DOMContentLoaded', () => {
                 'python': 'def add_head(head, data):\n    new_node = Node(data)\n    if head is None:\n        new_node.next = new_node\n        return new_node\n    current = head\n    while current.next != head:\n        current = current.next\n    new_node.next = head\n    current.next = new_node\n    return new_node',
                 'java': 'Node addHead(Node head, int data) {\n    Node newNode = new Node(data);\n    if (head == null) {\n        newNode.next = newNode;\n        return newNode;\n    }\n    Node current = head;\n    while (current.next != head) {\n        current = current.next;\n    }\n    newNode.next = head;\n    current.next = newNode;\n    return newNode;\n}',
                 'javascript': 'addHead(head, data) {\n    let newNode = new Node(data);\n    if (head === null) {\n        newNode.next = newNode;\n        return newNode;\n    }\n    let current = head;\n    while (current.next !== head) {\n        current = current.next;\n    }\n    newNode.next = head;\n    current.next = newNode;\n    return newNode;\n}'
+            },
+            'add_tail': {
+                'cpp': 'void add_tail(int data) {\n    Node* new_node = new Node(data);\n    if (head == nullptr) {\n        head = new_node;\n        new_node->next = head;\n        return;\n    }\n    Node* temp = head;\n    while (temp->next != head) {\n        temp = temp->next;\n    }\n    temp->next = new_node;\n    new_node->next = head;\n}',
+                'python': 'def add_tail(self, data):\n    new_node = Node(data)\n    if self.head is None:\n        self.head = new_node\n        new_node.next = self.head\n        return\n    temp = self.head\n    while temp.next != self.head:\n        temp = temp.next\n    temp.next = new_node\n    new_node.next = self.head',
+                'java': 'void add_tail(int data) {\n    Node new_node = new Node(data);\n    if (head == null) {\n        head = new_node;\n        new_node.next = head;\n        return;\n    }\n    Node temp = head;\n    while (temp.next != head) {\n        temp = temp.next;\n    }\n    temp.next = new_node;\n    new_node.next = head;\n}',
+                'javascript': 'add_tail(data) {\n    let new_node = new Node(data);\n    if (this.head === null) {\n        this.head = new_node;\n        new_node.next = this.head;\n        return;\n    }\n    let temp = this.head;\n    while (temp.next !== this.head) {\n        temp = temp.next;\n    }\n    temp.next = new_node;\n    new_node.next = this.head;\n}'
+            },
+            'insert_at': {
+                'cpp': 'void insert_at(int position, int data) {\n    if (position < 0) {\n        std::cout << "Invalid position." << std::endl;\n        return;\n    }\n    Node* new_node = new Node(data);\n    if (head == nullptr) {\n        if (position == 0) {\n            head = new_node;\n            new_node->next = head;\n        } else {\n            std::cout << "Position " << position << " is out of bounds for an empty list." << std::endl;\n            delete new_node;\n        }\n        return;\n    }\n    if (position == 0) {\n        Node* temp = head;\n        while (temp->next != head) {\n            temp = temp->next;\n        }\n        new_node->next = head;\n        temp->next = new_node;\n        head = new_node;\n        return;\n    }\n    Node* temp = head;\n    int current_pos = 0;\n    while (current_pos < position - 1) {\n        temp = temp->next;\n        current_pos++;\n        if (temp == head) {\n            std::cout << "Position " << position << " is out of bounds." << std::endl;\n            delete new_node;\n            return;\n        }\n    }\n    new_node->next = temp->next;\n    temp->next = new_node;\n}',
+                'python': 'def insert_at(self, position, data):\n    if position < 0:\n        print("Invalid position.")\n        return\n    new_node = Node(data)\n    if self.head is None:\n        if position == 0:\n            self.head = new_node\n            new_node.next = self.head\n        else:\n            print(f"Position {position} is out of bounds for an empty list.")\n        return\n    if position == 0:\n        temp = self.head\n        while temp.next != self.head:\n            temp = temp.next\n        new_node.next = self.head\n        temp.next = new_node\n        self.head = new_node\n        return\n    temp = self.head\n    current_pos = 0\n    while current_pos < position - 1:\n        temp = temp.next\n        current_pos += 1\n        if temp == self.head:\n            print(f"Position {position} is out of bounds.")\n            return\n    new_node.next = temp.next\n    temp.next = new_node',
+                'java': 'void insert_at(int position, int data) {\n    if (position < 0) {\n        System.out.println("Invalid position.");\n        return;\n    }\n    Node new_node = new Node(data);\n    if (head == null) {\n        if (position == 0) {\n            head = new_node;\n            new_node.next = head;\n        } else {\n            System.out.println("Position " + position + " is out of bounds for an empty list.");\n        }\n        return;\n    }\n    if (position == 0) {\n        Node temp = head;\n        while (temp.next != head) {\n            temp = temp.next;\n        }\n        new_node.next = head;\n        temp.next = new_node;\n        head = new_node;\n        return;\n    }\n    Node temp = head;\n    int current_pos = 0;\n    while (current_pos < position - 1) {\n        temp = temp.next;\n        current_pos++;\n        if (temp == head) {\n            System.out.println("Position " + position + " is out of bounds.");\n            return;\n        }\n    }\n    new_node.next = temp.next;\n    temp.next = new_node;\n}',
+                'javascript': 'insert_at(position, data) {\n    if (position < 0) {\n        console.log("Invalid position.");\n        return;\n    }\n    let new_node = new Node(data);\n    if (this.head === null) {\n        if (position === 0) {\n            this.head = new_node;\n            new_node.next = this.head;\n        } else {\n            console.log(`Position ${position} is out of bounds for an empty list.`);\n        }\n        return;\n    }\n    if (position === 0) {\n        let temp = this.head;\n        while (temp.next !== this.head) {\n            temp = temp.next;\n        }\n        new_node.next = this.head;\n        temp.next = new_node;\n        this.head = new_node;\n        return;\n    }\n    let temp = this.head;\n    let current_pos = 0;\n    while (current_pos < position - 1) {\n        temp = temp.next;\n        current_pos++;\n        if (temp === this.head) {\n            console.log(`Position ${position} is out of bounds.`);\n            return;\n        }\n    }\n    new_node.next = temp.next;\n    temp.next = new_node;\n}'
+            },
+            'remove_head': {
+                'cpp': 'void remove_head() {\n    if (head == nullptr) {\n        std::cout << "List is empty. Nothing to remove." << std::endl;\n        return;\n    }\n    if (head->next == head) {\n        delete head;\n        head = nullptr;\n        return;\n    }\n    Node* old_head = head;\n    Node* last = head;\n    while (last->next != head) {\n        last = last->next;\n    }\n    head = head->next;\n    last->next = head;\n    delete old_head;\n}',
+                'python': 'def remove_head(self):\n    if self.head is None:\n        print("List is empty. Nothing to remove.")\n        return\n    if self.head.next == self.head:\n        self.head = None\n        return\n    old_head = self.head\n    last = self.head\n    while last.next != self.head:\n        last = last.next\n    self.head = self.head.next\n    last.next = self.head',
+                'java': 'void remove_head() {\n    if (head == null) {\n        System.out.println("List is empty. Nothing to remove.");\n        return;\n    }\n    if (head.next == head) {\n        head = null;\n        return;\n    }\n    Node old_head = head;\n    Node last = head;\n    while (last.next != head) {\n        last = last.next;\n    }\n    head = head.next;\n    last.next = head;\n}',
+                'javascript': 'remove_head() {\n    if (this.head === null) {\n        console.log("List is empty. Nothing to remove.");\n        return;\n    }\n    if (this.head.next === this.head) {\n        this.head = null;\n        return;\n    }\n    let old_head = this.head;\n    let last = this.head;\n    while (last.next !== this.head) {\n        last = last.next;\n    }\n    this.head = this.head.next;\n    last.next = this.head;\n}'
+            },
+            'remove_tail': {
+                'cpp': 'void remove_tail() {\n    if (head == nullptr) {\n        std::cout << "List is empty. Nothing to remove." << std::endl;\n        return;\n    }\n    if (head->next == head) {\n        delete head;\n        head = nullptr;\n        return;\n    }\n    Node* temp = head;\n    while (temp->next->next != head) {\n        temp = temp->next;\n    }\n    Node* tail_node = temp->next;\n    temp->next = head;\n    delete tail_node;\n}',
+                'python': 'def remove_tail(self):\n    if self.head is None:\n        print("List is empty. Nothing to remove.")\n        return\n    if self.head.next == self.head:\n        self.head = None\n        return\n    temp = self.head\n    while temp.next.next != self.head:\n        temp = temp.next\n    temp.next = self.head',
+                'java': 'void remove_tail() {\n    if (head == null) {\n        System.out.println("List is empty. Nothing to remove.");\n        return;\n    }\n    if (head.next == head) {\n        head = null;\n        return;\n    }\n    Node temp = head;\n    while (temp.next.next != head) {\n        temp = temp.next;\n    }\n    temp.next = head;\n}',
+                'javascript': 'remove_tail() {\n    if (this.head === null) {\n        console.log("List is empty. Nothing to remove.");\n        return;\n    }\n    if (this.head.next === this.head) {\n        this.head = null;\n        return;\n    }\n    let temp = this.head;\n    while (temp.next.next !== this.head) {\n        temp = temp.next;\n    }\n    temp.next = this.head;\n}'
+            },
+            'reverse': {
+                'cpp': 'void reverse() {\n    if (head == nullptr || head->next == head) {\n        return;\n    }\n    Node* prev = nullptr;\n    Node* current = head;\n    Node* next_node = nullptr;\n    do {\n        next_node = current->next;\n        current->next = prev;\n        prev = current;\n        current = next_node;\n    } while (current != head);\n    head->next = prev;\n    head = prev;\n}',
+                'python': 'def reverse(self):\n    if self.head is None or self.head.next == self.head:\n        return\n    prev = None\n    current = self.head\n    next_node = None\n    while True:\n        next_node = current.next\n        current.next = prev\n        prev = current\n        current = next_node\n        if current == self.head:\n            break\n    self.head.next = prev\n    self.head = prev',
+                'java': 'void reverse() {\n    if (head == null || head.next == head) {\n        return;\n    }\n    Node prev = null;\n    Node current = head;\n    Node next_node = null;\n    do {\n        next_node = current.next;\n        current.next = prev;\n        prev = current;\n        current = next_node;\n    } while (current != head);\n    head.next = prev;\n    head = prev;\n}',
+                'javascript': 'reverse() {\n    if (this.head === null || this.head.next === this.head) {\n        return;\n    }\n    let prev = null;\n    let current = this.head;\n    let next_node = null;\n    do {\n        next_node = current.next;\n        current.next = prev;\n        prev = current;\n        current = next_node;\n    } while (current !== this.head);\n    this.head.next = prev;\n    this.head = prev;\n}'
+            },
+            'print': {
+                'cpp': 'void print() {\n    if (head == nullptr) {\n        std::cout << "List is empty." << std::endl;\n        return;\n    }\n    Node* temp = head;\n    do {\n        std::cout << temp->data << " -> ";\n        temp = temp->next;\n    } while (temp != head);\n    std::cout << "(Back to Head)" << std::endl;\n}',
+                'python': 'def print_list(self):\n    if self.head is None:\n        print("List is empty.")\n        return\n    temp = self.head\n    while True:\n        print(f"{temp.data} -> ", end="")\n        temp = temp.next\n        if temp == self.head:\n            break\n    print("(Back to Head)")',
+                'java': 'void print() {\n    if (head == null) {\n        System.out.println("List is empty.");\n        return;\n    }\n    Node temp = head;\n    do {\n        System.out.print(temp.data + " -> ");\n        temp = temp.next;\n    } while (temp != head);\n    System.out.println("(Back to Head)");\n}',
+                'javascript': 'print() {\n    if (this.head === null) {\n        console.log("List is empty.");\n        return;\n    }\n    let temp = this.head;\n    let str = "";\n    do {\n        str += temp.data + " -> ";\n        temp = temp.next;\n    } while (temp !== this.head);\n    console.log(str + "(Back to Head)");\n}'
+            },
+            'sort': {
+                'Bubble Sort': {
+                    'cpp': 'void bubble_sort() {\n    if (head == nullptr || head->next == head) {\n        return;\n    }\n    bool swapped;\n    Node* current;\n    Node* last_sorted = nullptr;\n    do {\n        swapped = false;\n        current = head;\n        while (current->next != last_sorted && current->next != head) {\n            if (current->data > current->next->data) {\n                std::swap(current->data, current->next->data);\n                swapped = true;\n            }\n            current = current->next;\n        }\n        last_sorted = current;\n    } while (swapped);\n}',
+                    'python': 'def bubble_sort(self):\n    if self.head is None or self.head.next == self.head:\n        return\n    last_sorted = None\n    swapped = True\n    while swapped:\n        swapped = False\n        current = self.head\n        while current.next != last_sorted and current.next != self.head:\n            if current.data > current.next.data:\n                current.data, current.next.data = current.next.data, current.data\n                swapped = True\n            current = current.next\n        last_sorted = current',
+                    'java': 'void bubble_sort() {\n    if (head == null || head.next == head) {\n        return;\n    }\n    boolean swapped;\n    Node current;\n    Node last_sorted = null;\n    do {\n        swapped = false;\n        current = head;\n        while (current.next != last_sorted && current.next != head) {\n            if (current.data > current.next.data) {\n                int temp = current.data;\n                current.data = current.next.data;\n                current.next.data = temp;\n                swapped = true;\n            }\n            current = current.next;\n        }\n        last_sorted = current;\n    } while (swapped);\n}',
+                    'javascript': 'bubble_sort() {\n    if (this.head === null || this.head.next === this.head) {\n        return;\n    }\n    let swapped;\n    let current;\n    let last_sorted = null;\n    do {\n        swapped = false;\n        current = this.head;\n        while (current.next !== last_sorted && current.next !== this.head) {\n            if (current.data > current.next.data) {\n                let temp = current.data;\n                current.data = current.next.data;\n                current.next.data = temp;\n                swapped = true;\n            }\n            current = current.next;\n        }\n        last_sorted = current;\n    } while (swapped);\n}'
+                },
+                'Selection Sort': {
+                    'cpp': 'void selection_sort() {\n    if (head == nullptr || head->next == head) {\n        return;\n    }\n    Node* current = head;\n    do {\n        Node* min_node = current;\n        Node* temp = current->next;\n        while (temp != head) {\n            if (temp->data < min_node->data) {\n                min_node = temp;\n            }\n            temp = temp->next;\n        }\n        if (min_node != current) {\n            std::swap(current->data, min_node->data);\n        }\n        current = current->next;\n    } while (current->next != head);\n}',
+                    'python': 'def selection_sort(self):\n    if self.head is None or self.head.next == self.head:\n        return\n    current = self.head\n    while True:\n        min_node = current\n        temp = current.next\n        while temp != self.head:\n            if temp.data < min_node.data:\n                min_node = temp\n            temp = temp.next\n        if min_node != current:\n            current.data, min_node.data = min_node.data, current.data\n        current = current.next\n        if current.next == self.head:\n            break',
+                    'java': 'void selection_sort() {\n    if (head == null || head.next == head) {\n        return;\n    }\n    Node current = head;\n    do {\n        Node min_node = current;\n        Node temp = current.next;\n        while (temp != head) {\n            if (temp.data < min_node.data) {\n                min_node = temp;\n            }\n            temp = temp.next;\n        }\n        if (min_node != current) {\n            int tmp = current.data;\n            current.data = min_node.data;\n            min_node.data = tmp;\n        }\n        current = current.next;\n    } while (current.next != head);\n}',
+                    'javascript': 'selection_sort() {\n    if (this.head === null || this.head.next === this.head) {\n        return;\n    }\n    let current = this.head;\n    do {\n        let min_node = current;\n        let temp = current.next;\n        while (temp !== this.head) {\n            if (temp.data < min_node.data) {\n                min_node = temp;\n            }\n            temp = temp.next;\n        }\n        if (min_node !== current) {\n            let tmp = current.data;\n            current.data = min_node.data;\n            min_node.data = tmp;\n        }\n        current = current.next;\n    } while (current.next !== this.head);\n}'
+                },
+                'Insertion Sort': {
+                    'cpp': 'Node* sortedInsert(Node* sorted_head, Node* new_node) {\n    if (sorted_head == nullptr) {\n        new_node->next = new_node;\n        return new_node;\n    }\n    if (new_node->data <= sorted_head->data) {\n        Node* temp = sorted_head;\n        while (temp->next != sorted_head) {\n            temp = temp->next;\n        }\n        temp->next = new_node;\n        new_node->next = sorted_head;\n        return new_node;\n    }\n    Node* temp = sorted_head;\n    while (temp->next != sorted_head && temp->next->data < new_node->data) {\n        temp = temp->next;\n    }\n    new_node->next = temp->next;\n    temp->next = new_node;\n    return sorted_head;\n}\n\nvoid insertion_sort() {\n    if (head == nullptr || head->next == head) {\n        return;\n    }\n    Node* sorted_head = nullptr;\n    Node* current = head;\n    Node* next_node = nullptr;\n    do {\n        next_node = current->next;\n        sorted_head = sortedInsert(sorted_head, current);\n        current = next_node;\n    } while (current != head);\n    head = sorted_head;\n}',
+                    'python': 'def sortedInsert(self, sorted_head, new_node):\n    if sorted_head is None:\n        new_node.next = new_node\n        return new_node\n    if new_node.data <= sorted_head.data:\n        temp = sorted_head\n        while temp.next != sorted_head:\n            temp = temp.next\n        temp.next = new_node\n        new_node.next = sorted_head\n        return new_node\n    temp = sorted_head\n    while temp.next != sorted_head and temp.next.data < new_node.data:\n        temp = temp.next\n    new_node.next = temp.next\n    temp.next = new_node\n    return sorted_head\n\ndef insertion_sort(self):\n    if self.head is None or self.head.next == self.head:\n        return\n    sorted_head = None\n    current = self.head\n    while True:\n        next_node = current.next\n        sorted_head = self.sortedInsert(sorted_head, current)\n        current = next_node\n        if current == self.head:\n            break\n    self.head = sorted_head',
+                    'java': 'Node sortedInsert(Node sorted_head, Node new_node) {\n    if (sorted_head == null) {\n        new_node.next = new_node;\n        return new_node;\n    }\n    if (new_node.data <= sorted_head.data) {\n        Node temp = sorted_head;\n        while (temp.next != sorted_head) {\n            temp = temp.next;\n        }\n        temp.next = new_node;\n        new_node.next = sorted_head;\n        return new_node;\n    }\n    Node temp = sorted_head;\n    while (temp.next != sorted_head && temp.next.data < new_node.data) {\n        temp = temp.next;\n    }\n    new_node.next = temp.next;\n    temp.next = new_node;\n    return sorted_head;\n}\n\nvoid insertion_sort() {\n    if (head == null || head.next == head) {\n        return;\n    }\n    Node sorted_head = null;\n    Node current = head;\n    Node next_node = null;\n    do {\n        next_node = current.next;\n        sorted_head = sortedInsert(sorted_head, current);\n        current = next_node;\n    } while (current != head);\n    head = sorted_head;\n}',
+                    'javascript': 'sortedInsert(sorted_head, new_node) {\n    if (sorted_head === null) {\n        new_node.next = new_node;\n        return new_node;\n    }\n    if (new_node.data <= sorted_head.data) {\n        let temp = sorted_head;\n        while (temp.next !== sorted_head) {\n            temp = temp.next;\n        }\n        temp.next = new_node;\n        new_node.next = sorted_head;\n        return new_node;\n    }\n    let temp = sorted_head;\n    while (temp.next !== sorted_head && temp.next.data < new_node.data) {\n        temp = temp.next;\n    }\n    new_node.next = temp.next;\n    temp.next = new_node;\n    return sorted_head;\n}\n\ninsertion_sort() {\n    if (this.head === null || this.head.next === this.head) {\n        return;\n    }\n    let sorted_head = null;\n    let current = this.head;\n    let next_node = null;\n    do {\n        next_node = current.next;\n        sorted_head = this.sortedInsert(sorted_head, current);\n        current = next_node;\n    } while (current !== this.head);\n    this.head = sorted_head;\n}'
+                },
+                'Quick Sort': {
+                    'cpp': '// Helper: Find the tail of the circular linked list\nNode* get_tail() {\n    if (head == nullptr) return nullptr;\n    Node* temp = head;\n    while (temp->next != head) {\n        temp = temp->next;\n    }\n    return temp;\n}\n\n// Helper: Partition the list using Lomuto scheme (last element is pivot)\nNode* _partition(Node* start, Node* end) {\n    int pivot = end->data;\n    Node* i = start;\n    for (Node* j = start; j != end; j = j->next) {\n        if (j->data < pivot) {\n            std::swap(i->data, j->data);\n            i = i->next;\n        }\n    }\n    std::swap(i->data, end->data);\n    return i;\n}\n\n// Helper: Recursive Quick Sort\nvoid _quick_sort(Node* start, Node* end) {\n    if (start == nullptr || start == end || start == end->next) {\n        return;\n    }\n    Node* pivot_node = _partition(start, end);\n    if (start != pivot_node) {\n        Node* temp = start;\n        while (temp->next != pivot_node) {\n            temp = temp->next;\n        }\n        _quick_sort(start, temp);\n    }\n    if (pivot_node != end) {\n        _quick_sort(pivot_node->next, end);\n    }\n}\n\n// Main Quick Sort Function\nvoid quick_sort() {\n    if (head == nullptr || head->next == head) {\n        return;\n    }\n    Node* tail = get_tail();\n    _quick_sort(head, tail);\n}',
+                    'python': '# Helper: Find the tail of the circular linked list\ndef get_tail(self):\n    if self.head is None:\n        return None\n    temp = self.head\n    while temp.next != self.head:\n        temp = temp.next\n    return temp\n\n# Helper: Partition the list using Lomuto scheme (last element is pivot)\ndef _partition(self, start, end):\n    pivot = end.data\n    i = start\n    j = start\n    while j != end:\n        if j.data < pivot:\n            i.data, j.data = j.data, i.data\n            i = i.next\n        j = j.next\n    i.data, end.data = end.data, i.data\n    return i\n\n# Helper: Recursive Quick Sort\ndef _quick_sort(self, start, end):\n    if start is None or start == end or start == end.next:\n        return\n    pivot_node = self._partition(start, end)\n    if start != pivot_node:\n        temp = start\n        while temp.next != pivot_node:\n            temp = temp.next\n        self._quick_sort(start, temp)\n    if pivot_node != end:\n        self._quick_sort(pivot_node.next, end)\n\n# Main Quick Sort Function\ndef quick_sort(self):\n    if self.head is None or self.head.next == self.head:\n        return\n    tail = self.get_tail()\n    self._quick_sort(self.head, tail)',
+                    'java': '// Helper: Find the tail of the circular linked list\nNode get_tail() {\n    if (head == null) return null;\n    Node temp = head;\n    while (temp.next != head) {\n        temp = temp.next;\n    }\n    return temp;\n}\n\n// Helper: Partition the list using Lomuto scheme (last element is pivot)\nNode _partition(Node start, Node end) {\n    int pivot = end.data;\n    Node i = start;\n    for (Node j = start; j != end; j = j.next) {\n        if (j.data < pivot) {\n            int temp = i.data;\n            i.data = j.data;\n            j.data = temp;\n            i = i.next;\n        }\n    }\n    int temp = i.data;\n    i.data = end.data;\n    end.data = temp;\n    return i;\n}\n\n// Helper: Recursive Quick Sort\nvoid _quick_sort(Node start, Node end) {\n    if (start == null || start == end || start == end.next) {\n        return;\n    }\n    Node pivot_node = _partition(start, end);\n    if (start != pivot_node) {\n        Node temp = start;\n        while (temp.next != pivot_node) {\n            temp = temp.next;\n        }\n        _quick_sort(start, temp);\n    }\n    if (pivot_node != end) {\n        _quick_sort(pivot_node.next, end);\n    }\n}\n\n// Main Quick Sort Function\nvoid quick_sort() {\n    if (head == null || head.next == head) {\n        return;\n    }\n    Node tail = get_tail();\n    _quick_sort(head, tail);\n}',
+                    'javascript': '// Helper: Find the tail of the circular linked list\nget_tail() {\n    if (this.head === null) return null;\n    let temp = this.head;\n    while (temp.next !== this.head) {\n        temp = temp.next;\n    }\n    return temp;\n}\n\n// Helper: Partition the list using Lomuto scheme (last element is pivot)\n_partition(start, end) {\n    let pivot = end.data;\n    let i = start;\n    for (let j = start; j !== end; j = j.next) {\n        if (j.data < pivot) {\n            let temp = i.data;\n            i.data = j.data;\n            j.data = temp;\n            i = i.next;\n        }\n    }\n    let temp = i.data;\n    i.data = end.data;\n    end.data = temp;\n    return i;\n}\n\n// Helper: Recursive Quick Sort\n_quick_sort(start, end) {\n    if (start === null || start === end || start === end.next) {\n        return;\n    }\n    let pivot_node = this._partition(start, end);\n    if (start !== pivot_node) {\n        let temp = start;\n        while (temp.next !== pivot_node) {\n            temp = temp.next;\n        }\n        this._quick_sort(start, temp);\n    }\n    if (pivot_node !== end) {\n        this._quick_sort(pivot_node.next, end);\n    }\n}\n\n// Main Quick Sort Function\nquick_sort() {\n    if (this.head === null || this.head.next === this.head) {\n        return;\n    }\n    let tail = this.get_tail();\n    this._quick_sort(this.head, tail);\n}'
+                }
+            }
+        },
+        'directed-graph': {
+            'add_vertex': {
+                'cpp': 'void add_vertex(int vertex) {\n    if (adj_list.find(vertex) == adj_list.end()) {\n        adj_list[vertex] = std::vector<int>();\n        std::cout << "Vertex " << vertex << " added successfully.\\n";\n    } else {\n        std::cout << "Vertex " << vertex << " already exists in the graph.\\n";\n    }\n}',
+                'python': 'def add_vertex(self, vertex):\n    if vertex not in self.adj_list:\n        self.adj_list[vertex] = []\n        print(f"Vertex {vertex} added successfully.")\n    else:\n        print(f"Vertex {vertex} already exists in the graph.")',
+                'java': 'void add_vertex(int vertex) {\n    if (!adj_list.containsKey(vertex)) {\n        adj_list.put(vertex, new ArrayList<Integer>());\n        System.out.println("Vertex " + vertex + " added successfully.");\n    } else {\n        System.out.println("Vertex " + vertex + " already exists in the graph.");\n    }\n}',
+                'javascript': 'add_vertex(vertex) {\n    if (!this.adj_list.has(vertex)) {\n        this.adj_list.set(vertex, []);\n        console.log(`Vertex ${vertex} added successfully.\\n`);\n    } else {\n        console.log(`Vertex ${vertex} already exists in the graph.\\n`);\n    }\n}'
+            },
+            'add_edge': {
+                'cpp': 'void add_edge(int source, int destination) {\n    add_vertex(source);\n    add_vertex(destination);\n    adj_list[source].push_back(destination);\n}',
+                'python': 'def add_edge(self, source, destination):\n    self.add_vertex(source)\n    self.add_vertex(destination)\n    self.adj_list[source].append(destination)',
+                'java': 'void add_edge(int source, int destination) {\n    add_vertex(source);\n    add_vertex(destination);\n    adj_list.get(source).add(destination);\n}',
+                'javascript': 'add_edge(source, destination) {\n    this.add_vertex(source);\n    this.add_vertex(destination);\n    this.adj_list.get(source).push(destination);\n}'
+            },
+            'bfs': {
+                'cpp': 'void bfs(int start_vertex) {\n    if (adj_list.find(start_vertex) == adj_list.end()) {\n        std::cout << "Start vertex " << start_vertex << " not found in the graph.\\n";\n        return;\n    }\n    std::unordered_set<int> visited;\n    std::queue<int> q;\n    visited.insert(start_vertex);\n    q.push(start_vertex);\n    std::cout << "BFS Traversal starting from " << start_vertex << ":\\n";\n    while (!q.empty()) {\n        int current = q.front();\n        q.pop();\n        std::cout << current << " ";\n        for (int neighbor : adj_list[current]) {\n            if (visited.find(neighbor) == visited.end()) {\n                visited.insert(neighbor);\n                q.push(neighbor);\n            }\n        }\n    }\n    std::cout << std::endl;\n}',
+                'python': 'def bfs(self, start_vertex):\n    if start_vertex not in self.adj_list:\n        print(f"Start vertex {start_vertex} not found in the graph.")\n        return\n    visited = set()\n    queue = [start_vertex]\n    visited.add(start_vertex)\n    print(f"BFS Traversal starting from {start_vertex}:")\n    while queue:\n        current = queue.pop(0)\n        print(current, end=" ")\n        for neighbor in self.adj_list[current]:\n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append(neighbor)\n    print()',
+                'java': 'void bfs(int start_vertex) {\n    if (!adj_list.containsKey(start_vertex)) {\n        System.out.println("Start vertex " + start_vertex + " not found in the graph.");\n        return;\n    }\n    Set<Integer> visited = new HashSet<>();\n    Queue<Integer> q = new LinkedList<>();\n    visited.add(start_vertex);\n    q.add(start_vertex);\n    System.out.println("BFS Traversal starting from " + start_vertex + ":");\n    while (!q.isEmpty()) {\n        int current = q.poll();\n        System.out.print(current + " ");\n        for (int neighbor : adj_list.get(current)) {\n            if (!visited.contains(neighbor)) {\n                visited.add(neighbor);\n                q.add(neighbor);\n            }\n        }\n    }\n    System.out.println();\n}',
+                'javascript': 'bfs(start_vertex) {\n    if (!this.adj_list.has(start_vertex)) {\n        console.log(`Start vertex ${start_vertex} not found in the graph.\\n`);\n        return;\n    }\n    const visited = new Set();\n    const queue = [];\n    visited.add(start_vertex);\n    queue.push(start_vertex);\n    let result = `BFS Traversal starting from ${start_vertex}:\\n`;\n    while (queue.length > 0) {\n        const current = queue.shift();\n        result += current + " ";\n        for (const neighbor of this.adj_list.get(current)) {\n            if (!visited.has(neighbor)) {\n                visited.add(neighbor);\n                queue.push(neighbor);\n            }\n        }\n    }\n    console.log(result + "\\n");\n}'
+            },
+            'dfs': {
+                'cpp': 'void dfs(int node, const std::vector<std::vector<int>>& adj, std::vector<bool>& visited) {\n    visited[node] = true;\n    std::cout << node << " ";\n    for (int neighbor : adj[node]) {\n        if (!visited[neighbor]) {\n            dfs(neighbor, adj, visited);\n        }\n    }\n}',
+                'python': 'def dfs(self, node, adj, visited):\n    visited[node] = True\n    print(node, end=" ")\n    for neighbor in adj[node]:\n        if not visited[neighbor]:\n            self.dfs(neighbor, adj, visited)',
+                'java': 'void dfs(int node, List<List<Integer>> adj, boolean[] visited) {\n    visited[node] = true;\n    System.out.print(node + " ");\n    for (int neighbor : adj.get(node)) {\n        if (!visited[neighbor]) {\n            dfs(neighbor, adj, visited);\n        }\n    }\n}',
+                'javascript': 'dfs(node, adj, visited) {\n    visited[node] = true;\n    console.log(node + " ");\n    for (const neighbor of adj[node]) {\n        if (!visited[neighbor]) {\n            this.dfs(neighbor, adj, visited);\n        }\n    }\n}'
+            }
+        },
+        'undirected-graph': {
+            'add_vertex': {
+                'cpp': 'void add_vertex() {\n    adj.push_back(std::vector<int>());\n    numVertices++;\n    std::cout << "Added vertex " << numVertices - 1 << std::endl;\n}',
+                'python': 'def add_vertex(self):\n    self.adj.append([])\n    self.numVertices += 1\n    print(f"Added vertex {self.numVertices - 1}")',
+                'java': 'void add_vertex() {\n    adj.add(new ArrayList<Integer>());\n    numVertices++;\n    System.out.println("Added vertex " + (numVertices - 1));\n}',
+                'javascript': 'add_vertex() {\n    this.adj.push([]);\n    this.numVertices++;\n    console.log(`Added vertex ${this.numVertices - 1}\\n`);\n}'
+            },
+            'add_edge': {
+                'cpp': 'void add_edge(int u, int v) {\n    if (u >= numVertices || v >= numVertices || u < 0 || v < 0) {\n        std::cout << "Error: One or both vertices do not exist!" << std::endl;\n        return;\n    }\n    adj[u].push_back(v);\n    adj[v].push_back(u);\n}',
+                'python': 'def add_edge(self, u, v):\n    if u >= self.numVertices or v >= self.numVertices or u < 0 or v < 0:\n        print("Error: One or both vertices do not exist!")\n        return\n    self.adj[u].append(v)\n    self.adj[v].append(u)',
+                'java': 'void add_edge(int u, int v) {\n    if (u >= numVertices || v >= numVertices || u < 0 || v < 0) {\n        System.out.println("Error: One or both vertices do not exist!");\n        return;\n    }\n    adj.get(u).add(v);\n    adj.get(v).add(u);\n}',
+                'javascript': 'add_edge(u, v) {\n    if (u >= this.numVertices || v >= this.numVertices || u < 0 || v < 0) {\n        console.log("Error: One or both vertices do not exist!\\n");\n        return;\n    }\n    this.adj[u].push(v);\n    this.adj[v].push(u);\n}'
+            },
+            'bfs': {
+                'cpp': 'void bfs(int startNode) {\n    if (startNode >= numVertices || startNode < 0) {\n        std::cout << "Error: Starting node does not exist!" << std::endl;\n        return;\n    }\n    std::vector<bool> visited(numVertices, false);\n    std::queue<int> q;\n    visited[startNode] = true;\n    q.push(startNode);\n    std::cout << "Breadth-First Search starting from node " << startNode << ":\\n";\n    while (!q.empty()) {\n        int currentNode = q.front();\n        q.pop();\n        std::cout << currentNode << " ";\n        for (int neighbor : adj[currentNode]) {\n            if (!visited[neighbor]) {\n                visited[neighbor] = true;\n                q.push(neighbor);\n            }\n        }\n    }\n    std::cout << std::endl;\n}',
+                'python': 'def bfs(self, startNode):\n    if startNode >= self.numVertices or startNode < 0:\n        print("Error: Starting node does not exist!")\n        return\n    visited = [False] * self.numVertices\n    q = []\n    visited[startNode] = True\n    q.append(startNode)\n    print(f"Breadth-First Search starting from node {startNode}:")\n    while q:\n        currentNode = q.pop(0)\n        print(currentNode, end=" ")\n        for neighbor in self.adj[currentNode]:\n            if not visited[neighbor]:\n                visited[neighbor] = True\n                q.append(neighbor)\n    print()',
+                'java': 'void bfs(int startNode) {\n    if (startNode >= numVertices || startNode < 0) {\n        System.out.println("Error: Starting node does not exist!");\n        return;\n    }\n    boolean[] visited = new boolean[numVertices];\n    Queue<Integer> q = new LinkedList<>();\n    visited[startNode] = true;\n    q.add(startNode);\n    System.out.println("Breadth-First Search starting from node " + startNode + ":");\n    while (!q.isEmpty()) {\n        int currentNode = q.poll();\n        System.out.print(currentNode + " ");\n        for (int neighbor : adj.get(currentNode)) {\n            if (!visited[neighbor]) {\n                visited[neighbor] = true;\n                q.add(neighbor);\n            }\n        }\n    }\n    System.out.println();\n}',
+                'javascript': 'bfs(startNode) {\n    if (startNode >= this.numVertices || startNode < 0) {\n        console.log("Error: Starting node does not exist!\\n");\n        return;\n    }\n    const visited = new Array(this.numVertices).fill(false);\n    const q = [];\n    visited[startNode] = true;\n    q.push(startNode);\n    let result = `Breadth-First Search starting from node ${startNode}:\\n`;\n    while (q.length > 0) {\n        const currentNode = q.shift();\n        result += currentNode + " ";\n        for (const neighbor of this.adj[currentNode]) {\n            if (!visited[neighbor]) {\n                visited[neighbor] = true;\n                q.push(neighbor);\n            }\n        }\n    }\n    console.log(result + "\\n");\n}'
+            },
+            'dfs': {
+                'cpp': 'void dfs_helper(int currentNode, std::vector<bool>& visited) {\n    visited[currentNode] = true;\n    std::cout << currentNode << " ";\n    for (int neighbor : adj[currentNode]) {\n        if (!visited[neighbor]) {\n            dfs_helper(neighbor, visited);\n        }\n    }\n}\nvoid dfs(int startNode) {\n    if (startNode >= numVertices || startNode < 0) {\n        std::cout << "Error: Starting node does not exist!" << std::endl;\n        return;\n    }\n    std::vector<bool> visited(numVertices, false);\n    std::cout << "Depth-First Search starting from node " << startNode << ":\\n";\n    dfs_helper(startNode, visited);\n    std::cout << std::endl;\n}',
+                'python': 'def dfs_helper(self, currentNode, visited):\n    visited[currentNode] = True\n    print(currentNode, end=" ")\n    for neighbor in self.adj[currentNode]:\n        if not visited[neighbor]:\n            self.dfs_helper(neighbor, visited)\n\ndef dfs(self, startNode):\n    if startNode >= self.numVertices or startNode < 0:\n        print("Error: Starting node does not exist!")\n        return\n    visited = [False] * self.numVertices\n    print(f"Depth-First Search starting from node {startNode}:")\n    self.dfs_helper(startNode, visited)\n    print()',
+                'java': 'void dfs_helper(int currentNode, boolean[] visited) {\n    visited[currentNode] = true;\n    System.out.print(currentNode + " ");\n    for (int neighbor : adj.get(currentNode)) {\n        if (!visited[neighbor]) {\n            dfs_helper(neighbor, visited);\n        }\n    }\n}\nvoid dfs(int startNode) {\n    if (startNode >= numVertices || startNode < 0) {\n        System.out.println("Error: Starting node does not exist!");\n        return;\n    }\n    boolean[] visited = new boolean[numVertices];\n    System.out.println("Depth-First Search starting from node " + startNode + ":");\n    dfs_helper(startNode, visited);\n    System.out.println();\n}',
+                'javascript': 'dfs_helper(currentNode, visited, result) {\n    visited[currentNode] = true;\n    result.push(currentNode);\n    for (const neighbor of this.adj[currentNode]) {\n        if (!visited[neighbor]) {\n            this.dfs_helper(neighbor, visited, result);\n        }\n    }\n}\ndfs(startNode) {\n    if (startNode >= this.numVertices || startNode < 0) {\n        console.log("Error: Starting node does not exist!\\n");\n        return;\n    }\n    const visited = new Array(this.numVertices).fill(false);\n    const result = [];\n    this.dfs_helper(startNode, visited, result);\n    console.log(`Depth-First Search starting from node ${startNode}:\\n` + result.join(" ") + "\\n");\n}'
+            },
+            'binary-search-tree': {
+                'insert': {
+                    'cpp': 'Node* insert_helper(Node* node, int val) {\n    if (node == nullptr) {\n        return new Node(val);\n    }\n    if (val < node->data) {\n        node->left = insert_helper(node->left, val);\n    }\n    else if (val > node->data) {\n        node->right = insert_helper(node->right, val);\n    }\n    return node;\n}\nvoid in_order_helper(Node* node) {\n    if (node != nullptr) {\n        in_order_helper(node->left);\n        std::cout << node->data << " ";\n        in_order_helper(node->right);\n    }\n}\nvoid insert(int val) {\n    root = insert_helper(root, val);\n}\nvoid print_in_order() {\n    std::cout << "In-Order Traversal: ";\n    in_order_helper(root);\n    std::cout << std::endl;\n}',
+                    'python': 'def insert_helper(self, node, val):\n    if node is None:\n        return Node(val)\n    if val < node.data:\n        node.left = self.insert_helper(node.left, val)\n    elif val > node.data:\n        node.right = self.insert_helper(node.right, val)\n    return node\n\ndef in_order_helper(self, node):\n    if node is not None:\n        self.in_order_helper(node.left)\n        print(node.data, end=" ")\n        self.in_order_helper(node.right)\n\ndef insert(self, val):\n    self.root = self.insert_helper(self.root, val)\n\ndef print_in_order(self):\n    print("In-Order Traversal: ", end="")\n    self.in_order_helper(self.root)\n    print()',
+                    'java': 'Node insert_helper(Node node, int val) {\n    if (node == null) {\n        return new Node(val);\n    }\n    if (val < node.data) {\n        node.left = insert_helper(node.left, val);\n    } else if (val > node.data) {\n        node.right = insert_helper(node.right, val);\n    }\n    return node;\n}\n\nvoid in_order_helper(Node node) {\n    if (node != null) {\n        in_order_helper(node.left);\n        System.out.print(node.data + " ");\n        in_order_helper(node.right);\n    }\n}\n\nvoid insert(int val) {\n    root = insert_helper(root, val);\n}\n\nvoid print_in_order() {\n    System.out.print("In-Order Traversal: ");\n    in_order_helper(root);\n    System.out.println();\n}',
+                    'javascript': 'insert_helper(node, val) {\n    if (node === null) {\n        return new Node(val);\n    }\n    if (val < node.data) {\n        node.left = this.insert_helper(node.left, val);\n    } else if (val > node.data) {\n        node.right = this.insert_helper(node.right, val);\n    }\n    return node;\n}\n\nin_order_helper(node, result) {\n    if (node !== null) {\n        this.in_order_helper(node.left, result);\n        result.push(node.data);\n        this.in_order_helper(node.right, result);\n    }\n}\n\ninsert(val) {\n    this.root = this.insert_helper(this.root, val);\n}\n\nprint_in_order() {\n    const result = [];\n    this.in_order_helper(this.root, result);\n    console.log("In-Order Traversal: " + result.join(" ") + "\\n");\n}'
+                }
             }
         }
     };
@@ -1075,6 +1197,63 @@ document.addEventListener('DOMContentLoaded', () => {
             },
 
             'add_tail': (progLang) => {
+                if (currentStructure === 'circular-linked-list') {
+                    let codeDef, newAlloc, checkEmpty, prepCursor, traverseLoop, linkTail, linkHead;
+                    switch (progLang) {
+                        case 'python':
+                            codeDef = `def add_tail(self, data):`;
+                            newAlloc = `new_node = Node(data)`;
+                            checkEmpty = `if self.head is None:\n    self.head = new_node\n    new_node.next = self.head\n    return`;
+                            prepCursor = `temp = self.head`;
+                            traverseLoop = `while temp.next != self.head:\n    temp = temp.next`;
+                            linkTail = `temp.next = new_node`;
+                            linkHead = `new_node.next = self.head`;
+                            break;
+                        case 'java':
+                            codeDef = `void add_tail(int data)`;
+                            newAlloc = `Node new_node = new Node(data);`;
+                            checkEmpty = `if (head == null) {\n    head = new_node;\n    new_node.next = head;\n    return;\n}`;
+                            prepCursor = `Node temp = head;`;
+                            traverseLoop = `while (temp.next != head) {\n    temp = temp.next;\n}`;
+                            linkTail = `temp.next = new_node`;
+                            linkHead = `new_node.next = head`;
+                            break;
+                        case 'javascript':
+                            codeDef = `add_tail(data) {`;
+                            newAlloc = `let new_node = new Node(data);`;
+                            checkEmpty = `if (this.head === null) {\n    this.head = new_node;\n    new_node.next = this.head;\n    return;\n}`;
+                            prepCursor = `let temp = this.head;`;
+                            traverseLoop = `while (temp.next !== this.head) {\n    temp = temp.next;\n}`;
+                            linkTail = `temp.next = new_node`;
+                            linkHead = `new_node.next = this.head`;
+                            break;
+                        case 'cpp':
+                        default:
+                            codeDef = `void add_tail(int data)`;
+                            newAlloc = `Node* new_node = new Node(data);`;
+                            checkEmpty = `if (head == nullptr) {\n    head = new_node;\n    new_node->next = head;\n    return;\n}`;
+                            prepCursor = `Node* temp = head;`;
+                            traverseLoop = `while (temp->next != head) {\n    temp = temp->next;\n}`;
+                            linkTail = `temp->next = new_node`;
+                            linkHead = `new_node->next = head`;
+                            break;
+                    }
+                    return `<h3>Adding an element to the end of a circular list (<code>add_tail</code>)</h3>
+<p>As we have already figured out, a circular list is a train traveling in a closed circle, where the last car is always coupled to the first one (the Head). If we want to add a new car to the very end of this train, we need to find the "coupling" point between the end and the beginning, break it, insert our new car, and close the circle again.</p>
+<h3>How it works step-by-step:</h3>
+<ul>
+<li><pre><code>${codeDef}\n    ${newAlloc}</code></pre><strong>Creating a new node:</strong> The algorithm starts by allocating memory for a new "car" and loading the passed information into it.</li>
+<li><pre><code>${checkEmpty}</code></pre><strong>Creating the first ring (if the list is empty):</strong> First, the program checks if the train exists at all. If the Head is empty, our new car becomes the very first element. But since the list must be circular, this single car immediately connects to itself (its pointer is directed to itself). At this point, the addition is successfully completed.</li>
+<li><pre><code>${prepCursor}\n${traverseLoop}</code></pre><strong>Finding the old Tail:</strong> If there are already other cars in the train, we need to find the very last one. The program creates a temporary cursor, places it on the Head, and begins moving forward. The cursor steps from car to car until it finds the one that points back to the Head. This is our old Tail.</li>
+<li><pre><code>${linkTail}</code></pre><strong>Embedding the new car:</strong> Having found the last element, we detach its pointer from the Head and direct it to our new car. Now the new car has become the last in line.</li>
+<li><pre><code>${linkHead}</code></pre><strong>Closing the circle:</strong> So that the structure doesn't break and remains circular, we take the pointer of our new (now the last) car and direct it to the Head of the list. The circle is closed again!</li>
+</ul>
+<h3>Time complexity:</h3>
+<ul>
+<li><strong>O(n) (Linear time):</strong> Since we only have direct access to the beginning of the list, the algorithm is forced to go through each element to reach the end of the ring. The execution speed directly depends on the number of nodes: the longer the list, the longer the cursor will search for the last element. <em>(A little hint: if the list structure specifically stored an additional constant pointer to the Tail, this operation could be sped up to instantaneous time O(1), as we would no longer have to run through the entire train).</em></li>
+</ul>`;
+                }
+
                 let codeDef, newAlloc, checkEmpty, prepCursor, traverseLoop, appendNode;
                 switch (progLang) {
                     case 'python':
@@ -1129,6 +1308,65 @@ document.addEventListener('DOMContentLoaded', () => {
             },
 
             'insert_at': (progLang) => {
+                if (currentStructure === 'circular-linked-list') {
+                    let codeDef, sanityCheck, scenario1, scenario2, scenario3, protection, recoupling;
+                    switch (progLang) {
+                        case 'python':
+                            codeDef = `def insert_at(self, position, data):`;
+                            sanityCheck = `if position < 0:\n    print("Invalid position.")\n    return\nnew_node = Node(data)`;
+                            scenario1 = `if self.head is None:\n    if position == 0:\n        self.head = new_node\n        new_node.next = self.head\n    else:\n        print(f"Position {position} is out of bounds...")\n    return`;
+                            scenario2 = `if position == 0:\n    temp = self.head\n    while temp.next != self.head:\n        temp = temp.next\n    new_node.next = self.head\n    temp.next = new_node\n    self.head = new_node\n    return`;
+                            scenario3 = `temp = self.head\ncurrent_pos = 0\nwhile current_pos < position - 1:\n    temp = temp.next\n    current_pos += 1`;
+                            protection = `    if temp == self.head:\n        print(f"Position {position} is out of bounds.")\n        return`;
+                            recoupling = `new_node.next = temp.next\ntemp.next = new_node`;
+                            break;
+                        case 'java':
+                            codeDef = `void insert_at(int position, int data)`;
+                            sanityCheck = `if (position < 0) {\n    System.out.println("Invalid position.");\n    return;\n}\nNode new_node = new Node(data);`;
+                            scenario1 = `if (head == null) {\n    if (position == 0) {\n        head = new_node;\n        new_node.next = head;\n    } else {\n        System.out.println("Position " + position + " is out of bounds...");\n    }\n    return;\n}`;
+                            scenario2 = `if (position == 0) {\n    Node temp = head;\n    while (temp.next != head) {\n        temp = temp.next;\n    }\n    new_node.next = head;\n    temp.next = new_node;\n    head = new_node;\n    return;\n}`;
+                            scenario3 = `Node temp = head;\nint current_pos = 0;\nwhile (current_pos < position - 1) {\n    temp = temp.next;\n    current_pos++;`;
+                            protection = `    if (temp == head) {\n        System.out.println("Position " + position + " is out of bounds.");\n        return;\n    }\n}`;
+                            recoupling = `new_node.next = temp.next;\ntemp.next = new_node;`;
+                            break;
+                        case 'javascript':
+                            codeDef = `insert_at(position, data) {`;
+                            sanityCheck = `if (position < 0) {\n    console.log("Invalid position.");\n    return;\n}\nlet new_node = new Node(data);`;
+                            scenario1 = `if (this.head === null) {\n    if (position === 0) {\n        this.head = new_node;\n        new_node.next = this.head;\n    } else {\n        console.log(\`Position \${position} is out of bounds...\`);\n    }\n    return;\n}`;
+                            scenario2 = `if (position === 0) {\n    let temp = this.head;\n    while (temp.next !== this.head) {\n        temp = temp.next;\n    }\n    new_node.next = this.head;\n    temp.next = new_node;\n    this.head = new_node;\n    return;\n}`;
+                            scenario3 = `let temp = this.head;\nlet current_pos = 0;\nwhile (current_pos < position - 1) {\n    temp = temp.next;\n    current_pos++;`;
+                            protection = `    if (temp === this.head) {\n        console.log(\`Position \${position} is out of bounds.\`);\n        return;\n    }\n}`;
+                            recoupling = `new_node.next = temp.next;\ntemp.next = new_node;`;
+                            break;
+                        case 'cpp':
+                        default:
+                            codeDef = `void insert_at(int position, int data)`;
+                            sanityCheck = `if (position < 0) {\n    std::cout << "Invalid position." << std::endl;\n    return;\n}\nNode* new_node = new Node(data);`;
+                            scenario1 = `if (head == nullptr) {\n    if (position == 0) {\n        head = new_node;\n        new_node->next = head;\n    } else {\n        std::cout << "Position " << position << " is out of bounds...";\n        delete new_node;\n    }\n    return;\n}`;
+                            scenario2 = `if (position == 0) {\n    Node* temp = head;\n    while (temp->next != head) {\n        temp = temp->next;\n    }\n    new_node->next = head;\n    temp->next = new_node;\n    head = new_node;\n    return;\n}`;
+                            scenario3 = `Node* temp = head;\nint current_pos = 0;\nwhile (current_pos < position - 1) {\n    temp = temp->next;\n    current_pos++;`;
+                            protection = `    if (temp == head) {\n        std::cout << "Position " << position << " is out of bounds.";\n        delete new_node;\n        return;\n    }\n}`;
+                            recoupling = `new_node->next = temp->next;\ntemp->next = new_node;`;
+                            break;
+                    }
+                    return `<h3>Inserting an element at a given position in a circular list (<code>insert_at</code>)</h3>
+<p>Sometimes there is a need to add a new node (car) not at the very beginning or end, but at a specific place — for example, making it the third or fifth in order. Since our list is circular (the last car is connected to the first), the algorithm must be very careful not to accidentally break this endless circle while making space between the cars or to go endlessly in circles looking for a non-existent place.</p>
+<h3>How it works step-by-step:</h3>
+<ul>
+<li><pre><code>${codeDef}\n    ${sanityCheck}</code></pre><strong>Sanity check:</strong> First of all, the program checks the basic logic: did the user request a negative position (for example, -5)? If so, an error is output, and the process stops. If the position is valid, a new isolated node with the data is created.</li>
+<li><pre><code>${scenario1}</code></pre><strong>Scenario 1: The list is empty.</strong> If the train does not exist yet, the only logical place for insertion is the very first position (0). In this case, the new node becomes the Head and immediately connects to itself, forming a mini-ring. If, however, position 10 was requested for an empty list, this is an out-of-bounds error. The algorithm will report it and destroy the new node so as not to clutter the computer's memory.</li>
+<li><pre><code>${scenario2}</code></pre><strong>Scenario 2: Insertion at the very beginning (Position 0).</strong> If there are already cars, and we want to insert a new one in front of the very first one, we will have to do some work. It is not enough to simply put the new car in front of the Head. Since the circle is closed, the program sends the cursor to the very end of the list to find the Tail. Having found it, it detaches the Tail from the old Head and re-couples it to our new node. Only after this is the circle considered whole again, and the new node becomes the new Head.</li>
+<li><pre><code>${scenario3}</code></pre><strong>Scenario 3: Insertion in the middle (Position &gt; 0).</strong> If the place is somewhere in the middle, the program sends the cursor from the beginning of the list. Its task is to take steps forward and stop exactly at the car that will stand before our new one.</li>
+<li><pre><code>${protection}</code></pre><strong>Protection against "running in circles":</strong> While searching for the right place, there is one danger. In a normal list, we simply reach the end and see a "dead end." In a circular list, the cursor can unnoticeably go for a second lap! To prevent this, the algorithm keeps track: if during the stepping we stumble upon the Head again (meaning we went in a circle), and the required position has not been reached — it means the requested place is beyond the actual length of the list. In this case, the operation is canceled.</li>
+<li><pre><code>${recoupling}</code></pre><strong>Re-coupling:</strong> If the correct place is found, we take our new node, direct its pointer to the next part of the train, and redirect the car the cursor is on to our new one. The new element is successfully integrated into the ring!</li>
+</ul>
+<h3>Time complexity:</h3>
+<ul>
+<li><strong>O(n) for most cases:</strong> The execution speed depends directly on the number of elements and the desired position. If you insert an element in the middle, the program needs to take the corresponding number of steps. If you insert at position 0, the program will have to go through the entire list to find the Tail.</li>
+<li><strong>O(1) in an exceptional case:</strong> The operation is performed instantly only when the list is absolutely empty, and we insert an element at the zero position.</li>
+</ul>`;
+                }
+
                 let codeDef, newAlloc, checkZero, prepCursor, checkBounds, insertNode;
                 switch (progLang) {
                     case 'python':
@@ -1183,6 +1421,74 @@ document.addEventListener('DOMContentLoaded', () => {
             },
 
             'remove_head': (progLang) => {
+                if (currentStructure === 'circular-linked-list') {
+                    let codeDef, checkEmpty, singleCar, saveOldHead, findTail, updateHead, closeCircle, clearMemory, gcNote;
+                    switch (progLang) {
+                        case 'python':
+                            codeDef = `def remove_head(self):`;
+                            checkEmpty = `if self.head is None:\n    print("List is empty. Nothing to remove.")\n    return`;
+                            singleCar = `if self.head.next == self.head:\n    self.head = None\n    return`;
+                            saveOldHead = `old_head = self.head\nlast = self.head`;
+                            findTail = `while last.next != self.head:\n    last = last.next`;
+                            updateHead = `self.head = self.head.next`;
+                            closeCircle = `last.next = self.head`;
+                            clearMemory = ``;
+                            gcNote = ` (handled automatically by Python's Garbage Collector)`;
+                            break;
+                        case 'java':
+                            codeDef = `void remove_head()`;
+                            checkEmpty = `if (head == null) {\n    System.out.println("List is empty...");\n    return;\n}`;
+                            singleCar = `if (head.next == head) {\n    head = null;\n    return;\n}`;
+                            saveOldHead = `Node old_head = head;\nNode last = head;`;
+                            findTail = `while (last.next != head) {\n    last = last.next;\n}`;
+                            updateHead = `head = head.next;`;
+                            closeCircle = `last.next = head;`;
+                            clearMemory = ``;
+                            gcNote = ` (handled automatically by Java's Garbage Collector)`;
+                            break;
+                        case 'javascript':
+                            codeDef = `remove_head() {`;
+                            checkEmpty = `if (this.head === null) {\n    console.log("List is empty...");\n    return;\n}`;
+                            singleCar = `if (this.head.next === this.head) {\n    this.head = null;\n    return;\n}`;
+                            saveOldHead = `let old_head = this.head;\nlet last = this.head;`;
+                            findTail = `while (last.next !== this.head) {\n    last = last.next;\n}`;
+                            updateHead = `this.head = this.head.next;`;
+                            closeCircle = `last.next = this.head;`;
+                            clearMemory = ``;
+                            gcNote = ` (handled automatically by JavaScript's Garbage Collector)`;
+                            break;
+                        case 'cpp':
+                        default:
+                            codeDef = `void remove_head()`;
+                            checkEmpty = `if (head == nullptr) {\n    std::cout << "List is empty...";\n    return;\n}`;
+                            singleCar = `if (head->next == head) {\n    delete head;\n    head = nullptr;\n    return;\n}`;
+                            saveOldHead = `Node* old_head = head;\nNode* last = head;`;
+                            findTail = `while (last->next != head) {\n    last = last->next;\n}`;
+                            updateHead = `head = head->next;`;
+                            closeCircle = `last->next = head;`;
+                            clearMemory = `delete old_head;`;
+                            gcNote = ``;
+                            break;
+                    }
+                    const clearMemoryHtml = clearMemory ? `<pre><code>${clearMemory}</code></pre>` : '';
+                    return `<h3>Removing an element from the beginning of a circular list (<code>remove_head</code>)</h3>
+<p>In a normal linear list, removing the first element is very easy — it is enough to simply say that the list now starts from the second car. But in a circular list, things are a bit more complicated. Since the very last car of the train is always coupled to the very first one, we cannot simply remove the Head. We need to find the Tail and re-couple it to the new Head so that our ring does not break!</p>
+<h3>How it works step-by-step:</h3>
+<ul>
+<li><pre><code>${codeDef}\n    ${checkEmpty}</code></pre><strong>Checking for emptiness:</strong> First of all, the program checks if there is anything to remove at all. If the list is empty (there is no Head), it simply outputs a message that the train does not exist and ends its work.</li>
+<li><pre><code>${singleCar}</code></pre><strong>Single-car scenario:</strong> This is a special case. If there is only one element in the list, which is closed on itself (its "successor" is itself), then after its removal, nothing will be left. The program simply destroys this car and officially declares the list empty.</li>
+<li><pre><code>${saveOldHead}</code></pre><strong>Preparation for removal (multiple cars):</strong> If there are several cars, we cannot immediately delete the first one. First, the program "remembers" the current Head so that it can properly erase it from memory later.</li>
+<li><pre><code>${findTail}</code></pre><strong>Finding the Tail:</strong> The algorithm sends a search cursor from the beginning of the list. This cursor runs through all the cars to the very end until it finds the one whose "coupling" points to our current Head. This is the last car.</li>
+<li><pre><code>${updateHead}</code></pre><strong>Updating the Head:</strong> Now we move the "Head of the train" status to the second car. From now on, it is considered the new beginning.</li>
+<li><pre><code>${closeCircle}</code></pre><strong>Closing the circle:</strong> We take the found last car and direct its pointer to our new Head. The ring is securely closed again!</li>
+<li>${clearMemoryHtml}<strong>Clearing memory:</strong> Only now, when all connections have been updated and the old first car is no longer used by anyone, does the program permanently destroy it, freeing the computer's memory.${gcNote}</li>
+</ul>
+<h3>Time complexity:</h3>
+<ul>
+<li><strong>O(n) (Linear time):</strong> Removing from the beginning in a circular list takes more time than in a normal one. The whole problem is in the Tail — to update its "coupling," the program is forced to run through the entire list from the first to the last element. Therefore, for a list with n elements, it will have to make n steps.<br><em>(As with adding, if we constantly stored a separate pointer to the Tail, we would avoid this long search, and the speed would be instantaneous — O(1)).</em></li>
+</ul>`;
+                }
+
                 let codeDef, checkEmpty, saveOld, updateHead, clearMemory, gcNote;
                 switch (progLang) {
                     case 'python':
@@ -1239,6 +1545,64 @@ document.addEventListener('DOMContentLoaded', () => {
             },
 
             'remove_tail': (progLang) => {
+                if (currentStructure === 'circular-linked-list') {
+                    let codeDef, checkEmpty, singleCar, findPenultimate, closeCircle, clearMemory, gcNote;
+                    switch (progLang) {
+                        case 'python':
+                            codeDef = `def remove_tail(self):`;
+                            checkEmpty = `if self.head is None:\n    print("List is empty. Nothing to remove.")\n    return`;
+                            singleCar = `if self.head.next == self.head:\n    self.head = None\n    return`;
+                            findPenultimate = `temp = self.head\nwhile temp.next.next != self.head:\n    temp = temp.next`;
+                            closeCircle = `temp.next = self.head`;
+                            clearMemory = ``;
+                            gcNote = ` (handled automatically by Python's Garbage Collector)`;
+                            break;
+                        case 'java':
+                            codeDef = `void remove_tail()`;
+                            checkEmpty = `if (head == null) {\n    System.out.println("List is empty. Nothing to remove.");\n    return;\n}`;
+                            singleCar = `if (head.next == head) {\n    head = null;\n    return;\n}`;
+                            findPenultimate = `Node temp = head;\nwhile (temp.next.next != head) {\n    temp = temp.next;\n}`;
+                            closeCircle = `temp.next = head;`;
+                            clearMemory = ``;
+                            gcNote = ` (handled automatically by Java's Garbage Collector)`;
+                            break;
+                        case 'javascript':
+                            codeDef = `remove_tail() {`;
+                            checkEmpty = `if (this.head === null) {\n    console.log("List is empty. Nothing to remove.");\n    return;\n}`;
+                            singleCar = `if (this.head.next === this.head) {\n    this.head = null;\n    return;\n}`;
+                            findPenultimate = `let temp = this.head;\nwhile (temp.next.next !== this.head) {\n    temp = temp.next;\n}`;
+                            closeCircle = `temp.next = this.head;`;
+                            clearMemory = ``;
+                            gcNote = ` (handled automatically by JavaScript's Garbage Collector)`;
+                            break;
+                        case 'cpp':
+                        default:
+                            codeDef = `void remove_tail()`;
+                            checkEmpty = `if (head == nullptr) {\n    std::cout << "List is empty. Nothing to remove." << std::endl;\n    return;\n}`;
+                            singleCar = `if (head->next == head) {\n    delete head;\n    head = nullptr;\n    return;\n}`;
+                            findPenultimate = `Node* temp = head;\nwhile (temp->next->next != head) {\n    temp = temp->next;\n}\nNode* tail_node = temp->next;`;
+                            closeCircle = `temp->next = head;`;
+                            clearMemory = `delete tail_node;`;
+                            gcNote = ``;
+                            break;
+                    }
+                    const clearMemoryHtml = clearMemory ? `<pre><code>${clearMemory}</code></pre>` : '';
+                    return `<h3>Removing an element from the end of a circular list (<code>remove_tail</code>)</h3>
+<p>Removing the last element (the Tail) in a circular list is a task that requires us to find the "penultimate" (second-to-last) car. Why this specific one? Because after we detach the last car, it is the penultimate one that must take over its role and close the circle by connecting to the very first car (the Head).</p>
+<h3>How it works step-by-step:</h3>
+<ul>
+<li><pre><code>${codeDef}\n    ${checkEmpty}</code></pre><strong>Checking for emptiness:</strong> As always, the algorithm first makes sure that the train actually exists. If the Head is empty, there is nothing to remove, and the function simply exits.</li>
+<li><pre><code>${singleCar}</code></pre><strong>Single-car scenario:</strong> If there is only one car in the list, it is closed on itself. Removing its end means removing the entire train. The program simply destroys this single node and leaves emptiness behind it (the Head becomes empty).</li>
+<li><pre><code>${findPenultimate}</code></pre><strong>Finding the penultimate car:</strong> If the train is long, the most interesting part begins. The program launches a cursor from the Head of the list. This cursor constantly "looks two steps ahead." It asks itself: "Is the car that comes after the next one our Head?" If not, the cursor takes a step forward. As soon as the answer becomes "yes," the cursor stops. This means it is standing exactly on the penultimate car.</li>
+<li><pre><code>${closeCircle}</code></pre><strong>Closing the new circle:</strong> Now we have access to the penultimate car, and right behind it stands our old Tail. We take the "coupling" of the penultimate car and direct it straight to the Head of the list, ignoring the old last car. The circle is closed again, but without the Tail!</li>
+<li>${clearMemoryHtml}<strong>Clearing memory:</strong> The old last car is now isolated from our circular train. So that it doesn't take up unnecessary space, the program permanently destroys it, freeing the computer's RAM.${gcNote}</li>
+</ul>
+<h3>Time complexity:</h3>
+<ul>
+<li><strong>O(n) (Linear time):</strong> The execution speed of this operation directly depends on the number of cars. Since we can only move forward, the algorithm is forced to traverse almost the entire train (from the first to the penultimate car) to safely detach the end and close the circle. Therefore, for a list of n elements, it will have to make about n steps.<br><em>(Important remark: unlike operations at the beginning of the list, even if we maintained a constant pointer to the Tail, it would not speed up the removal. To detach the Tail, we still need access to the penultimate element, and we cannot move backward. This operation is only fast in doubly linked lists).</em></li>
+</ul>`;
+                }
+
                 let codeDef, checkEmpty, checkSingle, findPenultimate, detachTail, gcNote;
                 switch (progLang) {
                     case 'python':
@@ -1292,6 +1656,61 @@ document.addEventListener('DOMContentLoaded', () => {
 </ul>`;
             },
             'reverse': (progLang) => {
+                if (currentStructure === 'circular-linked-list') {
+                    let codeDef, checkNecessity, prep, reverseLoop, closeCircle, updateStatus;
+                    switch (progLang) {
+                        case 'python':
+                            codeDef = `def reverse(self):`;
+                            checkNecessity = `if self.head is None or self.head.next == self.head:\n    return`;
+                            prep = `prev = None\ncurrent = self.head\nnext_node = None`;
+                            reverseLoop = `while True:\n    next_node = current.next\n    current.next = prev\n    prev = current\n    current = next_node\n    if current == self.head:\n        break`;
+                            closeCircle = `self.head.next = prev`;
+                            updateStatus = `self.head = prev`;
+                            break;
+                        case 'java':
+                            codeDef = `void reverse()`;
+                            checkNecessity = `if (head == null || head.next == head) {\n    return;\n}`;
+                            prep = `Node prev = null;\nNode current = head;\nNode next_node = null;`;
+                            reverseLoop = `do {\n    next_node = current.next;\n    current.next = prev;\n    prev = current;\n    current = next_node;\n} while (current != head);`;
+                            closeCircle = `head.next = prev;`;
+                            updateStatus = `head = prev;`;
+                            break;
+                        case 'javascript':
+                            codeDef = `reverse() {`;
+                            checkNecessity = `if (this.head === null || this.head.next === this.head) {\n    return;\n}`;
+                            prep = `let prev = null;\nlet current = this.head;\nlet next_node = null;`;
+                            reverseLoop = `do {\n    next_node = current.next;\n    current.next = prev;\n    prev = current;\n    current = next_node;\n} while (current !== this.head);`;
+                            closeCircle = `this.head.next = prev;`;
+                            updateStatus = `this.head = prev;`;
+                            break;
+                        case 'cpp':
+                        default:
+                            codeDef = `void reverse()`;
+                            checkNecessity = `if (head == nullptr || head->next == head) {\n    return;\n}`;
+                            prep = `Node* prev = nullptr;\nNode* current = head;\nNode* next_node = nullptr;`;
+                            reverseLoop = `do {\n    next_node = current->next;\n    current->next = prev;\n    prev = current;\n    current = next_node;\n} while (current != head);`;
+                            closeCircle = `head->next = prev;`;
+                            updateStatus = `head = prev;`;
+                            break;
+                    }
+                    return `<h3>Reversing a circular list (<code>reverse</code>)</h3>
+<p>Reversing a circular list is an advanced task (like a problem with an asterisk). Imagine that our train is traveling in a closed circle clockwise. Our goal is to reverse all the "couplings" between the cars so that the train travels counterclockwise. At the same time, we must be extremely careful not to break our endless circle!</p>
+<p>This process is very similar to reversing a standard linear list (we also use three temporary pointers: Previous, Current, and Next), but it has one extremely important final step — properly closing the new circle.</p>
+<h3>How it works step-by-step:</h3>
+<ul>
+<li><pre><code>${codeDef}\n    ${checkNecessity}</code></pre><strong>Checking for necessity:</strong> First, the program sees if it makes sense to do anything. If the train does not exist, or there is only one car in it (which is closed on itself), then there is nothing to reverse — the list looks the same in both directions anyway. The process immediately ends.</li>
+<li><pre><code>${prep}</code></pre><strong>Preparing the team of pointers:</strong> If there are many cars, the program creates the three pointers familiar to us. Current is set to the Head of the list (the first car), Previous is initially empty, and Next waits for its turn.</li>
+<li><pre><code>${reverseLoop}</code></pre><strong>Reversing in a circle:</strong> The program starts a loop that goes from car to car. For each node, it performs three actions: it "remembers" the next car so as not to lose the way; it detaches the current car and directs its "coupling" backward to the Previous car; and it moves the entire team of pointers one step forward. This process continues until the Current pointer goes through the entire circle and stumbles upon the original Head of the list again.</li>
+<li><p><strong>Attention, broken circle!</strong> When the loop ends, all the couplings between the cars are successfully reversed. But there is one problem: our old Head (which has now become the last car) is currently pointing to nowhere, and the circle is broken. At the same time, our Previous pointer is currently standing on the former last car, which should become the new beginning.</p></li>
+<li><pre><code>${closeCircle}</code></pre><strong>Final closing (Ring magic):</strong> To form a circle again, we must connect the new end with the new beginning. The program takes the old Head and directs its pointer to the car where the Previous pointer is currently standing. The circle is restored!</li>
+<li><pre><code>${updateStatus}</code></pre><strong>Updating status:</strong> Finally, we officially hang the "Head of the train" sign on the exact same car where the Previous pointer is standing. Now our list is completely reversed and is once again a perfect ring.</li>
+</ul>
+<h3>Time complexity:</h3>
+<ul>
+<li><strong>O(n) (Linear time):</strong> To change the direction of all cars, it is enough for the algorithm to go around the circle exactly once. It visits each node, changes its pointer, and moves on. Therefore, for a list of n elements, it will need to take n steps. This is a very fast and efficient operation, which moreover does not require creating new cars — we are only reassigning the existing couplings.</li>
+</ul>`;
+                }
+
                 let codeDef, prep, saveFuture, changeDirection, stepForward, finish;
                 switch (progLang) {
                     case 'python':
@@ -1346,6 +1765,55 @@ document.addEventListener('DOMContentLoaded', () => {
 </ul>`;
             },
                         'print': (progLang) => {
+                if (currentStructure === 'circular-linked-list') {
+                    let codeDef, checkEmpty, specialStart, readingLoop, finish;
+                    switch (progLang) {
+                        case 'python':
+                            codeDef = `def print_list(self):`;
+                            checkEmpty = `if self.head is None:\n    print("List is empty.")\n    return`;
+                            specialStart = `temp = self.head`;
+                            readingLoop = `while True:\n    print(f"{temp.data} -> ", end="")\n    temp = temp.next\n    if temp == self.head:\n        break`;
+                            finish = `print("(Back to Head)")`;
+                            break;
+                        case 'java':
+                            codeDef = `void print()`;
+                            checkEmpty = `if (head == null) {\n    System.out.println("List is empty.");\n    return;\n}`;
+                            specialStart = `Node temp = head;`;
+                            readingLoop = `do {\n    System.out.print(temp.data + " -> ");\n    temp = temp.next;\n} while (temp != head);`;
+                            finish = `System.out.println("(Back to Head)");`;
+                            break;
+                        case 'javascript':
+                            codeDef = `print() {`;
+                            checkEmpty = `if (this.head === null) {\n    console.log("List is empty.");\n    return;\n}`;
+                            specialStart = `let temp = this.head;\nlet str = "";`;
+                            readingLoop = `do {\n    str += temp.data + " -> ";\n    temp = temp.next;\n} while (temp !== this.head);`;
+                            finish = `console.log(str + "(Back to Head)");`;
+                            break;
+                        case 'cpp':
+                        default:
+                            codeDef = `void print()`;
+                            checkEmpty = `if (head == nullptr) {\n    std::cout << "List is empty." << std::endl;\n    return;\n}`;
+                            specialStart = `Node* temp = head;`;
+                            readingLoop = `do {\n    std::cout << temp->data << " -> ";\n    temp = temp->next;\n} while (temp != head);`;
+                            finish = `std::cout << "(Back to Head)" << std::endl;`;
+                            break;
+                    }
+                    return `<h3>Printing a circular list to the screen (<code>print</code>)</h3>
+<p>Reading a normal list is very simple: we go from the first car and stop when we hit emptiness (the end of the train). But in a circular list, there is no end! If we simply tell the program "go forward until you see emptiness," it will endlessly run in circles, printing the same data over and over, until the computer freezes.</p>
+<p>Therefore, we need a special, clever approach: we must remember where we started and stop exactly when we return to the start.</p>
+<h3>How it works step-by-step:</h3>
+<ul>
+<li><pre><code>${codeDef}\n    ${checkEmpty}</code></pre><strong>Checking for emptiness:</strong> First, the algorithm checks if the train exists at all. If the Head is empty, the program simply reports: "The list is empty," and exits.</li>
+<li><pre><code>${specialStart}</code></pre><strong>Special start (Algorithm's trick):</strong> The program places the reading cursor on the very first car (the Head). There is a nuance here: if we told the program "move until you are at the Head," it wouldn't even start working because it's already standing on the Head! Therefore, the algorithm uses the "act first, check later" rule.</li>
+<li><pre><code>${readingLoop}</code></pre><strong>Reading and stepping:</strong> According to this rule, the program first takes the information from the current car and prints it to the screen (usually drawing an arrow to the next one). Only after the data is read does the cursor take one step forward. <br><strong>Checking for the finish:</strong> After stepping forward, the program asks: "Is the car I am currently standing on our starting Head?". If not, the loop repeats (we read and step further). <br><strong>Completing the circle:</strong> As soon as the cursor takes a step and realizes that it is back at the very first car, the loop stops immediately. We have successfully completed a full circle!</li>
+<li><pre><code>${finish}</code></pre><strong>Visual emphasis:</strong> To make it clear to the user that this is not a normal linear list, but a closed ring, at the end the program prints a special message like "(Return to Head)".</li>
+</ul>
+<h3>Time complexity:</h3>
+<ul>
+<li><strong>O(n) (Linear time):</strong> The reading speed directly depends on the number of cars in the train. To show the entire list, the cursor needs to enter each car exactly once and make exactly one full circle. So, for a list of n elements, the program will make n steps. This is the optimal and only possible time for this task.</li>
+</ul>`;
+                }
+
                 let codeDef, prep, loopStart, display, step, finish;
                 switch (progLang) {
                     case 'python':
@@ -1399,6 +1867,213 @@ document.addEventListener('DOMContentLoaded', () => {
 </ul>`;
             },
                         'sort': (progLang, algo) => {
+                if (currentStructure === 'circular-linked-list') {
+                    if (algo === 'Bubble Sort') {
+                        let checkEmpty, startPass, compare, shorten, finishSort;
+                        switch (progLang) {
+                            case 'python':
+                                checkEmpty = `if self.head is None or self.head.next == self.head:\n    return`;
+                                startPass = `last_sorted = None\nswapped = True\nwhile swapped:\n    swapped = False\n    current = self.head`;
+                                compare = `while current.next != last_sorted and current.next != self.head:\n    if current.data > current.next.data:\n        current.data, current.next.data = current.next.data, current.data\n        swapped = True\n    current = current.next`;
+                                shorten = `last_sorted = current`;
+                                finishSort = `# loop ends automatically when swapped == False`;
+                                break;
+                            case 'java':
+                                checkEmpty = `if (head == null || head.next == head) {\n    return;\n}`;
+                                startPass = `boolean swapped;\nNode current;\nNode last_sorted = null;\ndo {\n    swapped = false;\n    current = head;`;
+                                compare = `while (current.next != last_sorted && current.next != head) {\n    if (current.data > current.next.data) {\n        int t = current.data;\n        current.data = current.next.data;\n        current.next.data = t;\n        swapped = true;\n    }\n    current = current.next;\n}`;
+                                shorten = `last_sorted = current;`;
+                                finishSort = `} while (swapped);`;
+                                break;
+                            case 'javascript':
+                                checkEmpty = `if (this.head === null || this.head.next === this.head) {\n    return;\n}`;
+                                startPass = `let swapped;\nlet current;\nlet last_sorted = null;\ndo {\n    swapped = false;\n    current = this.head;`;
+                                compare = `while (current.next !== last_sorted && current.next !== this.head) {\n    if (current.data > current.next.data) {\n        let t = current.data;\n        current.data = current.next.data;\n        current.next.data = t;\n        swapped = true;\n    }\n    current = current.next;\n}`;
+                                shorten = `last_sorted = current;`;
+                                finishSort = `} while (swapped);`;
+                                break;
+                            case 'cpp':
+                            default:
+                                checkEmpty = `if (head == nullptr || head->next == head) {\n    return;\n}`;
+                                startPass = `bool swapped;\nNode* current;\nNode* last_sorted = nullptr;\ndo {\n    swapped = false;\n    current = head;`;
+                                compare = `while (current->next != last_sorted && current->next != head) {\n    if (current->data > current->next->data) {\n        std::swap(current->data, current->next->data);\n        swapped = true;\n    }\n    current = current->next;\n}`;
+                                shorten = `last_sorted = current;`;
+                                finishSort = `} while (swapped);`;
+                                break;
+                        }
+                        return `<h3>Sorting a circular list (Bubble Sort)</h3>
+<p>You are already familiar with the "bubble sort" algorithm, where the largest values gradually "float" to the end of the list. For a circular list, the basic principle remains the same: we do not break the couplings between the cars, but simply swap their cargo (data).</p>
+<p>However, since our train travels in a closed circle, a new danger arises — the algorithm could endlessly run in circles and never stop! Therefore, we need a reliable "safety catch" that will say in time: "Stop, the circle is complete."</p>
+<h3>How it works step-by-step:</h3>
+<ul>
+<li><pre><code>${checkEmpty}</code></pre><strong>Checking "if there is anything to sort":</strong> If the train does not exist or has only one car, the program immediately ends its work. Such a list is considered sorted a priori.</li>
+<li><pre><code>${startPass}</code></pre><strong>Preparing for the lap:</strong> The algorithm creates a cursor and places it on the Head. It also takes a special indicator (a flag) that will record whether we made any cargo swaps during the current lap.</li>
+<li><pre><code>${compare}</code></pre><strong>Movement and comparison:</strong> The cursor begins to move. It looks at the cargo in its own car and in the next one. If its cargo is heavier (the number is larger), it swaps their data and turns on the flag. After that, it takes a step forward. <br><strong>Infinity safety catch:</strong> In a normal list, the cursor would stop when it saw emptiness (the end). Here, it stops when it sees that the next car is our Head again! This is a signal that a full circle (of the unsorted part) has been completed. If during the run the scout finds a cargo smaller than our "temporary minimum", it simply remembers the location of this car.</li>
+<li><pre><code>${shorten}</code></pre><strong>Smart optimization (Shortening the path):</strong> After the very first full lap, the heaviest cargo is guaranteed to end up in the very last car (right before the Head). To avoid doing unnecessary work, the algorithm remembers this car and places a conditional "stop sign" there. During the second lap, the cursor will no longer go all the way to the Head, but will stop before this sign. With each lap, this "stop sign" will shift closer to the beginning, reducing the route.</li>
+<li><pre><code>${finishSort}</code></pre><strong>Perfect order:</strong> The program sends the cursor on new laps over and over until it travels the entire available route without ever turning on the flag (meaning no swaps were made). This means that all the cargo is arranged perfectly!</li>
+</ul>
+<h3>Time complexity:</h3>
+<ul>
+<li><strong>O(n²) (Quadratic time) in the worst and average cases:</strong> Even with our "smart optimization," if the cargo is completely mixed up, the algorithm will have to make a lot of laps. For a ring with many cars, this takes a lot of time, so bubble sort remains slow for large volumes of data.</li>
+<li><strong>O(n) in the best case:</strong> If you give the program a train where the cargo is already arranged in ascending order, the algorithm will make exactly one lap, see that nothing needs to be changed, and instantly finish its work.</li>
+</ul>`;
+                    } else if (algo === 'Selection Sort') {
+                        let checkEmpty, outerLoop, innerLoop, swapData, moveOuter;
+                        switch (progLang) {
+                            case 'python':
+                                checkEmpty = `if self.head is None or self.head.next == self.head:\n    return`;
+                                outerLoop = `current = self.head\nwhile True:\n    min_node = current\n    temp = current.next`;
+                                innerLoop = `    while temp != self.head:\n        if temp.data < min_node.data:\n            min_node = temp\n        temp = temp.next`;
+                                swapData = `    if min_node != current:\n        current.data, min_node.data = min_node.data, current.data`;
+                                moveOuter = `    current = current.next\n    if current.next == self.head:\n        break`;
+                                break;
+                            case 'java':
+                                checkEmpty = `if (head == null || head.next == head) {\n    return;\n}`;
+                                outerLoop = `Node current = head;\ndo {\n    Node min_node = current;\n    Node temp = current.next;`;
+                                innerLoop = `    while (temp != head) {\n        if (temp.data < min_node.data) {\n            min_node = temp;\n        }\n        temp = temp.next;\n    }`;
+                                swapData = `    if (min_node != current) {\n        int tmp = current.data;\n        current.data = min_node.data;\n        min_node.data = tmp;\n    }`;
+                                moveOuter = `    current = current.next;\n} while (current.next != head);`;
+                                break;
+                            case 'javascript':
+                                checkEmpty = `if (this.head === null || this.head.next === this.head) {\n    return;\n}`;
+                                outerLoop = `let current = this.head;\ndo {\n    let min_node = current;\n    let temp = current.next;`;
+                                innerLoop = `    while (temp !== this.head) {\n        if (temp.data < min_node.data) {\n            min_node = temp;\n        }\n        temp = temp.next;\n    }`;
+                                swapData = `    if (min_node !== current) {\n        let tmp = current.data;\n        current.data = min_node.data;\n        min_node.data = tmp;\n    }`;
+                                moveOuter = `    current = current.next;\n} while (current.next !== this.head);`;
+                                break;
+                            case 'cpp':
+                            default:
+                                checkEmpty = `if (head == nullptr || head->next == head) {\n    return;\n}`;
+                                outerLoop = `Node* current = head;\ndo {\n    Node* min_node = current;\n    Node* temp = current->next;`;
+                                innerLoop = `    while (temp != head) {\n        if (temp->data < min_node->data) {\n            min_node = temp;\n        }\n        temp = temp->next;\n    }`;
+                                swapData = `    if (min_node != current) {\n        std::swap(current->data, min_node->data);\n    }`;
+                                moveOuter = `    current = current->next;\n} while (current->next != head);`;
+                                break;
+                        }
+                        return `<h3>Selection Sort in a circular list</h3>
+<p>The "selection sort" algorithm works like a very meticulous loader. Its goal is to find the smallest (lightest) cargo and put it in the first car, then find the next smallest and put it in the second, and so on.</p>
+<p>For a circular list, we use the "data swapping" approach: we do not decouple the cars themselves, but simply transfer the boxes with numbers from one car to another. The main difficulty here is to stop the search in time so as not to go for a second lap around our endless ring.</p>
+<h3>How it works step-by-step:</h3>
+<ul>
+<li><pre><code>${checkEmpty}</code></pre><strong>Checking for readiness:</strong> First of all, the program sees if it makes sense to start working. If the train does not exist or has only one car in it, there is nothing to sort — the list is considered perfect by default.</li>
+<li><pre><code>${outerLoop}</code></pre><strong>Choosing the "target" car:</strong> The algorithm places the main cursor on the first car (the Head). This cursor marks the car we are currently trying to fill with the smallest available cargo. The program temporarily assumes that the cargo already lying in this car is the smallest.</li>
+<li><pre><code>${innerLoop}</code></pre><strong>Launching the scout (Finding the minimum):</strong> Next, the algorithm sends a scout cursor forward. Its task is to run through all subsequent cars and check their cargo. <br><strong>Infinity safety catch:</strong> Since the train is circular, the scout must know where to stop. It runs forward and compares cargoes until it sees that the next car is our starting Head again. This is a signal that a full circle (of the unsorted part) has been completed. If during the run the scout finds a cargo smaller than our "temporary minimum", it simply remembers the location of this car.</li>
+<li><pre><code>${swapData}</code></pre><strong>Swapping cargo:</strong> When the scout completes its lap, we know exactly where the smallest cargo lies. If it ended up not being in our "target" car, the program simply swaps their cargoes.</li>
+<li><pre><code>${moveOuter}</code></pre><strong>Stepping forward:</strong> Now the first car has the perfect cargo and is considered sorted! The main cursor moves to the second car, and the entire search process is repeated. The algorithm stops its work one step before the Head (at the penultimate car) — because if all previous cars are sorted correctly, the last one will automatically be left with the largest cargo.</li>
+</ul>
+<h3>Time complexity:</h3>
+<ul>
+<li><strong>O(n²) (Quadratic time) in all cases:</strong> Unlike "bubble" sort, selection sort cannot understand whether the list is already ordered. Even if all cargoes are perfectly arranged from smallest to largest, our scout will still diligently run in a circle at each step to check every single car. Therefore, for a train of n cars, it will always make approximately n × n steps. Because of this, the algorithm is considered slow for large data sets.</li>
+</ul>`;
+                    } else if (algo === 'Insertion Sort') {
+                        let checkEmpty, disassemble, build, stepForward, finishUp;
+                        switch (progLang) {
+                            case 'python':
+                                checkEmpty = `if self.head is None or self.head.next == self.head:\n    return`;
+                                disassemble = `sorted_head = None\ncurrent = self.head`;
+                                build = `    sorted_head = self.sortedInsert(sorted_head, current)`;
+                                stepForward = `    current = next_node\n    if current == self.head:\n        break`;
+                                finishUp = `self.head = sorted_head`;
+                                break;
+                            case 'java':
+                                checkEmpty = `if (head == null || head.next == head) {\n    return;\n}`;
+                                disassemble = `Node sorted_head = null;\nNode current = head;`;
+                                build = `    sorted_head = sortedInsert(sorted_head, current);`;
+                                stepForward = `    current = next_node;\n} while (current != head);`;
+                                finishUp = `head = sorted_head;`;
+                                break;
+                            case 'javascript':
+                                checkEmpty = `if (this.head === null || this.head.next === this.head) {\n    return;\n}`;
+                                disassemble = `let sorted_head = null;\nlet current = this.head;`;
+                                build = `    sorted_head = this.sortedInsert(sorted_head, current);`;
+                                stepForward = `    current = next_node;\n} while (current !== this.head);`;
+                                finishUp = `this.head = sorted_head;`;
+                                break;
+                            case 'cpp':
+                            default:
+                                checkEmpty = `if (head == nullptr || head->next == head) {\n    return;\n}`;
+                                disassemble = `Node* sorted_head = nullptr;\nNode* current = head;`;
+                                build = `    sorted_head = sortedInsert(sorted_head, current);`;
+                                stepForward = `    current = next_node;\n} while (current != head);`;
+                                finishUp = `head = sorted_head;`;
+                                break;
+                        }
+                        return `<h3>Insertion Sort in a circular list</h3>
+<p>The "insertion sort" algorithm resembles the process of taking one card at a time from an unsorted deck and inserting it into the correct place in the fan of cards in your hand.</p>
+<p>In the case of a circular list, we literally disassemble our old, unsorted train step by step and simultaneously build a new train from its cars — instantly sorted. Here we don't just swap the cargo; we actually re-couple the cars themselves, ensuring that the new train always remains closed in a ring!</p>
+<h3>How it works step-by-step:</h3>
+<ul>
+<li><pre><code>${checkEmpty}</code></pre><strong>Checking for readiness:</strong> If the train is empty or consists of only one car (which is closed on itself), the program does nothing. Such a list is already considered perfect.</li>
+<li><pre><code>${disassemble}</code></pre><strong>Disassembling the old train:</strong> The program creates an empty platform for our future, "sorted" train. Then it approaches the first car of the old train. An important point: before detaching this car, the program absolutely must "remember" which car comes next, so as not to lose the rest of the old train during the disassembly process.</li>
+<li><pre><code>${build}</code></pre><strong>Building the new train (Finding a place):</strong> Having detached the car, the algorithm looks at our new train to find the right place for it:<br>
+<strong>Scenario A (The new train is empty):</strong> If this is the very first detached car, it becomes the Head of the new train and immediately connects to itself (forming a mini-ring).<br>
+<strong>Scenario B (The lightest cargo):</strong> If the cargo in our car is smaller than that of the Head of the new train, it should become the new beginning. But since this is a ring, the program is forced to run all the way to the Tail of the new train to detach it from the old Head and re-couple it to our new car.<br>
+<strong>Scenario C (The cargo is in the middle or heavier):</strong> If the car is to be placed somewhere in the middle or at the end, a special cursor runs through the new train, looking for a "gap" where the next car will be heavier than ours. Having found it, it carefully makes space between the coupling and inserts our car there.</li>
+<li><pre><code>${stepForward}</code></pre><strong>Stepping forward:</strong> As soon as the car is successfully attached to the new train, the program returns to that "remembered" car from the old train (step 2) and repeats the process.</li>
+<li><pre><code>${finishUp}</code></pre><strong>Finishing up:</strong> This cycle of "detach -&gt; find a place -&gt; insert into the ring" continues until the old train is completely disassembled. At the end, we declare our newly built, perfectly sorted train as the main one!</li>
+</ul>
+<h3>Time complexity:</h3>
+<ul>
+<li><strong>O(n²) (Quadratic time):</strong> Because we are working with a ring, this algorithm does a lot of running around. For each detached car, the program has to find a place for it in the new train by going through it from the beginning. And if the car turns out to be the smallest (Scenario B), it will have to run all the way to the end of the new train to re-couple the Tail. For long lists, this process takes quite a bit of time.</li>
+<li><strong>Advantage:</strong> Despite being slow on large volumes of data, this method works wonderfully and very quickly if the list is already almost sorted from the very beginning, or if there are very few cars.</li>
+</ul>`;
+                    } else if (algo === 'Quick Sort') {
+                        let findTail, choosePivot, partitionLoop, fixPivot, divideConquer, oneWayMovement;
+                        switch (progLang) {
+                            case 'python':
+                                findTail = `def get_tail(self):\n    if self.head is None:\n        return None\n    temp = self.head\n    while temp.next != self.head:\n        temp = temp.next\n    return temp`;
+                                choosePivot = `pivot = end.data\ni = start\nj = start`;
+                                partitionLoop = `while j != end:\n    if j.data < pivot:\n        i.data, j.data = j.data, i.data\n        i = i.next\n    j = j.next`;
+                                fixPivot = `i.data, end.data = end.data, i.data\nreturn i`;
+                                divideConquer = `if start != pivot_node:\n    temp = start\n    # ...\n    self._quick_sort(start, temp)\nif pivot_node != end:\n    self._quick_sort(pivot_node.next, end)`;
+                                oneWayMovement = `temp = start\nwhile temp.next != pivot_node:\n    temp = temp.next`;
+                                break;
+                            case 'java':
+                                findTail = `Node get_tail() {\n    if (head == null) return null;\n    Node temp = head;\n    while (temp.next != head) {\n        temp = temp.next;\n    }\n    return temp;\n}`;
+                                choosePivot = `int pivot = end.data;\nNode i = start;`;
+                                partitionLoop = `for (Node j = start; j != end; j = j.next) {\n    if (j.data < pivot) {\n        int temp = i.data;\n        i.data = j.data;\n        j.data = temp;\n        i = i.next;\n    }\n}`;
+                                fixPivot = `int temp = i.data;\ni.data = end.data;\nend.data = temp;\nreturn i;`;
+                                divideConquer = `if (start != pivot_node) {\n    Node temp = start;\n    // ...\n    _quick_sort(start, temp);\n}\nif (pivot_node != end) {\n    _quick_sort(pivot_node.next, end);\n}`;
+                                oneWayMovement = `Node temp = start;\nwhile (temp.next != pivot_node) {\n    temp = temp.next;\n}`;
+                                break;
+                            case 'javascript':
+                                findTail = `get_tail() {\n    if (this.head === null) return null;\n    let temp = this.head;\n    while (temp.next !== this.head) {\n        temp = temp.next;\n    }\n    return temp;\n}`;
+                                choosePivot = `let pivot = end.data;\nlet i = start;`;
+                                partitionLoop = `for (let j = start; j !== end; j = j.next) {\n    if (j.data < pivot) {\n        let temp = i.data;\n        i.data = j.data;\n        j.data = temp;\n        i = i.next;\n    }\n}`;
+                                fixPivot = `let temp = i.data;\ni.data = end.data;\nend.data = temp;\nreturn i;`;
+                                divideConquer = `if (start !== pivot_node) {\n    let temp = start;\n    // ...\n    this._quick_sort(start, temp);\n}\nif (pivot_node !== end) {\n    this._quick_sort(pivot_node.next, end);\n}`;
+                                oneWayMovement = `let temp = start;\nwhile (temp.next !== pivot_node) {\n    temp = temp.next;\n}`;
+                                break;
+                            case 'cpp':
+                            default:
+                                findTail = `Node* get_tail() {\n    if (head == nullptr) return nullptr;\n    Node* temp = head;\n    while (temp->next != head) {\n        temp = temp->next;\n    }\n    return temp;\n}`;
+                                choosePivot = `int pivot = end->data;\nNode* i = start;`;
+                                partitionLoop = `for (Node* j = start; j != end; j = j->next) {\n    if (j->data < pivot) {\n        std::swap(i->data, j->data);\n        i = i->next;\n    }\n}`;
+                                fixPivot = `std::swap(i->data, end->data);\nreturn i;`;
+                                divideConquer = `if (start != pivot_node) {\n    Node* temp = start;\n    // ...\n    _quick_sort(start, temp);\n}\nif (pivot_node != end) {\n    _quick_sort(pivot_node->next, end);\n}`;
+                                oneWayMovement = `Node* temp = start;\nwhile (temp->next != pivot_node) {\n    temp = temp->next;\n}`;
+                                break;
+                        }
+                        return `<h3>Quick Sort in a circular list</h3>
+<p>"Quick sort" is one of the most powerful algorithms. Its main idea is to choose one "benchmark" (pivot) cargo and scatter the rest so that all lighter cargoes end up to its left, and heavier ones to its right.</p>
+<p>Sorting a circular list using this method is quite interesting. Since the train is locked in an endless circle, the algorithm first needs to "mentally" break it by defining clear boundaries: where our temporary "beginning" and "end" are. It is important to note: in this version of the algorithm, we do not decouple the cars themselves (so as not to break the ring), but only move the boxes with numbers from one car to another (value swapping).</p>
+<h3>How it works step-by-step:</h3>
+<ul>
+<li><pre><code>${findTail}</code></pre><strong>Finding boundaries (Defining the Tail):</strong> First of all, the program checks if the train exists. If it has more than one car, the algorithm sends a cursor around the circle to find the very last car (the Tail), which is coupled to the Head. Now we have a clear working area: from the Head to the Tail.</li>
+<li><pre><code>${choosePivot}</code></pre><strong>Choosing the "Benchmark" (Pivot):</strong> The algorithm takes the cargo from the very last car of our working area and designates it as the "benchmark".</li>
+<li><pre><code>${partitionLoop}</code></pre><strong>Partitioning (Sorting by groups):</strong> A scout cursor is launched, starting from the first car. Its goal is to find all cargoes that are lighter than our benchmark. As soon as the scout finds such a light cargo, it moves it closer to the beginning of the train (swaps places with other cargoes).</li>
+<li><pre><code>${fixPivot}</code></pre><strong>Fixing the Pivot:</strong> When the scout checks all the cars, we will know exactly where the group of "light" cargoes ends. The program takes our "benchmark" cargo from the last car and places it exactly on this boundary. From now on, this cargo stands in its perfect, final place!</li>
+<li><pre><code>${divideConquer}</code></pre><strong>Divide and conquer (Recursion):</strong> Now our train is logically divided into two unsorted parts: the cars to the left of the pivot and the cars to the right. The algorithm takes the left part and repeats all the steps for it (again finds the end of this zone, chooses a new pivot, divides the cargoes). Then it does the same for the right part.</li>
+<li><pre><code>${oneWayMovement}</code></pre><strong>The difficulty of one-way movement:</strong> To sort the left group, the algorithm needs to know where it ends (i.e., to find the car immediately preceding our fixed pivot). Since the train can only move forward, the program has to make an additional run from the beginning of the left group every time to find this penultimate car.</li>
+</ul>
+<h3>Time complexity:</h3>
+<ul>
+<li><strong>O(n log n) in the best and average cases:</strong> If the pivot cargo divides the zone into approximately two equal halves each time, the algorithm works extremely efficiently. It organizes the data lightning fast, living up to its "Quick" name.</li>
+<li><strong>O(n²) in the worst case:</strong> This is the weak point of the algorithm. If you give it a train where the cargoes are already arranged perfectly (or vice versa, in reverse order), the very last car will always have the largest (or smallest) cargo. Because of this, the partitioning will be terrible: 0 cars on one side, and all the others on the other. In such a scenario, plus considering the need to constantly run forward to find boundaries, the speed of the algorithm drops significantly and becomes as slow as "bubble sort".</li>
+</ul>`;
+                    }
+                }
+
                 if (algo === 'Bubble Sort') {
                     let codeDef, checkEmpty, startPass, compare, shorten, finishSort;
                     switch (progLang) {
@@ -1607,10 +2282,352 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 return `Sorts the list using ${algo || 'the chosen algorithm'}.`;
             },
-            'add_vertex': 'Adds a new vertex to the graph. Time Complexity: O(1).',
-            'add_edge': 'Adds a directed or undirected edge between two vertices. Time Complexity: O(1) for adjacency list.',
-            'bfs': 'Breadth-First Search. Explores the graph layer by layer using a Queue. Time Complexity: O(V + E).',
-            'dfs': 'Depth-First Search. Explores as far as possible along each branch before backtracking using a Stack (or recursion). Time Complexity: O(V + E).',
+            'add_vertex': (progLang) => {
+                if (currentStructure === 'undirected-graph') {
+                    let appendEmpty, incCounter, notifyOpen;
+                    switch (progLang) {
+                        case 'python':
+                            appendEmpty = `self.adj.append([])`;
+                            incCounter = `self.numVertices += 1`;
+                            notifyOpen = `print(f"Added vertex {self.numVertices - 1}")`;
+                            break;
+                        case 'java':
+                            appendEmpty = `adj.add(new ArrayList<Integer>());`;
+                            incCounter = `numVertices++;`;
+                            notifyOpen = `System.out.println("Added vertex " + (numVertices - 1));`;
+                            break;
+                        case 'javascript':
+                            appendEmpty = `this.adj.push([]);`;
+                            incCounter = `this.numVertices++;`;
+                            notifyOpen = `console.log(\`Added vertex \${this.numVertices - 1}\\n\`);`;
+                            break;
+                        case 'cpp':
+                        default:
+                            appendEmpty = `adj.push_back(std::vector<int>());`;
+                            incCounter = `numVertices++;`;
+                            notifyOpen = `std::cout << "Added vertex " << numVertices - 1 << std::endl;`;
+                            break;
+                    }
+                    return `<h3>Adding a vertex to a graph (add_vertex)</h3>
+<p><strong>Real-life Analogy: Building a New Railway Station</strong></p>
+<p>Imagine we are expanding the country's transport network. We already have a certain number of cities connected by tracks. This algorithm acts as an order to build a completely new station somewhere out in a field.</p>
+<p>Here are the steps involved in this "construction":</p>
+<ul>
+<li><pre><code>${appendEmpty}</code></pre><strong>Clearing a vacant lot (Adding a list):</strong> The algorithm creates a new, completely empty entry in the main route ledger. This means: "The station already exists, but no tracks have been laid to it yet." The new vertex is added in isolation, without any connections to others.</li>
+<li><pre><code>${incCounter}</code></pre><strong>Updating statistics (Incrementing the counter):</strong> We take the general register of all stations in the network and increase their total count by one. Now the system officially knows that the number of objects has grown.</li>
+<li><pre><code>${notifyOpen}</code></pre><strong>Official opening (Outputting a message):</strong> A notification is sent to the dispatchers: "Attention, a new station with such-and-such number has been successfully added" (in programming, numbering usually starts at zero, so the new station's number is one less than the total count).</li>
+</ul>
+<p>After executing this algorithm, a new point appears in our network, patiently waiting for another algorithm (adding an edge) to lay routes to it.</p>
+<h3>Efficiency Evaluation (Big O)</h3>
+<p><strong>Time complexity:</strong> O(1) (amortized)<br>
+Adding a new empty entry to the end of a dynamic array (an adjacency list) usually happens instantly. We do not need to check or move existing stations; we simply append the new one to the end of the list.</p>
+<p><strong>Space complexity:</strong> O(1)<br>
+The algorithm allocates a minimal amount of memory solely for one new, empty list of connections. The scale of the graph itself does not affect this cost in any way.</p>`;
+                } else if (currentStructure.includes('graph')) {
+                    let checkExist, addSuccess;
+                    switch (progLang) {
+                        case 'python':
+                            checkExist = `if vertex not in self.adj_list:`;
+                            addSuccess = `self.adj_list[vertex] = []`;
+                            break;
+                        case 'java':
+                            checkExist = `if (!adj_list.containsKey(vertex)) {`;
+                            addSuccess = `adj_list.put(vertex, new ArrayList<Integer>());`;
+                            break;
+                        case 'javascript':
+                            checkExist = `if (!this.adj_list.has(vertex)) {`;
+                            addSuccess = `this.adj_list.set(vertex, []);`;
+                            break;
+                        case 'cpp':
+                        default:
+                            checkExist = `if (adj_list.find(vertex) == adj_list.end()) {`;
+                            addSuccess = `adj_list[vertex] = std::vector<int>();`;
+                            break;
+                    }
+                    return `<h3>Adding a vertex to a graph (add_vertex)</h3>
+<p>We are moving on to an extremely powerful data structure — Graphs. If a linked list resembled a train of sequential cars, a graph is best imagined as a map of cities (which in programming are called "vertices" or nodes) connected by roads (which are called "edges").<br>
+The <code>add_vertex</code> function performs the very first and simplest action — it simply registers a new city on our empty or already existing map.</p>
+<h3>How it works step-by-step:</h3>
+<ul>
+<li><pre><code>${checkExist}</code></pre><strong>Checking the directory (Finding duplicates):</strong> Before building a new city, the program looks into its main directory (the so-called "adjacency list") to check if there is already a city with exactly the same name or identification number.</li>
+<li><pre><code>${addSuccess}</code></pre><strong>Registering a new city:</strong> If the check shows that such a city does not exist yet, the program officially adds it to the directory. At this stage, the city is created completely isolated — no roads lead to it yet, and it is impossible to travel anywhere from it (an empty list of connections is created for it). We will build roads (edges) later using other functions.</li>
+<li><strong>Error protection:</strong> If a city with this number is already present on the map, the algorithm does not overwrite anything and simply informs the user that such a point already exists. This is a very important protective mechanism. If we allowed the creation of two cities with identical numbers, our navigation system would simply break down, not understanding exactly where to plot routes.</li>
+</ul>
+<h3>Time complexity:</h3>
+<ul>
+<li><strong>O(1) or O(log V) (Very fast):</strong> The speed of adding a vertex depends on exactly how our "directory" is technically structured under the hood of the program:
+<ul>
+<li>If the directory works on the principle of instant search (hash table), the check and creation of a new record occur in perfect constant time — O(1).</li>
+<li>If the directory is structured as an ordered search tree, the program will need a little time to find the right place by alphabet or number. In this case, the speed will be O(log V), where V is the number of already existing vertices (cities).</li>
+</ul>
+</li>
+</ul>
+<p>In both cases, this is an extremely efficient operation that is performed almost instantly.</p>`;
+                }
+                return `Adds a new vertex to the graph. Time Complexity: O(1).`;
+            },
+            'add_edge': (progLang) => {
+                if (currentStructure === 'undirected-graph') {
+                    let safetyCheck, firstConn, secondConn;
+                    switch (progLang) {
+                        case 'python':
+                            safetyCheck = `if u >= self.numVertices or v >= self.numVertices or u < 0 or v < 0:\n    print("Error: One or both vertices do not exist!")\n    return`;
+                            firstConn = `self.adj[u].append(v)`;
+                            secondConn = `self.adj[v].append(u)`;
+                            break;
+                        case 'java':
+                            safetyCheck = `if (u >= numVertices || v >= numVertices || u < 0 || v < 0) {\n    System.out.println("Error: One or both vertices do not exist!");\n    return;\n}`;
+                            firstConn = `adj.get(u).add(v);`;
+                            secondConn = `adj.get(v).add(u);`;
+                            break;
+                        case 'javascript':
+                            safetyCheck = `if (u >= this.numVertices || v >= this.numVertices || u < 0 || v < 0) {\n    console.log("Error: One or both vertices do not exist!\\n");\n    return;\n}`;
+                            firstConn = `this.adj[u].push(v);`;
+                            secondConn = `this.adj[v].push(u);`;
+                            break;
+                        case 'cpp':
+                        default:
+                            safetyCheck = `if (u >= numVertices || v >= numVertices || u < 0 || v < 0) {\n    std::cout << "Error: One or both vertices do not exist!" << std::endl;\n    return;\n}`;
+                            firstConn = `adj[u].push_back(v);`;
+                            secondConn = `adj[v].push_back(u);`;
+                            break;
+                    }
+                    return `<h3>Adding a connection / edge (add_edge)</h3>
+<p><strong>Real-life Analogy: Laying a Double-Track Railway Between Cities</strong></p>
+<p>If in the previous example we built isolated stations, now we are allocating resources to connect two of them with a fully functional track. Since the graph is undirected, this is like building a standard double-track railway where trains can freely travel in both directions.</p>
+<p>Here is how the logic of this process works step-by-step:</p>
+<ul>
+<li><pre><code>${safetyCheck}</code></pre><strong>Reality check (Safety check):</strong> Before dispatching a construction crew, the chief engineer always consults the map. They check whether both specified stations actually exist in reality (their numbers cannot be negative or greater than the total number of existing stations). If someone gives an order to connect an existing station with some imaginary stop "No. 999", the system immediately blocks this action and reports an error. You cannot build tracks to nowhere.</li>
+<li><pre><code>${firstConn}</code></pre><strong>Updating the schedule of the first station (Connection u &rarr; v):</strong> If both stations exist, we inform the stationmaster of the first station: "You now have a direct route to the second station." They add this direction to their local list of available trips.</li>
+<li><pre><code>${secondConn}</code></pre><strong>Mirror update (Connection v &rarr; u):</strong> Since our railway operates in two directions, we must absolutely call the stationmaster of the second station and give a similar instruction: "Add a return trip to the first station to your schedule."</li>
+</ul>
+<p>Without this last step, we would end up with a directed graph (a one-way street), but for two-way communication, it is crucial to record the information in the logs of both nodes.</p>
+<h3>Efficiency Evaluation (Big O)</h3>
+<p><strong>Time complexity:</strong> O(1) (amortized)<br>
+Checking the existence of the stations is an instantaneous mathematical operation. The actual "laying of the route" consists of quickly adding one entry to the end of the lists for two specific stations. The execution time does not depend on how massive the entire transport network is.</p>
+<p><strong>Space complexity:</strong> O(1)<br>
+To record the new connection, the algorithm uses exactly two new memory elements (one for each direction). The scale of the entire graph does not affect this cost.</p>`;
+                } else if (currentStructure.includes('graph')) {
+                    let prepVertex, linkEdge;
+                    switch (progLang) {
+                        case 'python':
+                            prepVertex = `self.add_vertex(source)\nself.add_vertex(destination)`;
+                            linkEdge = `self.adj_list[source].append(destination)`;
+                            break;
+                        case 'java':
+                            prepVertex = `add_vertex(source);\nadd_vertex(destination);`;
+                            linkEdge = `adj_list.get(source).add(destination);`;
+                            break;
+                        case 'javascript':
+                            prepVertex = `this.add_vertex(source);\nthis.add_vertex(destination);`;
+                            linkEdge = `this.adj_list.get(source).push(destination);`;
+                            break;
+                        case 'cpp':
+                        default:
+                            prepVertex = `add_vertex(source);\nadd_vertex(destination);`;
+                            linkEdge = `adj_list[source].push_back(destination);`;
+                            break;
+                    }
+                    return `<h3>Adding a connection / edge (add_edge)</h3>
+<p>If vertices are cities on our map, then edges are the roads that connect them. Without roads, our graph would consist simply of a set of isolated points between which it is impossible to travel.</p>
+<p>The function we are looking at creates a directed edge. In real life, this is the exact equivalent of a one-way street. That is, we lay a route from City A to City B, but this does not mean that you can return back along this exact same road!</p>
+<h3>How it works step-by-step:</h3>
+<ul>
+<li><pre><code>${prepVertex}</code></pre><strong>Checking the existence of cities:</strong> Before building a road, it is logical to make sure that both cities actually exist. The algorithm takes the starting point and the finishing point and checks our main directory. If any of these cities are not yet on the map, the program automatically creates them (using the previous <code>add_vertex</code> function). This protects the system from errors: we will never build a road to "nowhere."</li>
+<li><pre><code>${linkEdge}</code></pre><strong>Setting the pointer (Laying the road):</strong> Once we have ensured that both cities are on the map, the algorithm looks into the directory of the starting city. It adds the destination city to the list of available exits from this starting city.</li>
+<li><strong>One-way nature:</strong> Note: the program records the route only in the directory of the starting city. No new records appear in the directory of the destination city. This is exactly why the road turns out to be one-way. (If we wanted to make a standard two-way highway, the program would have to take one more step and record the return route).</li>
+</ul>
+<h3>Time complexity:</h3>
+<ul>
+<li><strong>O(1) (Very fast):</strong> The actual process of adding a new record about the road to the city's list of exits happens almost instantly. The overall execution time depends only on how quickly the program finds these cities in the directory (as we found out earlier, this takes O(1) or O(log V) time). In any case, the speed of laying a new road does not depend on how many millions of other roads already exist on our map. This is an extremely efficient operation!</li>
+</ul>`;
+                }
+                return `Adds a directed or undirected edge between two vertices. Time Complexity: O(1) for adjacency list.`;
+            },
+            'bfs': (progLang) => {
+                if (currentStructure === 'undirected-graph') {
+                    let setupQueue, markVisited, addToQueue;
+                    switch (progLang) {
+                        case 'python':
+                            setupQueue = `visited = [False] * self.numVertices\nq = []`;
+                            markVisited = `visited[neighbor] = True`;
+                            addToQueue = `q.append(neighbor)`;
+                            break;
+                        case 'java':
+                            setupQueue = `boolean[] visited = new boolean[numVertices];\nQueue<Integer> q = new LinkedList<>();`;
+                            markVisited = `visited[neighbor] = true;`;
+                            addToQueue = `q.add(neighbor);`;
+                            break;
+                        case 'javascript':
+                            setupQueue = `const visited = new Array(this.numVertices).fill(false);\nconst q = [];`;
+                            markVisited = `visited[neighbor] = true;`;
+                            addToQueue = `q.push(neighbor);`;
+                            break;
+                        case 'cpp':
+                        default:
+                            setupQueue = `std::vector<bool> visited(numVertices, false);\nstd::queue<int> q;`;
+                            markVisited = `visited[neighbor] = true;`;
+                            addToQueue = `q.push(neighbor);`;
+                            break;
+                    }
+                    return `<h3>Breadth-First Search (BFS)</h3>
+<p><strong>Real-life Analogy: Large-scale Rescue Operation</strong></p>
+<p>Imagine a dog gets lost in the city, and you are in charge of the search operation headquarters. Your task is to comb the area so that no alley is left unattended, gradually expanding the search zone around the point where the pet was last seen.</p>
+<p>Here is how your strategy works (it fully reflects the logic of BFS):</p>
+<ul>
+<li><pre><code>${setupQueue}</code></pre><strong>Setting up headquarters (Start node and queue):</strong> You pitch a tent at the intersection where the search begins (<code>startNode</code>). To avoid chaos, you grab a megaphone and a notebook (in the algorithm, this is a queue). In this notebook, you will write down all the intersections that need to be checked, strictly in the order of their turn.</li>
+<li><pre><code>${markVisited}</code></pre><strong>Checking the nearest neighbors (First circle):</strong> First, you send rescuers to all the immediately adjacent intersections (one block away). When the rescuers arrive at the location, they put a "checked" mark.</li>
+<li><pre><code>${addToQueue}</code></pre><strong>Planning the next wave (Adding to the queue):</strong> From each checked neighboring intersection, the rescuers see new streets leading even further. They radio their coordinates back to you. You do not tell them to run there immediately! You simply write these new coordinates at the end of your notebook.</li>
+<li><strong>Ripple effect on water:</strong> You continue to call out teams strictly according to the list from the notebook. Thanks to this rule, the headquarters is guaranteed to first check all points at a distance of 1 block, then &mdash; all points at a distance of 2 blocks, then &mdash; 3 blocks, and so on. The search spreads in even concentric circles, like ripples from a stone thrown into water.</li>
+</ul>
+<p>The main strength of BFS is that it is guaranteed to find the shortest path (with the fewest number of transitions) from the starting point to any other, because it will never move on to distant blocks until it has explored the closer ones.</p>
+<h3>Efficiency Evaluation (Big O)</h3>
+<p><strong>Time complexity:</strong> O(V + E)<br>
+Just as with depth-first search, V is the number of intersections, and E is the number of streets between them. To thoroughly comb the city, we will have to visit every intersection and walk down every street exactly once. The execution time grows linearly depending on the size of the graph.</p>
+<p><strong>Space complexity:</strong> O(V)<br>
+Memory is spent on the array of marks (to know where we have already been) and on the queue (our "notebook"). In the worst-case scenario, when the city has a star structure (a huge number of streets radiating simultaneously from the center), our queue at a certain point might store information about almost all the nodes of the graph simultaneously.</p>`;
+                } else if (currentStructure.includes('graph')) {
+                    let startTrav, loopQueue, checkNeighbors;
+                    switch (progLang) {
+                        case 'python':
+                            startTrav = `visited.add(start_vertex)\nqueue = [start_vertex]`;
+                            loopQueue = `while queue:\n    current = queue.pop(0)`;
+                            checkNeighbors = `for neighbor in self.adj_list[current]:\n    if neighbor not in visited:`;
+                            break;
+                        case 'java':
+                            startTrav = `visited.add(start_vertex);\nq.add(start_vertex);`;
+                            loopQueue = `while (!q.isEmpty()) {\n    int current = q.poll();`;
+                            checkNeighbors = `for (int neighbor : adj_list.get(current)) {\n    if (!visited.contains(neighbor)) {`;
+                            break;
+                        case 'javascript':
+                            startTrav = `visited.add(start_vertex);\nqueue.push(start_vertex);`;
+                            loopQueue = `while (queue.length > 0) {\n    const current = queue.shift();`;
+                            checkNeighbors = `for (const neighbor of this.adj_list.get(current)) {\n    if (!visited.has(neighbor)) {`;
+                            break;
+                        case 'cpp':
+                        default:
+                            startTrav = `visited.insert(start_vertex);\nq.push(start_vertex);`;
+                            loopQueue = `while (!q.empty()) {\n    int current = q.front();\n    q.pop();`;
+                            checkNeighbors = `for (int neighbor : adj_list[current]) {\n    if (visited.find(neighbor) == visited.end()) {`;
+                            break;
+                    }
+                    return `<h3>Breadth-First Search (BFS)</h3>
+<p>Imagine you are standing in your hometown and want to explore the entire country. What is the most logical way to do it? The best approach is to first visit all cities directly connected to you (your immediate neighbors). Then, visit all the "neighbors of your neighbors" (cities at a distance of two steps), then towns even further away, and so on.</p>
+<p>Your route expands uniformly in all directions, like ripples on water from a stone thrown into a pond. This "wave-like" principle is exactly how the extremely popular "Breadth-First Search" (BFS) algorithm works.</p>
+<p>To ensure the algorithm doesn't get lost or go in circles (since roads can form loops), it needs two tools:</p>
+<ul>
+<li><strong>Visited Log:</strong> A list of cities where we have already been or have already planned to travel.</li>
+<li><strong>Queue:</strong> A list of cities waiting to be explored. It works like a regular store queue — the first one in is the first one served.</li>
+</ul>
+<h3>How it works step-by-step:</h3>
+<ul>
+<li><strong>Starting check:</strong> First, the navigator checks if the city we want to start from actually exists on the map. If not, the search is canceled.</li>
+<li><pre><code>${startTrav}</code></pre><strong>The first step:</strong> We add our starting city to the Visited Log (so we never return there) and place it first in the Queue.</li>
+<li><pre><code>${loopQueue}</code></pre><strong>Processing a city:</strong> We take the very first city from the Queue and "visit" it (e.g., display its name on the screen).</li>
+<li><pre><code>${checkNeighbors}</code></pre><strong>Scanning neighbors (Planning):</strong> While in this city, we look at all the roads leading out of it. We check each neighbor: if this neighbor is not yet in our Visited Log, we immediately record it there and place it at the very end of the Queue.</li>
+<li><strong>Wave movement:</strong> The city is now fully explored! The program again takes the first city from the Queue (which will be one of the neighbors) and repeats the process. Since we always add new cities to the end of the queue, the algorithm is guaranteed to visit all "near" neighbors before moving on to the "far" ones.</li>
+<li><strong>Completion:</strong> This process continues until the Queue is completely empty. This means we have visited all the cities on the map that could be reached via the roads.</li>
+</ul>
+<h3>Time complexity:</h3>
+<ul>
+<li><strong>O(V + E) (Linear time):</strong> The algorithm's speed depends on the number of Vertices (V, cities) and the number of Edges (E, roads) in our graph. To fully explore the map, the algorithm must "visit" each city exactly once and check each road exactly once. Therefore, the execution time grows proportionally to the size of the map. This is a very efficient algorithm, often used in GPS navigators to find the shortest path!</li>
+</ul>
+<p>Would you like to explore how Depth-First Search (DFS) compares to BFS, as it takes the opposite approach by diving deep into a single branch before exploring others?</p>`;
+                }
+                return `Breadth-First Search. Explores the graph layer by layer using a Queue. Time Complexity: O(V + E).`;
+            },
+            'dfs': (progLang) => {
+                if (currentStructure === 'undirected-graph') {
+                    let safetyCheck, initVisited, callHelper, fieldWork;
+                    switch (progLang) {
+                        case 'python':
+                            safetyCheck = `if startNode >= self.numVertices or startNode < 0:\n    print("Error: Starting node does not exist!")\n    return`;
+                            initVisited = `visited = [False] * self.numVertices`;
+                            callHelper = `self.dfs_helper(startNode, visited)`;
+                            fieldWork = `visited[currentNode] = True\nfor neighbor in self.adj[currentNode]:\n    if not visited[neighbor]:\n        self.dfs_helper(neighbor, visited)`;
+                            break;
+                        case 'java':
+                            safetyCheck = `if (startNode >= numVertices || startNode < 0) {\n    System.out.println("Error: Starting node does not exist!");\n    return;\n}`;
+                            initVisited = `boolean[] visited = new boolean[numVertices];`;
+                            callHelper = `dfs_helper(startNode, visited);`;
+                            fieldWork = `visited[currentNode] = true;\nfor (int neighbor : adj.get(currentNode)) {\n    if (!visited[neighbor]) {\n        dfs_helper(neighbor, visited);\n    }\n}`;
+                            break;
+                        case 'javascript':
+                            safetyCheck = `if (startNode >= this.numVertices || startNode < 0) {\n    console.log("Error: Starting node does not exist!\\n");\n    return;\n}`;
+                            initVisited = `const visited = new Array(this.numVertices).fill(false);`;
+                            callHelper = `this.dfs_helper(startNode, visited, result);`;
+                            fieldWork = `visited[currentNode] = true;\nfor (const neighbor of this.adj[currentNode]) {\n    if (!visited[neighbor]) {\n        this.dfs_helper(neighbor, visited, result);\n    }\n}`;
+                            break;
+                        case 'cpp':
+                        default:
+                            safetyCheck = `if (startNode >= numVertices || startNode < 0) {\n    std::cout << "Error: Starting node does not exist!" << std::endl;\n    return;\n}`;
+                            initVisited = `std::vector<bool> visited(numVertices, false);`;
+                            callHelper = `dfs_helper(startNode, visited);`;
+                            fieldWork = `visited[currentNode] = true;\nfor (int neighbor : adj[currentNode]) {\n    if (!visited[neighbor]) {\n        dfs_helper(neighbor, visited);\n    }\n}`;
+                            break;
+                    }
+                    return `<h3>Depth-First Search (DFS)</h3>
+<p><strong>Real-life Analogy: Mission Control Center and Field Agent</strong></p>
+<p>Imagine that our exploration of the intricate old city has now reached a new level. It is no longer a lone tourist, but a professional expedition where duties are clearly divided between the Command Center (public function) and the Field Agent (private helper).</p>
+<p>Here is how this process is logically broken down:</p>
+<ul>
+<li><pre><code>${safetyCheck}</code></pre><strong>Coordinates check by Headquarters (Safety check):</strong> When the order to begin exploration is received (calling the public function), the Command Center first looks at the map. If the client asks to start from an intersection that does not exist (a negative number or one larger than the size of the city), the mission is immediately canceled. Headquarters does not send people to nowhere.</li>
+<li><pre><code>${initVisited}</code></pre><strong>Issuing equipment (Initializing visited):</strong> If the coordinates are correct, Headquarters prepares a completely new, blank notebook (the visited array) for the agent, where next to each intersection the status is set to "not visited" (false).</li>
+<li><pre><code>${callHelper}</code></pre><strong>Delegating the work (Calling dfs_helper):</strong> Headquarters hands this notebook over to the Field Agent, specifies the starting point, and says: "Follow the instructions." At this point, the active work of Headquarters ends; it simply waits for the results.</li>
+<li><pre><code>${fieldWork}</code></pre><strong>Fieldwork (Recursive helper):</strong> The Field Agent performs the exact same routine work we discussed earlier. They arrive at the location, make a mark in the notebook, report over the radio, inspect the neighboring streets, and, if they haven't been there yet, dive into them headfirst (recursive call).</li>
+</ul>
+<h3>Why is this approach better?</h3>
+<p>It creates the perfect "service" for the end user. The person ordering the exploration doesn't need to go to the store themselves, buy a blank notebook, and hand it to the agent. The user simply says, "Start from node 5," and the program itself prepares all the necessary tools and triggers the hidden mechanisms.</p>
+<h3>Efficiency Evaluation (Big O)</h3>
+<p>Since it is the exact same algorithm under the hood, its efficiency remains unchanged:</p>
+<p><strong>Time complexity:</strong> O(V + E)<br>
+Where V is the number of vertices (intersections), and E is the number of edges (streets). The agent will still have to traverse the entire accessible territory, spending time proportional to its size.</p>
+<p><strong>Space complexity:</strong> O(V)<br>
+Memory is spent on the "notebook" with marks for each vertex and on maintaining communication with Headquarters (the recursive call stack when the agent goes into deep dead ends).</p>`;
+                } else if (currentStructure.includes('graph')) {
+                    let markVisited, checkNeighbors;
+                    switch (progLang) {
+                        case 'python':
+                            markVisited = `visited[node] = True`;
+                            checkNeighbors = `for neighbor in adj[node]:\n    if not visited[neighbor]:`;
+                            break;
+                        case 'java':
+                            markVisited = `visited[node] = true;`;
+                            checkNeighbors = `for (int neighbor : adj.get(node)) {\n    if (!visited[neighbor]) {`;
+                            break;
+                        case 'javascript':
+                            markVisited = `visited[node] = true;`;
+                            checkNeighbors = `for (const neighbor of adj[node]) {\n    if (!visited[neighbor]) {`;
+                            break;
+                        case 'cpp':
+                        default:
+                            markVisited = `visited[node] = true;`;
+                            checkNeighbors = `for (int neighbor : adj[node]) {\n        if (!visited[neighbor]) {`;
+                            break;
+                    }
+                    return `<h3>Depth-First Search (DFS)</h3>
+<p><strong>Real-life Analogy: Exploring the Labyrinth of an Old City</strong></p>
+<p>Imagine you are a tourist trying to explore absolutely all the narrow streets of an unfamiliar old city so as not to miss anything, but without walking in circles.</p>
+<p>Here is how your exploration logic works (which perfectly matches the logic of the DFS algorithm):</p>
+<ul>
+<li><pre><code>${markVisited}</code></pre><strong>Chalk mark (Record of visit):</strong> When you arrive at a new intersection (in code, this is a <code>node</code>), you immediately draw a cross on the cobblestones with chalk and take a picture of this place (output to the screen). This is a signal to your future self: "I have already been here."</li>
+<li><strong>Surveying available paths (Checking neighbors):</strong> You look at all the streets radiating from this intersection.</li>
+<li><pre><code>${checkNeighbors}</code></pre><strong>Diving into the unknown (Recursive call):</strong> If you see a street leading to an intersection without your chalk mark, you do not stay to examine other turns. You immediately go down this new street as far as possible.</li>
+<li><strong>Turning back (Backtracking):</strong> You keep going deeper until you find yourself in a dead end or at an intersection where all neighboring streets already have your chalk marks. What then? You simply take one step back (this happens automatically when the recursive function finishes its execution for the current point) and check if there are any other unexplored turns left at the previous intersection.</li>
+</ul>
+<p>The main feature of this approach lies in its name — "depth-first". You always try to advance as far as possible along one route before turning back and checking alternatives.</p>
+<h3>Efficiency Evaluation (Big O)</h3>
+<p><strong>Time complexity:</strong> O(V + E)</p>
+<ul>
+<li>V (Vertices) — is the number of intersections (nodes).</li>
+<li>E (Edges) — is the number of streets between them (edges).</li>
+</ul>
+<p>The algorithm needs to visit every intersection and check every street once, so the execution time grows proportionally to the size of the entire map.</p>
+<p><strong>Space complexity:</strong> O(V)<br>
+We need additional memory to store the array of marks (where we have been). Furthermore, memory is consumed to maintain the backtracking chain itself (the recursion call stack). In the worst-case scenario (if all streets are lined up in one long straight line), we will have to keep all the nodes of the graph in memory simultaneously.</p>`;
+                }
+                return `Depth-First Search. Explores as far as possible along each branch before backtracking using a Stack (or recursion). Time Complexity: O(V + E).`;
+            },
             'insert': 'Inserts a new value into the tree. Time Complexity: O(log n) for balanced trees, O(n) for skewed trees.',
             'remove': 'Removes a value from the tree. Time Complexity: O(log n) for balanced trees.',
             'search': 'Searches for a value in the tree. Time Complexity: O(log n) for balanced trees.'
@@ -1723,6 +2740,63 @@ document.addEventListener('DOMContentLoaded', () => {
             },
 
             'add_tail': (progLang) => {
+                if (currentStructure === 'circular-linked-list') {
+                    let codeDef, newAlloc, checkEmpty, prepCursor, traverseLoop, linkTail, linkHead;
+                    switch (progLang) {
+                        case 'python':
+                            codeDef = `def add_tail(self, data):`;
+                            newAlloc = `new_node = Node(data)`;
+                            checkEmpty = `if self.head is None:\n    self.head = new_node\n    new_node.next = self.head\n    return`;
+                            prepCursor = `temp = self.head`;
+                            traverseLoop = `while temp.next != self.head:\n    temp = temp.next`;
+                            linkTail = `temp.next = new_node`;
+                            linkHead = `new_node.next = self.head`;
+                            break;
+                        case 'java':
+                            codeDef = `void add_tail(int data)`;
+                            newAlloc = `Node new_node = new Node(data);`;
+                            checkEmpty = `if (head == null) {\n    head = new_node;\n    new_node.next = head;\n    return;\n}`;
+                            prepCursor = `Node temp = head;`;
+                            traverseLoop = `while (temp.next != head) {\n    temp = temp.next;\n}`;
+                            linkTail = `temp.next = new_node`;
+                            linkHead = `new_node.next = head`;
+                            break;
+                        case 'javascript':
+                            codeDef = `add_tail(data) {`;
+                            newAlloc = `let new_node = new Node(data);`;
+                            checkEmpty = `if (this.head === null) {\n    this.head = new_node;\n    new_node.next = this.head;\n    return;\n}`;
+                            prepCursor = `let temp = this.head;`;
+                            traverseLoop = `while (temp.next !== this.head) {\n    temp = temp.next;\n}`;
+                            linkTail = `temp.next = new_node`;
+                            linkHead = `new_node.next = this.head`;
+                            break;
+                        case 'cpp':
+                        default:
+                            codeDef = `void add_tail(int data)`;
+                            newAlloc = `Node* new_node = new Node(data);`;
+                            checkEmpty = `if (head == nullptr) {\n    head = new_node;\n    new_node->next = head;\n    return;\n}`;
+                            prepCursor = `Node* temp = head;`;
+                            traverseLoop = `while (temp->next != head) {\n    temp = temp->next;\n}`;
+                            linkTail = `temp->next = new_node`;
+                            linkHead = `new_node->next = head`;
+                            break;
+                    }
+                    return `<h3>Додавання елемента в кінець кільцевого списку (<code>add_tail</code>)</h3>
+<p>Як ми вже з'ясували, кільцевий список — це потяг, що їде по замкненому колу, де останній вагон завжди зчеплений з першим (Головою). Якщо ми хочемо додати новий вагон у самий кінець цього потяга, нам потрібно знайти місце "зчеплення" між кінцем і початком, розірвати його, вставити наш новий вагон і знову замкнути коло.</p>
+<h3>Покрокове пояснення коду:</h3>
+<ul>
+<li><pre><code>${codeDef}\n    ${newAlloc}</code></pre><strong>Створення нового вузла:</strong> Алгоритм починається з того, що виділяє пам'ять для нового "вагона" і завантажує в нього передану інформацію.</li>
+<li><pre><code>${checkEmpty}</code></pre><strong>Створення першого кільця (якщо список порожній):</strong> Спочатку програма перевіряє, чи існує потяг взагалі. Якщо Голова порожня, наш новий вагон стає найпершим елементом. Але оскільки список має бути кільцевим, цей єдиний вагон одразу з'єднується сам із собою (його вказівник направлений на самого себе). На цьому додавання успішно завершується.</li>
+<li><pre><code>${prepCursor}\n${traverseLoop}</code></pre><strong>Пошук старого Хвоста:</strong> Якщо в потязі вже є інші вагони, нам потрібно знайти найостанніший. Програма створює тимчасовий курсор, ставить його на Голову і починає рух вперед. Курсор крокує від вагона до вагона, поки не знайде той, який вказує назад на Голову. Це і є наш старий Хвіст.</li>
+<li><pre><code>${linkTail}</code></pre><strong>Вбудовування нового вагона:</strong> Знайшовши останній елемент, ми від'єднуємо його вказівник від Голови і направляємо на наш новий вагон. Тепер новий вагон став останнім у черзі.</li>
+<li><pre><code>${linkHead}</code></pre><strong>Замикання кола:</strong> Щоб структура не зламалася і залишилася кільцевою, ми беремо вказівник нашого нового (тепер вже останнього) вагона і направляємо його на Голову списку. Коло знову замкнулося!</li>
+</ul>
+<h3>Часова складність:</h3>
+<ul>
+<li><strong>O(n) (Лінійний час):</strong> Оскільки ми маємо прямий доступ лише до початку списку, алгоритм змушений пройти через кожен елемент, щоб дістатися кінця кільця. Швидкість виконання прямо залежить від кількості вузлів: чим довший список, тим довше курсор шукатиме останній елемент. <em>(Невелика підказка: якби структура списку спеціально зберігала додатковий постійний вказівник на Хвіст, цю операцію можна було б прискорити до миттєвого часу O(1), оскільки нам більше не довелося б пробігати через весь потяг).</em></li>
+</ul>`;
+                }
+
                 let codeDef, newAlloc, checkEmpty, prepCursor, traverseLoop, appendNode;
                 switch (progLang) {
                     case 'python':
@@ -1777,6 +2851,65 @@ document.addEventListener('DOMContentLoaded', () => {
             },
 
             'insert_at': (progLang) => {
+                if (currentStructure === 'circular-linked-list') {
+                    let codeDef, sanityCheck, scenario1, scenario2, scenario3, protection, recoupling;
+                    switch (progLang) {
+                        case 'python':
+                            codeDef = `def insert_at(self, position, data):`;
+                            sanityCheck = `if position < 0:\n    print("Invalid position.")\n    return\nnew_node = Node(data)`;
+                            scenario1 = `if self.head is None:\n    if position == 0:\n        self.head = new_node\n        new_node.next = self.head\n    else:\n        print(f"Position {position} is out of bounds...")\n    return`;
+                            scenario2 = `if position == 0:\n    temp = self.head\n    while temp.next != self.head:\n        temp = temp.next\n    new_node.next = self.head\n    temp.next = new_node\n    self.head = new_node\n    return`;
+                            scenario3 = `temp = self.head\ncurrent_pos = 0\nwhile current_pos < position - 1:\n    temp = temp.next\n    current_pos += 1`;
+                            protection = `    if temp == self.head:\n        print(f"Position {position} is out of bounds.")\n        return`;
+                            recoupling = `new_node.next = temp.next\ntemp.next = new_node`;
+                            break;
+                        case 'java':
+                            codeDef = `void insert_at(int position, int data)`;
+                            sanityCheck = `if (position < 0) {\n    System.out.println("Invalid position.");\n    return;\n}\nNode new_node = new Node(data);`;
+                            scenario1 = `if (head == null) {\n    if (position == 0) {\n        head = new_node;\n        new_node.next = head;\n    } else {\n        System.out.println("Position " + position + " is out of bounds...");\n    }\n    return;\n}`;
+                            scenario2 = `if (position == 0) {\n    Node temp = head;\n    while (temp.next != head) {\n        temp = temp.next;\n    }\n    new_node.next = head;\n    temp.next = new_node;\n    head = new_node;\n    return;\n}`;
+                            scenario3 = `Node temp = head;\nint current_pos = 0;\nwhile (current_pos < position - 1) {\n    temp = temp.next;\n    current_pos++;`;
+                            protection = `    if (temp == head) {\n        System.out.println("Position " + position + " is out of bounds.");\n        return;\n    }\n}`;
+                            recoupling = `new_node.next = temp.next;\ntemp.next = new_node;`;
+                            break;
+                        case 'javascript':
+                            codeDef = `insert_at(position, data) {`;
+                            sanityCheck = `if (position < 0) {\n    console.log("Invalid position.");\n    return;\n}\nlet new_node = new Node(data);`;
+                            scenario1 = `if (this.head === null) {\n    if (position === 0) {\n        this.head = new_node;\n        new_node.next = this.head;\n    } else {\n        console.log(\`Position \${position} is out of bounds...\`);\n    }\n    return;\n}`;
+                            scenario2 = `if (position === 0) {\n    let temp = this.head;\n    while (temp.next !== this.head) {\n        temp = temp.next;\n    }\n    new_node.next = this.head;\n    temp.next = new_node;\n    this.head = new_node;\n    return;\n}`;
+                            scenario3 = `let temp = this.head;\nlet current_pos = 0;\nwhile (current_pos < position - 1) {\n    temp = temp.next;\n    current_pos++;`;
+                            protection = `    if (temp === this.head) {\n        console.log(\`Position \${position} is out of bounds.\`);\n        return;\n    }\n}`;
+                            recoupling = `new_node.next = temp.next;\ntemp.next = new_node;`;
+                            break;
+                        case 'cpp':
+                        default:
+                            codeDef = `void insert_at(int position, int data)`;
+                            sanityCheck = `if (position < 0) {\n    std::cout << "Invalid position." << std::endl;\n    return;\n}\nNode* new_node = new Node(data);`;
+                            scenario1 = `if (head == nullptr) {\n    if (position == 0) {\n        head = new_node;\n        new_node->next = head;\n    } else {\n        std::cout << "Position " << position << " is out of bounds...";\n        delete new_node;\n    }\n    return;\n}`;
+                            scenario2 = `if (position == 0) {\n    Node* temp = head;\n    while (temp->next != head) {\n        temp = temp->next;\n    }\n    new_node->next = head;\n    temp->next = new_node;\n    head = new_node;\n    return;\n}`;
+                            scenario3 = `Node* temp = head;\nint current_pos = 0;\nwhile (current_pos < position - 1) {\n    temp = temp->next;\n    current_pos++;`;
+                            protection = `    if (temp == head) {\n        std::cout << "Position " << position << " is out of bounds.";\n        delete new_node;\n        return;\n    }\n}`;
+                            recoupling = `new_node->next = temp->next;\ntemp->next = new_node;`;
+                            break;
+                    }
+                    return `<h3>Вставка елемента на задану позицію в кільцевому списку (<code>insert_at</code>)</h3>
+<p>Іноді виникає потреба додати новий вузол (вагон) не на самий початок або кінець, а в конкретне місце — наприклад, зробити його третім або п'ятим за порядком. Оскільки наш список кільцевий (останній вагон з'єднаний з першим), алгоритм має бути дуже обережним, щоб випадково не розірвати це нескінченне коло, звільняючи місце між вагонами, або не піти нескінченно по колу в пошуках неіснуючого місця.</p>
+<h3>Покрокове пояснення коду:</h3>
+<ul>
+<li><pre><code>${codeDef}\n    ${sanityCheck}</code></pre><strong>Базова перевірка (Sanity check):</strong> Перш за все, програма перевіряє базову логіку: чи не запросив користувач від'ємну позицію (наприклад, -5)? Якщо так, виводиться помилка, і процес зупиняється. Якщо позиція правильна, створюється новий ізольований вузол з даними.</li>
+<li><pre><code>${scenario1}</code></pre><strong>Сценарій 1: Список порожній.</strong> Якщо потяг ще не існує, єдине логічне місце для вставки — найперша позиція (0). У цьому випадку новий вузол стає Головою і одразу з'єднується сам із собою, утворюючи міні-кільце. Якщо ж для порожнього списку була запитана 10-та позиція, це помилка виходу за межі. Алгоритм повідомить про це і знищить новий вузол, щоб не засмічувати пам'ять комп'ютера.</li>
+<li><pre><code>${scenario2}</code></pre><strong>Сценарій 2: Вставка на самий початок (Позиція 0).</strong> Якщо вагони вже є, і ми хочемо вставити новий перед самим першим, доведеться трохи попрацювати. Недостатньо просто поставити новий вагон перед Головою. Оскільки коло замкнуте, програма відправляє курсор у самий кінець списку, щоб знайти Хвіст. Знайшовши його, вона від'єднує Хвіст від старої Голови і перечіплює його до нашого нового вузла. Лише після цього коло знову вважається цілим, і новий вузол стає новою Головою.</li>
+<li><pre><code>${scenario3}</code></pre><strong>Сценарій 3: Вставка в середину (Позиція &gt; 0).</strong> Якщо місце знаходиться десь посередині, програма відправляє курсор від початку списку. Його завдання — робити кроки вперед і зупинитися рівно на тому вагоні, який буде стояти перед нашим новим.</li>
+<li><pre><code>${protection}</code></pre><strong>Захист від "бігу по колу":</strong> Під час пошуку потрібного місця є одна небезпека. У звичайному списку ми просто доходимо до кінця і бачимо "глухий кут". У кільцевому списку курсор може непомітно піти на друге коло! Щоб запобігти цьому, алгоритм слідкує: якщо під час крокування ми знову натрапили на Голову (тобто пройшли по колу), а потрібна позиція не досягнута — це означає, що запитане місце знаходиться за межами реальної довжини списку. У цьому випадку операція скасовується.</li>
+<li><pre><code>${recoupling}</code></pre><strong>Перечеплення:</strong> Якщо правильне місце знайдено, ми беремо наш новий вузол, направляємо його вказівник на наступну частину потяга, а вагон, на якому стоїть курсор, перенаправляємо на наш новий. Новий елемент успішно інтегровано в кільце!</li>
+</ul>
+<h3>Часова складність:</h3>
+<ul>
+<li><strong>O(n) для більшості випадків:</strong> Швидкість виконання прямо залежить від кількості елементів і бажаної позиції. Якщо ви вставляєте елемент в середину, програмі потрібно зробити відповідну кількість кроків. Якщо ви вставляєте на позицію 0, програмі доведеться пройти весь список, щоб знайти Хвіст.</li>
+<li><strong>O(1) у винятковому випадку:</strong> Операція виконується миттєво лише тоді, коли список абсолютно порожній, і ми вставляємо елемент на нульову позицію.</li>
+</ul>`;
+                }
+
                 let codeDef, newAlloc, checkZero, prepCursor, checkBounds, insertNode;
                 switch (progLang) {
                     case 'python':
@@ -1831,6 +2964,74 @@ document.addEventListener('DOMContentLoaded', () => {
             },
 
             'remove_head': (progLang) => {
+                if (currentStructure === 'circular-linked-list') {
+                    let codeDef, checkEmpty, singleCar, saveOldHead, findTail, updateHead, closeCircle, clearMemory, gcNote;
+                    switch (progLang) {
+                        case 'python':
+                            codeDef = `def remove_head(self):`;
+                            checkEmpty = `if self.head is None:\n    print("List is empty. Nothing to remove.")\n    return`;
+                            singleCar = `if self.head.next == self.head:\n    self.head = None\n    return`;
+                            saveOldHead = `old_head = self.head\nlast = self.head`;
+                            findTail = `while last.next != self.head:\n    last = last.next`;
+                            updateHead = `self.head = self.head.next`;
+                            closeCircle = `last.next = self.head`;
+                            clearMemory = ``;
+                            gcNote = ` (автоматично обробляється збирачем сміття в Python)`;
+                            break;
+                        case 'java':
+                            codeDef = `void remove_head()`;
+                            checkEmpty = `if (head == null) {\n    System.out.println("List is empty...");\n    return;\n}`;
+                            singleCar = `if (head.next == head) {\n    head = null;\n    return;\n}`;
+                            saveOldHead = `Node old_head = head;\nNode last = head;`;
+                            findTail = `while (last.next != head) {\n    last = last.next;\n}`;
+                            updateHead = `head = head.next;`;
+                            closeCircle = `last.next = head;`;
+                            clearMemory = ``;
+                            gcNote = ` (автоматично обробляється збирачем сміття в Java)`;
+                            break;
+                        case 'javascript':
+                            codeDef = `remove_head() {`;
+                            checkEmpty = `if (this.head === null) {\n    console.log("List is empty...");\n    return;\n}`;
+                            singleCar = `if (this.head.next === this.head) {\n    this.head = null;\n    return;\n}`;
+                            saveOldHead = `let old_head = this.head;\nlet last = this.head;`;
+                            findTail = `while (last.next !== this.head) {\n    last = last.next;\n}`;
+                            updateHead = `this.head = this.head.next;`;
+                            closeCircle = `last.next = this.head;`;
+                            clearMemory = ``;
+                            gcNote = ` (автоматично обробляється збирачем сміття в JavaScript)`;
+                            break;
+                        case 'cpp':
+                        default:
+                            codeDef = `void remove_head()`;
+                            checkEmpty = `if (head == nullptr) {\n    std::cout << "List is empty...";\n    return;\n}`;
+                            singleCar = `if (head->next == head) {\n    delete head;\n    head = nullptr;\n    return;\n}`;
+                            saveOldHead = `Node* old_head = head;\nNode* last = head;`;
+                            findTail = `while (last->next != head) {\n    last = last->next;\n}`;
+                            updateHead = `head = head->next;`;
+                            closeCircle = `last->next = head;`;
+                            clearMemory = `delete old_head;`;
+                            gcNote = ``;
+                            break;
+                    }
+                    const clearMemoryHtml = clearMemory ? `<pre><code>${clearMemory}</code></pre>` : '';
+                    return `<h3>Видалення елемента з початку кільцевого списку (<code>remove_head</code>)</h3>
+<p>У звичайному лінійному списку видалити перший елемент дуже просто — достатньо лише сказати, що тепер список починається з другого вагона. Але в кільцевому списку все трохи складніше. Оскільки самий останній вагон потяга завжди зчеплений з найпершим, ми не можемо просто так прибрати Голову. Нам потрібно обов'язково знайти Хвіст і перечепити його до нової Голови, щоб наше кільце не розірвалося!</p>
+<h3>Покрокове пояснення коду:</h3>
+<ul>
+<li><pre><code>${codeDef}\n    ${checkEmpty}</code></pre><strong>Перевірка на порожнечу:</strong> Перш за все, програма перевіряє, чи є взагалі що видаляти. Якщо список порожній (Голови немає), вона просто виводить повідомлення, що потяга не існує, і завершує роботу.</li>
+<li><pre><code>${singleCar}</code></pre><strong>Сценарій одного вагона:</strong> Це особливий випадок. Якщо в списку лише один елемент, який замкнутий сам на себе (його "наступник" — це він сам), то після його видалення не залишиться нічого. Програма просто знищує цей вагон і офіційно оголошує список порожнім.</li>
+<li><pre><code>${saveOldHead}</code></pre><strong>Підготовка до видалення (кілька вагонів):</strong> Якщо вагонів кілька, ми не можемо одразу видалити перший. Спочатку програма "запам'ятовує" поточну Голову, щоб потім правильно стерти її з пам'яті.</li>
+<li><pre><code>${findTail}</code></pre><strong>Пошук Хвоста:</strong> Алгоритм відправляє пошуковий курсор від початку списку. Цей курсор пробігає по всіх вагонах до самого кінця, поки не знайде той, чиє "зчеплення" вказує на нашу поточну Голову. Це і є останній вагон.</li>
+<li><pre><code>${updateHead}</code></pre><strong>Оновлення Голови:</strong> Тепер ми передаємо статус "Голови потяга" другому вагону. Відтепер він вважається новим початком.</li>
+<li><pre><code>${closeCircle}</code></pre><strong>Замикання кола:</strong> Ми беремо знайдений останній вагон і направляємо його вказівник на нашу нову Голову. Кільце знову надійно замкнуте!</li>
+<li>${clearMemoryHtml}<strong>Очищення пам'яті:</strong> Лише тепер, коли всі зв'язки оновлено, і старий перший вагон більше ніким не використовується, програма остаточно знищує його, звільняючи пам'ять комп'ютера.${gcNote}</li>
+</ul>
+<h3>Часова складність:</h3>
+<ul>
+<li><strong>O(n) (Лінійний час):</strong> Видалення з початку в кільцевому списку займає більше часу, ніж у звичайному. Вся проблема у Хвості — щоб оновити його "зчеплення", програма змушена пробігти через весь список від першого до останнього елемента. Тому для списку з n елементів їй доведеться зробити n кроків.<br><em>(Як і при додаванні, якби ми постійно зберігали окремий вказівник на Хвіст, ми б уникнули цього довгого пошуку, і швидкість була б миттєвою — O(1)).</em></li>
+</ul>`;
+                }
+
                 let codeDef, checkEmpty, saveOld, updateHead, clearMemory, gcNote;
                 switch (progLang) {
                     case 'python':
@@ -1887,6 +3088,64 @@ document.addEventListener('DOMContentLoaded', () => {
             },
 
             'remove_tail': (progLang) => {
+                if (currentStructure === 'circular-linked-list') {
+                    let codeDef, checkEmpty, singleCar, findPenultimate, closeCircle, clearMemory, gcNote;
+                    switch (progLang) {
+                        case 'python':
+                            codeDef = `def remove_tail(self):`;
+                            checkEmpty = `if self.head is None:\n    print("List is empty. Nothing to remove.")\n    return`;
+                            singleCar = `if self.head.next == self.head:\n    self.head = None\n    return`;
+                            findPenultimate = `temp = self.head\nwhile temp.next.next != self.head:\n    temp = temp.next`;
+                            closeCircle = `temp.next = self.head`;
+                            clearMemory = ``;
+                            gcNote = ` (автоматично обробляється збирачем сміття в Python)`;
+                            break;
+                        case 'java':
+                            codeDef = `void remove_tail()`;
+                            checkEmpty = `if (head == null) {\n    System.out.println("List is empty. Nothing to remove.");\n    return;\n}`;
+                            singleCar = `if (head.next == head) {\n    head = null;\n    return;\n}`;
+                            findPenultimate = `Node temp = head;\nwhile (temp.next.next != head) {\n    temp = temp.next;\n}`;
+                            closeCircle = `temp.next = head;`;
+                            clearMemory = ``;
+                            gcNote = ` (автоматично обробляється збирачем сміття в Java)`;
+                            break;
+                        case 'javascript':
+                            codeDef = `remove_tail() {`;
+                            checkEmpty = `if (this.head === null) {\n    console.log("List is empty. Nothing to remove.");\n    return;\n}`;
+                            singleCar = `if (this.head.next === this.head) {\n    this.head = null;\n    return;\n}`;
+                            findPenultimate = `let temp = this.head;\nwhile (temp.next.next !== this.head) {\n    temp = temp.next;\n}`;
+                            closeCircle = `temp.next = this.head;`;
+                            clearMemory = ``;
+                            gcNote = ` (автоматично обробляється збирачем сміття в JavaScript)`;
+                            break;
+                        case 'cpp':
+                        default:
+                            codeDef = `void remove_tail()`;
+                            checkEmpty = `if (head == nullptr) {\n    std::cout << "List is empty. Nothing to remove." << std::endl;\n    return;\n}`;
+                            singleCar = `if (head->next == head) {\n    delete head;\n    head = nullptr;\n    return;\n}`;
+                            findPenultimate = `Node* temp = head;\nwhile (temp->next->next != head) {\n    temp = temp->next;\n}\nNode* tail_node = temp->next;`;
+                            closeCircle = `temp->next = head;`;
+                            clearMemory = `delete tail_node;`;
+                            gcNote = ``;
+                            break;
+                    }
+                    const clearMemoryHtml = clearMemory ? `<pre><code>${clearMemory}</code></pre>` : '';
+                    return `<h3>Видалення елемента з кінця кільцевого списку (<code>remove_tail</code>)</h3>
+<p>Видалення останнього елемента (Хвоста) у кільцевому списку — це завдання, яке вимагає від нас знайти "передостанній" вагон. Чому саме його? Тому що після того, як ми відчепимо останній вагон, саме передостанній має взяти на себе його роль і замкнути коло, з'єднавшись з найпершим вагоном (Головою).</p>
+<h3>Покрокове пояснення коду:</h3>
+<ul>
+<li><pre><code>${codeDef}\n    ${checkEmpty}</code></pre><strong>Перевірка на порожнечу:</strong> Як завжди, алгоритм спочатку переконується, що потяг взагалі існує. Якщо Голова порожня, видаляти нічого, і функція просто завершує роботу.</li>
+<li><pre><code>${singleCar}</code></pre><strong>Сценарій одного вагона:</strong> Якщо в списку лише один вагон, він замкнутий сам на себе. Видалення його кінця означає видалення всього потяга. Програма просто знищує цей єдиний вузол і залишає після нього порожнечу (Голова стає порожньою).</li>
+<li><pre><code>${findPenultimate}</code></pre><strong>Пошук передостаннього вагона:</strong> Якщо потяг довгий, починається найцікавіше. Програма запускає курсор від Голови списку. Цей курсор постійно "дивиться на два кроки вперед". Він питає себе: "Чи є вагон, який йде через один від мене, нашою Головою?". Якщо ні, курсор робить крок вперед. Щойно відповідь стає "так", курсор зупиняється. Це означає, що він стоїть рівно на передостанньому вагоні.</li>
+<li><pre><code>${closeCircle}</code></pre><strong>Замикання нового кола:</strong> Тепер у нас є доступ до передостаннього вагона, а відразу за ним стоїть наш старий Хвіст. Ми беремо "зчеплення" передостаннього вагона і направляємо його прямо на Голову списку, ігноруючи старий останній вагон. Коло знову замкнуте, але вже без Хвоста!</li>
+<li>${clearMemoryHtml}<strong>Очищення пам'яті:</strong> Старий останній вагон тепер ізольований від нашого кільцевого потяга. Щоб він не займав зайве місце, програма остаточно знищує його, звільняючи оперативну пам'ять комп'ютера.${gcNote}</li>
+</ul>
+<h3>Часова складність:</h3>
+<ul>
+<li><strong>O(n) (Лінійний час):</strong> Швидкість виконання цієї операції прямо залежить від кількості вагонів. Оскільки ми можемо рухатися лише вперед, алгоритм змушений пройти майже весь потяг (від першого до передостаннього вагона), щоб безпечно відчепити кінець і замкнути коло. Тому для списку з n елементів йому доведеться зробити близько n кроків.<br><em>(Важливе зауваження: на відміну від операцій на початку списку, навіть якби ми підтримували постійний вказівник на Хвіст, це не прискорило б видалення. Щоб відчепити Хвіст, нам все одно потрібен доступ до передостаннього елемента, а рухатися назад ми не можемо. Ця операція швидка лише у двозв'язних списках).</em></li>
+</ul>`;
+                }
+
                 let codeDef, checkEmpty, checkSingle, findPenultimate, detachTail, gcNote;
                 switch (progLang) {
                     case 'python':
@@ -1940,6 +3199,61 @@ document.addEventListener('DOMContentLoaded', () => {
 </ul>`;
             },
             'reverse': (progLang) => {
+                if (currentStructure === 'circular-linked-list') {
+                    let codeDef, checkNecessity, prep, reverseLoop, closeCircle, updateStatus;
+                    switch (progLang) {
+                        case 'python':
+                            codeDef = `def reverse(self):`;
+                            checkNecessity = `if self.head is None or self.head.next == self.head:\n    return`;
+                            prep = `prev = None\ncurrent = self.head\nnext_node = None`;
+                            reverseLoop = `while True:\n    next_node = current.next\n    current.next = prev\n    prev = current\n    current = next_node\n    if current == self.head:\n        break`;
+                            closeCircle = `self.head.next = prev`;
+                            updateStatus = `self.head = prev`;
+                            break;
+                        case 'java':
+                            codeDef = `void reverse()`;
+                            checkNecessity = `if (head == null || head.next == head) {\n    return;\n}`;
+                            prep = `Node prev = null;\nNode current = head;\nNode next_node = null;`;
+                            reverseLoop = `do {\n    next_node = current.next;\n    current.next = prev;\n    prev = current;\n    current = next_node;\n} while (current != head);`;
+                            closeCircle = `head.next = prev;`;
+                            updateStatus = `head = prev;`;
+                            break;
+                        case 'javascript':
+                            codeDef = `reverse() {`;
+                            checkNecessity = `if (this.head === null || this.head.next === this.head) {\n    return;\n}`;
+                            prep = `let prev = null;\nlet current = this.head;\nlet next_node = null;`;
+                            reverseLoop = `do {\n    next_node = current.next;\n    current.next = prev;\n    prev = current;\n    current = next_node;\n} while (current !== this.head);`;
+                            closeCircle = `this.head.next = prev;`;
+                            updateStatus = `this.head = prev;`;
+                            break;
+                        case 'cpp':
+                        default:
+                            codeDef = `void reverse()`;
+                            checkNecessity = `if (head == nullptr || head->next == head) {\n    return;\n}`;
+                            prep = `Node* prev = nullptr;\nNode* current = head;\nNode* next_node = nullptr;`;
+                            reverseLoop = `do {\n    next_node = current->next;\n    current->next = prev;\n    prev = current;\n    current = next_node;\n} while (current != head);`;
+                            closeCircle = `head->next = prev;`;
+                            updateStatus = `head = prev;`;
+                            break;
+                    }
+                    return `<h3>Обертання кільцевого списку (<code>reverse</code>)</h3>
+<p>Обертання кільцевого списку — це завдання підвищеної складності (як задача з зірочкою). Уявіть, що наш потяг їде по замкнутому колу за годинниковою стрілкою. Наша мета — розвернути всі "зчеплення" між вагонами так, щоб потяг поїхав проти годинникової стрілки. При цьому ми повинні бути вкрай обережними, щоб не розірвати наше нескінченне коло!</p>
+<p>Цей процес дуже схожий на обертання стандартного лінійного списку (ми також використовуємо три тимчасові вказівники: Попередній, Поточний та Наступний), але має один надзвичайно важливий фінальний крок — правильне замикання нового кола.</p>
+<h3>Покрокове пояснення коду:</h3>
+<ul>
+<li><pre><code>${codeDef}\n    ${checkNecessity}</code></pre><strong>Перевірка необхідності:</strong> Спочатку програма дивиться, чи є сенс щось робити. Якщо потяга не існує, або в ньому лише один вагон (який замкнутий сам на себе), то й обертати нічого — список виглядає однаково в обох напрямках. Процес негайно завершується.</li>
+<li><pre><code>${prep}</code></pre><strong>Підготовка команди вказівників:</strong> Якщо вагонів багато, програма створює вже знайому нам трійцю вказівників. Поточний (Current) стає на Голову списку (перший вагон), Попередній (Previous) спочатку порожній, а Наступний (Next) чекає своєї черги.</li>
+<li><pre><code>${reverseLoop}</code></pre><strong>Обертання по колу:</strong> Програма запускає цикл, який йде від вагона до вагона. Для кожного вузла вона виконує три дії: "запам'ятовує" наступний вагон, щоб не збитися зі шляху; відчіплює поточний вагон і направляє його "зчеплення" назад, на Попередній вагон; і робить крок всією командою вказівників вперед. Цей процес триває, поки Поточний вказівник не пройде все коло і знову не натрапить на оригінальну Голову списку.</li>
+<li><p><strong>Увага, розірване коло!</strong> Коли цикл завершується, всі зчеплення між вагонами успішно розвернуті. Але є одна проблема: наша стара Голова (яка тепер стала останнім вагоном) зараз вказує в нікуди, і коло розірване. У той же час, наш Попередній вказівник зараз стоїть на колишньому останньому вагоні, який має стати новим початком.</p></li>
+<li><pre><code>${closeCircle}</code></pre><strong>Фінальне замикання (Магія кільця):</strong> Щоб знову утворити коло, ми повинні з'єднати новий кінець з новим початком. Програма бере стару Голову і направляє її вказівник на той вагон, де зараз стоїть Попередній вказівник. Коло відновлено!</li>
+<li><pre><code>${updateStatus}</code></pre><strong>Оновлення статусу:</strong> Нарешті, ми офіційно вішаємо табличку "Голова потяга" на той самий вагон, де стоїть Попередній вказівник. Тепер наш список повністю обернений і знову є ідеально замкнутим кільцем.</li>
+</ul>
+<h3>Часова складність:</h3>
+<ul>
+<li><strong>O(n) (Лінійний час):</strong> Щоб змінити напрямок усіх вагонів, алгоритму достатньо пройти по колу рівно один раз. Він відвідує кожен вузол, змінює його вказівник і йде далі. Тому для списку з n елементів йому знадобиться зробити n кроків. Це дуже швидка та ефективна операція, яка до того ж не потребує створення нових вагонів — ми лише перепризначаємо існуючі зчеплення.</li>
+</ul>`;
+                }
+
                 let codeDef, prep, saveFuture, changeDirection, stepForward, finish;
                 switch (progLang) {
                     case 'python':
@@ -1994,6 +3308,55 @@ document.addEventListener('DOMContentLoaded', () => {
 </ul>`;
             },
                         'print': (progLang) => {
+                if (currentStructure === 'circular-linked-list') {
+                    let codeDef, checkEmpty, specialStart, readingLoop, finish;
+                    switch (progLang) {
+                        case 'python':
+                            codeDef = `def print_list(self):`;
+                            checkEmpty = `if self.head is None:\n    print("List is empty.")\n    return`;
+                            specialStart = `temp = self.head`;
+                            readingLoop = `while True:\n    print(f"{temp.data} -> ", end="")\n    temp = temp.next\n    if temp == self.head:\n        break`;
+                            finish = `print("(Back to Head)")`;
+                            break;
+                        case 'java':
+                            codeDef = `void print()`;
+                            checkEmpty = `if (head == null) {\n    System.out.println("List is empty.");\n    return;\n}`;
+                            specialStart = `Node temp = head;`;
+                            readingLoop = `do {\n    System.out.print(temp.data + " -> ");\n    temp = temp.next;\n} while (temp != head);`;
+                            finish = `System.out.println("(Back to Head)");`;
+                            break;
+                        case 'javascript':
+                            codeDef = `print() {`;
+                            checkEmpty = `if (this.head === null) {\n    console.log("List is empty.");\n    return;\n}`;
+                            specialStart = `let temp = this.head;\nlet str = "";`;
+                            readingLoop = `do {\n    str += temp.data + " -> ";\n    temp = temp.next;\n} while (temp !== this.head);`;
+                            finish = `console.log(str + "(Back to Head)");`;
+                            break;
+                        case 'cpp':
+                        default:
+                            codeDef = `void print()`;
+                            checkEmpty = `if (head == nullptr) {\n    std::cout << "List is empty." << std::endl;\n    return;\n}`;
+                            specialStart = `Node* temp = head;`;
+                            readingLoop = `do {\n    std::cout << temp->data << " -> ";\n    temp = temp->next;\n} while (temp != head);`;
+                            finish = `std::cout << "(Back to Head)" << std::endl;`;
+                            break;
+                    }
+                    return `<h3>Виведення кільцевого списку на екран (<code>print</code>)</h3>
+<p>Прочитати звичайний список дуже просто: ми йдемо від першого вагона і зупиняємось, коли впираємось у порожнечу (кінець потяга). Але в кільцевому списку кінця немає! Якщо ми просто скажемо програмі "йди вперед, поки не побачиш порожнечу", вона буде нескінченно бігати по колу, виводячи одні й ті самі дані знову і знову, поки комп'ютер не зависне.</p>
+<p>Тому нам потрібен спеціальний, хитрий підхід: ми маємо запам'ятати, звідки почали, і зупинитися рівно тоді, коли повернемося на старт.</p>
+<h3>Покрокове пояснення коду:</h3>
+<ul>
+<li><pre><code>${codeDef}\n    ${checkEmpty}</code></pre><strong>Перевірка на порожнечу:</strong> Спочатку алгоритм перевіряє, чи взагалі існує потяг. Якщо Голова порожня, програма просто повідомляє: "Список порожній", і завершує роботу.</li>
+<li><pre><code>${specialStart}</code></pre><strong>Особливий старт (Хитрість алгоритму):</strong> Програма ставить курсор для читання на найперший вагон (Голову). Тут є нюанс: якби ми сказали програмі "рухайся, поки не опинишся на Голові", вона б навіть не почала працювати, бо вона вже стоїть на Голові! Тому алгоритм використовує правило "спочатку роби, потім перевіряй".</li>
+<li><pre><code>${readingLoop}</code></pre><strong>Читання та крок:</strong> За цим правилом програма спочатку бере інформацію з поточного вагона і виводить її на екран (зазвичай малюючи стрілочку до наступного). Лише після того, як дані прочитані, курсор робить один крок вперед. <br><strong>Перевірка на фініш:</strong> Зробивши крок, програма питає: "Чи є вагон, на якому я зараз стою, нашою стартовою Головою?". Якщо ні, цикл повторюється (ми читаємо і крокуємо далі). <br><strong>Завершення кола:</strong> Як тільки курсор робить крок і розуміє, що знову опинився на найпершому вагоні, цикл миттєво зупиняється. Ми успішно пройшли повне коло!</li>
+<li><pre><code>${finish}</code></pre><strong>Візуальний акцент:</strong> Щоб користувачу було зрозуміло, що це не звичайний лінійний список, а замкнуте кільце, в кінці програма виводить спеціальне повідомлення на кшталт "(Повернення до Голови)".</li>
+</ul>
+<h3>Часова складність:</h3>
+<ul>
+<li><strong>O(n) (Лінійний час):</strong> Швидкість читання прямо залежить від кількості вагонів у потязі. Щоб показати весь список, курсору потрібно зайти в кожен вагон рівно один раз і зробити рівно одне повне коло. Отже, для списку з n елементів програма зробить n кроків. Це оптимальний і єдиний можливий час для цієї задачі.</li>
+</ul>`;
+                }
+
                 let codeDef, prep, loopStart, display, step, finish;
                 switch (progLang) {
                     case 'python':
@@ -2047,6 +3410,213 @@ document.addEventListener('DOMContentLoaded', () => {
 </ul>`;
             },
                         'sort': (progLang, algo) => {
+                if (currentStructure === 'circular-linked-list') {
+                    if (algo === 'Bubble Sort') {
+                        let checkEmpty, startPass, compare, shorten, finishSort;
+                        switch (progLang) {
+                            case 'python':
+                                checkEmpty = `if self.head is None or self.head.next == self.head:\n    return`;
+                                startPass = `last_sorted = None\nswapped = True\nwhile swapped:\n    swapped = False\n    current = self.head`;
+                                compare = `while current.next != last_sorted and current.next != self.head:\n    if current.data > current.next.data:\n        current.data, current.next.data = current.next.data, current.data\n        swapped = True\n    current = current.next`;
+                                shorten = `last_sorted = current`;
+                                finishSort = `# loop ends automatically when swapped == False`;
+                                break;
+                            case 'java':
+                                checkEmpty = `if (head == null || head.next == head) {\n    return;\n}`;
+                                startPass = `boolean swapped;\nNode current;\nNode last_sorted = null;\ndo {\n    swapped = false;\n    current = head;`;
+                                compare = `while (current.next != last_sorted && current.next != head) {\n    if (current.data > current.next.data) {\n        int temp = current.data;\n        current.data = current.next.data;\n        current.next.data = temp;\n        swapped = true;\n    }\n    current = current.next;\n}`;
+                                shorten = `last_sorted = current;`;
+                                finishSort = `} while (swapped);`;
+                                break;
+                            case 'javascript':
+                                checkEmpty = `if (this.head === null || this.head.next === this.head) {\n    return;\n}`;
+                                startPass = `let swapped;\nlet current;\nlet last_sorted = null;\ndo {\n    swapped = false;\n    current = this.head;`;
+                                compare = `while (current.next !== last_sorted && current.next !== this.head) {\n    if (current.data > current.next.data) {\n        let temp = current.data;\n        current.data = current.next.data;\n        current.next.data = temp;\n        swapped = true;\n    }\n    current = current.next;\n}`;
+                                shorten = `last_sorted = current;`;
+                                finishSort = `} while (swapped);`;
+                                break;
+                            case 'cpp':
+                            default:
+                                checkEmpty = `if (head == nullptr || head->next == head) {\n    return;\n}`;
+                                startPass = `bool swapped;\nNode* current;\nNode* last_sorted = nullptr;\ndo {\n    swapped = false;\n    current = head;`;
+                                compare = `while (current->next != last_sorted && current->next != head) {\n    if (current->data > current->next->data) {\n        std::swap(current->data, current->next->data);\n        swapped = true;\n    }\n    current = current->next;\n}`;
+                                shorten = `last_sorted = current;`;
+                                finishSort = `} while (swapped);`;
+                                break;
+                        }
+                        return `<h3>Сортування кільцевого списку (Bubble Sort)</h3>
+<p>Ви вже знайомі з алгоритмом "сортування бульбашкою", де найбільші значення поступово "спливають" у кінець списку. Для кільцевого списку базовий принцип залишається тим самим: ми не розриваємо зчеплення між вагонами, а просто міняємо їхній вантаж (дані) місцями.</p>
+<p>Однак, оскільки наш потяг їде по замкнутому колу, виникає нова небезпека — алгоритм може нескінченно бігати по колу і ніколи не зупинитися! Тому нам потрібен надійний "запобіжник", який вчасно скаже: "Стоп, коло завершено".</p>
+<h3>Покрокове пояснення коду:</h3>
+<ul>
+<li><pre><code>${checkEmpty}</code></pre><strong>Перевірка "чи є що сортувати":</strong> Якщо потяга не існує або в ньому лише один вагон, програма відразу завершує свою роботу. Такий список апріорі вважається відсортованим.</li>
+<li><pre><code>${startPass}</code></pre><strong>Підготовка до кола:</strong> Алгоритм створює курсор і ставить його на Голову. Також він бере спеціальний індикатор (прапорець), який буде фіксувати, чи робили ми якісь перестановки вантажу під час поточного кола.</li>
+<li><pre><code>${compare}</code></pre><strong>Рух і порівняння:</strong> Курсор починає рух. Він дивиться на вантаж у своєму вагоні та в наступному. Якщо його вантаж важчий (число більше), він міняє їхні дані місцями і вмикає прапорець. Після цього робить крок вперед. <br><strong>Запобіжник нескінченності:</strong> У звичайному списку курсор зупинився б, коли побачив порожнечу (кінець). Тут він зупиняється, коли бачить, що наступний вагон — це знову наша Голова! Це означає, що ми пройшли повне коло і більше перевіряти нічого.</li>
+<li><pre><code>${shorten}</code></pre><strong>Розумна оптимізація (Скорочення шляху):</strong> Після найпершого повного кола найважчий вантаж гарантовано опиниться в самому останньому вагоні (прямо перед Головою). Щоб не робити зайвої роботи, алгоритм запам'ятовує цей вагон і ставить там умовний "знак стоп". Під час другого кола курсор вже не піде до самої Голови, а зупиниться перед цим знаком. З кожним колом цей "знак стоп" буде зсуватися ближче до початку, зменшуючи маршрут.</li>
+<li><pre><code>${finishSort}</code></pre><strong>Ідеальний порядок:</strong> Програма знову і знову відправляє курсор на нові кола, поки він не проїде весь доступний маршрут, жодного разу не ввімкнувши прапорець (тобто не зробивши жодної перестановки). Це означає, що весь вантаж розставлено ідеально!</li>
+</ul>
+<h3>Часова складність:</h3>
+<ul>
+<li><strong>O(n²) (Квадратичний час) у найгіршому та середньому випадках:</strong> Навіть з нашою "розумною оптимізацією", якщо вантаж повністю перемішаний, алгоритму доведеться зробити дуже багато кіл. Для кільця з великою кількістю вагонів це забирає багато часу, тому бульбашкове сортування залишається повільним для великих обсягів даних.</li>
+<li><strong>O(n) у найкращому випадку:</strong> Якщо ви дасте програмі потяг, де вантаж вже розставлений за зростанням, алгоритм зробить рівно одне коло, побачить, що нічого міняти не треба, і миттєво завершить роботу.</li>
+</ul>`;
+                    } else if (algo === 'Selection Sort') {
+                        let checkEmpty, outerLoop, innerLoop, swapData, moveOuter;
+                        switch (progLang) {
+                            case 'python':
+                                checkEmpty = `if self.head is None or self.head.next == self.head:\n    return`;
+                                outerLoop = `current = self.head\nwhile True:\n    min_node = current\n    temp = current.next`;
+                                innerLoop = `    while temp != self.head:\n        if temp.data < min_node.data:\n            min_node = temp\n        temp = temp.next`;
+                                swapData = `    if min_node != current:\n        current.data, min_node.data = min_node.data, current.data`;
+                                moveOuter = `    current = current.next\n    if current.next == self.head:\n        break`;
+                                break;
+                            case 'java':
+                                checkEmpty = `if (head == null || head.next == head) {\n    return;\n}`;
+                                outerLoop = `Node current = head;\ndo {\n    Node min_node = current;\n    Node temp = current.next;`;
+                                innerLoop = `    while (temp != head) {\n        if (temp.data < min_node.data) {\n            min_node = temp;\n        }\n        temp = temp.next;\n    }`;
+                                swapData = `    if (min_node != current) {\n        int tmp = current.data;\n        current.data = min_node.data;\n        min_node.data = tmp;\n    }`;
+                                moveOuter = `    current = current.next;\n} while (current.next != head);`;
+                                break;
+                            case 'javascript':
+                                checkEmpty = `if (this.head === null || this.head.next === this.head) {\n    return;\n}`;
+                                outerLoop = `let current = this.head;\ndo {\n    let min_node = current;\n    let temp = current.next;`;
+                                innerLoop = `    while (temp !== this.head) {\n        if (temp.data < min_node.data) {\n            min_node = temp;\n        }\n        temp = temp.next;\n    }`;
+                                swapData = `    if (min_node !== current) {\n        let tmp = current.data;\n        current.data = min_node.data;\n        min_node.data = tmp;\n    }`;
+                                moveOuter = `    current = current.next;\n} while (current.next !== this.head);`;
+                                break;
+                            case 'cpp':
+                            default:
+                                checkEmpty = `if (head == nullptr || head->next == head) {\n    return;\n}`;
+                                outerLoop = `Node* current = head;\ndo {\n    Node* min_node = current;\n    Node* temp = current->next;`;
+                                innerLoop = `    while (temp != head) {\n        if (temp->data < min_node->data) {\n            min_node = temp;\n        }\n        temp = temp->next;\n    }`;
+                                swapData = `    if (min_node != current) {\n        std::swap(current->data, min_node->data);\n    }`;
+                                moveOuter = `    current = current->next;\n} while (current->next != head);`;
+                                break;
+                        }
+                        return `<h3>Сортування вибором у кільцевому списку (Selection Sort)</h3>
+<p>Алгоритм "сортування вибором" працює як дуже прискіпливий вантажник. Його мета — знайти найменший (найлегший) вантаж і покласти його в перший вагон, потім знайти наступний найменший і покласти в другий, і так далі.</p>
+<p>Для кільцевого списку ми використовуємо підхід "обміну даними": ми не розчіплюємо самі вагони, а просто переносимо коробки з числами з одного вагона в інший. Головна складність тут — вчасно зупинити пошук, щоб не піти на друге коло по нашому нескінченному кільцю.</p>
+<h3>Покрокове пояснення коду:</h3>
+<ul>
+<li><pre><code>${checkEmpty}</code></pre><strong>Перевірка готовності:</strong> Перш за все, програма дивиться, чи є сенс починати роботу. Якщо потяга не існує або в ньому лише один вагон, сортувати нічого — список за замовчуванням вважається ідеальним.</li>
+<li><pre><code>${outerLoop}</code></pre><strong>Вибір "цільового" вагона:</strong> Алгоритм ставить головний курсор на перший вагон (Голову). Цей курсор позначає вагон, який ми зараз намагаємося заповнити найменшим доступним вантажем. Програма тимчасово припускає, що вантаж, який вже лежить у цьому вагоні, і є найменшим.</li>
+<li><pre><code>${innerLoop}</code></pre><strong>Запуск розвідника (Пошук мінімуму):</strong> Далі алгоритм відправляє вперед курсор-розвідник. Його завдання — пробігтися по всіх наступних вагонах і перевірити їхній вантаж. <br><strong>Запобіжник нескінченності:</strong> Оскільки потяг кільцевий, розвідник повинен знати, де зупинитися. Він біжить вперед і порівнює вантажі, поки не побачить, що наступний вагон — це знову наша стартова Голова. Це сигнал, що повне коло (невідсортованої частини) пройдено. Якщо під час пробіжки розвідник знаходить вантаж, менший за наш "тимчасовий мінімум", він просто запам'ятовує розташування цього вагона.</li>
+<li><pre><code>${swapData}</code></pre><strong>Обмін вантажем:</strong> Коли розвідник завершує своє коло, ми точно знаємо, де лежить найменший вантаж. Якщо виявилося, що він не в нашому "цільовому" вагоні, програма просто міняє їхні вантажі місцями.</li>
+<li><pre><code>${moveOuter}</code></pre><strong>Крок вперед:</strong> Тепер перший вагон має ідеальний вантаж і вважається відсортованим! Головний курсор переходить до другого вагона, і весь процес пошуку повторюється. Алгоритм зупиняє свою роботу за один крок до Голови (на передостанньому вагоні) — бо якщо всі попередні вагони відсортовані правильно, в останньому автоматично залишиться найбільший вантаж.</li>
+</ul>
+<h3>Часова складність:</h3>
+<ul>
+<li><strong>O(n²) (Квадратичний час) у всіх випадках:</strong> На відміну від "бульбашкового" сортування, сортування вибором не вміє розуміти, чи список вже впорядковано. Навіть якщо всі вантажі ідеально розставлені від найменшого до найбільшого, наш розвідник все одно буде старанно бігати по колу на кожному кроці, щоб перевірити кожен вагон. Тому для потяга з n вагонів він завжди робитиме приблизно n × n кроків. Через це алгоритм вважається повільним для великих обсягів даних.</li>
+</ul>`;
+                    } else if (algo === 'Insertion Sort') {
+                        let checkEmpty, disassemble, build, stepForward, finishUp;
+                        switch (progLang) {
+                            case 'python':
+                                checkEmpty = `if self.head is None or self.head.next == self.head:\n    return`;
+                                disassemble = `sorted_head = None\ncurrent = self.head`;
+                                build = `    sorted_head = self.sortedInsert(sorted_head, current)`;
+                                stepForward = `    current = next_node\n    if current == self.head:\n        break`;
+                                finishUp = `self.head = sorted_head`;
+                                break;
+                            case 'java':
+                                checkEmpty = `if (head == null || head.next == head) {\n    return;\n}`;
+                                disassemble = `Node sorted_head = null;\nNode current = head;`;
+                                build = `    sorted_head = sortedInsert(sorted_head, current);`;
+                                stepForward = `    current = next_node;\n} while (current != head);`;
+                                finishUp = `head = sorted_head;`;
+                                break;
+                            case 'javascript':
+                                checkEmpty = `if (this.head === null || this.head.next === this.head) {\n    return;\n}`;
+                                disassemble = `let sorted_head = null;\nlet current = this.head;`;
+                                build = `    sorted_head = this.sortedInsert(sorted_head, current);`;
+                                stepForward = `    current = next_node;\n} while (current !== this.head);`;
+                                finishUp = `this.head = sorted_head;`;
+                                break;
+                            case 'cpp':
+                            default:
+                                checkEmpty = `if (head == nullptr || head->next == head) {\n    return;\n}`;
+                                disassemble = `Node* sorted_head = nullptr;\nNode* current = head;`;
+                                build = `    sorted_head = sortedInsert(sorted_head, current);`;
+                                stepForward = `    current = next_node;\n} while (current != head);`;
+                                finishUp = `head = sorted_head;`;
+                                break;
+                        }
+                        return `<h3>Сортування вставкою у кільцевому списку (Insertion Sort)</h3>
+<p>Алгоритм "сортування вставкою" нагадує процес, коли ви берете по одній карті з невідсортованої колоди і вставляєте її в правильне місце у віялі карт у вашій руці.</p>
+<p>У випадку з кільцевим списком, ми буквально крок за кроком розбираємо наш старий, невідсортований потяг і паралельно будуємо з його вагонів новий — відразу відсортований. Тут ми не просто міняємо вантаж; ми реально перечіплюємо самі вагони, слідкуючи за тим, щоб новий потяг завжди залишався замкнутим у кільце!</p>
+<h3>Покрокове пояснення коду:</h3>
+<ul>
+<li><pre><code>${checkEmpty}</code></pre><strong>Перевірка готовності:</strong> Якщо потяг порожній або складається лише з одного вагона (який замкнутий сам на собі), програма нічого не робить. Такий список вже вважається ідеальним.</li>
+<li><pre><code>${disassemble}</code></pre><strong>Розбирання старого потяга:</strong> Програма створює порожню платформу для нашого майбутнього, "відсортованого" потяга. Потім вона підходить до першого вагона старого потяга. Важливий момент: перш ніж відчепити цей вагон, програма обов'язково повинна "запам'ятати", який вагон йде наступним, щоб не загубити залишок старого потяга в процесі розбирання.</li>
+<li><pre><code>${build}</code></pre><strong>Будівництво нового потяга (Пошук місця):</strong> Відчепивши вагон, алгоритм дивиться на наш новий потяг, щоб знайти для нього правильне місце:<br>
+<strong>Сценарій А (Новий потяг порожній):</strong> Якщо це найперший відчеплений вагон, він стає Головою нового потяга і відразу причіплюється сам до себе (утворюючи міні-кільце).<br>
+<strong>Сценарій Б (Найлегший вантаж):</strong> Якщо вантаж у нашому вагоні менший, ніж у Голови нового потяга, він має стати новим початком. Але оскільки це кільце, програма змушена пробігтися аж до Хвоста нового потяга, щоб відчепити його від старої Голови і перечепити до нашого нового вагона.<br>
+<strong>Сценарій В (Вантаж посередині або важчий):</strong> Якщо вагон має стати десь посередині або в кінці, спеціальний курсор пробігає по новому потягу, шукаючи "щілину", де наступний вагон буде важчим за наш. Знайшовши її, він акуратно розсуває зчеплення і вставляє наш вагон туди.</li>
+<li><pre><code>${stepForward}</code></pre><strong>Крок вперед:</strong> Як тільки вагон успішно причеплено до нового потяга, програма повертається до того "запам'ятованого" вагона зі старого потяга (крок 2) і повторює процес.</li>
+<li><pre><code>${finishUp}</code></pre><strong>Завершення:</strong> Цей цикл "відчепити -&gt; знайти місце -&gt; вставити в кільце" триває, поки старий потяг не буде повністю розібрано. В кінці ми оголошуємо наш новозбудований, ідеально відсортований потяг головним!</li>
+</ul>
+<h3>Часова складність:</h3>
+<ul>
+<li><strong>O(n²) (Квадратичний час):</strong> Оскільки ми працюємо з кільцем, цей алгоритм багато бігає туди-сюди. Для кожного відчепленого вагона програма повинна знайти місце в новому потязі, перебираючи його з початку. А якщо вагон виявляється найменшим (Сценарій Б), їй доведеться пробігти аж до кінця нового потяга, щоб перечепити Хвіст. Для довгих списків цей процес забирає чимало часу.</li>
+<li><strong>Перевага:</strong> Попри повільність на великих обсягах даних, цей метод працює чудово і дуже швидко, якщо список вже майже відсортований з самого початку, або якщо вагонів зовсім мало.</li>
+</ul>`;
+                    } else if (algo === 'Quick Sort') {
+                        let findTail, choosePivot, partitionLoop, fixPivot, divideConquer, oneWayMovement;
+                        switch (progLang) {
+                            case 'python':
+                                findTail = `def get_tail(self):\n    if self.head is None:\n        return None\n    temp = self.head\n    while temp.next != self.head:\n        temp = temp.next\n    return temp`;
+                                choosePivot = `pivot = end.data\ni = start\nj = start`;
+                                partitionLoop = `while j != end:\n    if j.data < pivot:\n        i.data, j.data = j.data, i.data\n        i = i.next\n    j = j.next`;
+                                fixPivot = `i.data, end.data = end.data, i.data\nreturn i`;
+                                divideConquer = `if start != pivot_node:\n    temp = start\n    # ...\n    self._quick_sort(start, temp)\nif pivot_node != end:\n    self._quick_sort(pivot_node.next, end)`;
+                                oneWayMovement = `temp = start\nwhile temp.next != pivot_node:\n    temp = temp.next`;
+                                break;
+                            case 'java':
+                                findTail = `Node get_tail() {\n    if (head == null) return null;\n    Node temp = head;\n    while (temp.next != head) {\n        temp = temp.next;\n    }\n    return temp;\n}`;
+                                choosePivot = `int pivot = end.data;\nNode i = start;`;
+                                partitionLoop = `for (Node j = start; j != end; j = j.next) {\n    if (j.data < pivot) {\n        int temp = i.data;\n        i.data = j.data;\n        j.data = temp;\n        i = i.next;\n    }\n}`;
+                                fixPivot = `int temp = i.data;\ni.data = end.data;\nend.data = temp;\nreturn i;`;
+                                divideConquer = `if (start != pivot_node) {\n    Node temp = start;\n    // ...\n    _quick_sort(start, temp);\n}\nif (pivot_node != end) {\n    _quick_sort(pivot_node.next, end);\n}`;
+                                oneWayMovement = `Node temp = start;\nwhile (temp.next != pivot_node) {\n    temp = temp.next;\n}`;
+                                break;
+                            case 'javascript':
+                                findTail = `get_tail() {\n    if (this.head === null) return null;\n    let temp = this.head;\n    while (temp.next !== this.head) {\n        temp = temp.next;\n    }\n    return temp;\n}`;
+                                choosePivot = `let pivot = end.data;\nlet i = start;`;
+                                partitionLoop = `for (let j = start; j !== end; j = j.next) {\n    if (j.data < pivot) {\n        let temp = i.data;\n        i.data = j.data;\n        j.data = temp;\n        i = i.next;\n    }\n}`;
+                                fixPivot = `let temp = i.data;\ni.data = end.data;\nend.data = temp;\nreturn i;`;
+                                divideConquer = `if (start !== pivot_node) {\n    let temp = start;\n    // ...\n    this._quick_sort(start, temp);\n}\nif (pivot_node !== end) {\n    this._quick_sort(pivot_node.next, end);\n}`;
+                                oneWayMovement = `let temp = start;\nwhile (temp.next !== pivot_node) {\n    temp = temp.next;\n}`;
+                                break;
+                            case 'cpp':
+                            default:
+                                findTail = `Node* get_tail() {\n    if (head == nullptr) return nullptr;\n    Node* temp = head;\n    while (temp->next != head) {\n        temp = temp->next;\n    }\n    return temp;\n}`;
+                                choosePivot = `int pivot = end->data;\nNode* i = start;`;
+                                partitionLoop = `for (Node* j = start; j != end; j = j->next) {\n    if (j->data < pivot) {\n        std::swap(i->data, j->data);\n        i = i->next;\n    }\n}`;
+                                fixPivot = `std::swap(i->data, end->data);\nreturn i;`;
+                                divideConquer = `if (start != pivot_node) {\n    Node* temp = start;\n    // ...\n    _quick_sort(start, temp);\n}\nif (pivot_node != end) {\n    _quick_sort(pivot_node->next, end);\n}`;
+                                oneWayMovement = `Node* temp = start;\nwhile (temp->next != pivot_node) {\n    temp = temp->next;\n}`;
+                                break;
+                        }
+                        return `<h3>Швидке сортування у кільцевому списку (Quick Sort)</h3>
+<p>"Швидке сортування" — один з найпотужніших алгоритмів. Його головна ідея полягає в тому, щоб вибрати один "еталонний" (опорний) вантаж і розкидати інші так, щоб усі легші вантажі опинилися зліва від нього, а важчі — справа.</p>
+<p>Сортування кільцевого списку цим методом досить цікаве. Оскільки потяг замкнутий у нескінченне коло, алгоритму спочатку потрібно "подумки" його розірвати, визначивши чіткі межі: де наш тимчасовий "початок" і "кінець". Важливо зазначити: у цій версії алгоритму ми не розчіплюємо самі вагони (щоб не розірвати кільце), а лише переносимо коробки з числами з одного вагона в інший (обмін значеннями).</p>
+<h3>Покрокове пояснення коду:</h3>
+<ul>
+<li><pre><code>${findTail}</code></pre><strong>Пошук меж (Визначення Хвоста):</strong> Перш за все, програма перевіряє, чи існує потяг. Якщо в ньому більше одного вагона, алгоритм відправляє курсор по колу, щоб знайти самісінький останній вагон (Хвіст), який причеплений до Голови. Тепер у нас є чітка робоча зона: від Голови до Хвоста.</li>
+<li><pre><code>${choosePivot}</code></pre><strong>Вибір "Еталона" (Опорного елемента):</strong> Алгоритм бере вантаж із самого останнього вагона нашої робочої зони і призначає його "еталоном".</li>
+<li><pre><code>${partitionLoop}</code></pre><strong>Розбиття (Сортування за групами):</strong> Запускається курсор-розвідник, починаючи з першого вагона. Його мета — знайти всі вантажі, які легші за наш еталон. Як тільки розвідник знаходить такий легкий вантаж, він пересуває його ближче до початку потяга (міняє місцями з іншими вантажами).</li>
+<li><pre><code>${fixPivot}</code></pre><strong>Фіксація Еталона:</strong> Коли розвідник перевірить усі вагони, ми будемо точно знати, де закінчується група "легких" вантажів. Програма бере наш "еталонний" вантаж з останнього вагона і ставить його рівно на цю межу. Відтепер цей вантаж стоїть на своєму ідеальному, фінальному місці!</li>
+<li><pre><code>${divideConquer}</code></pre><strong>Розділяй і володарюй (Рекурсія):</strong> Тепер наш потяг логічно поділено на дві невідсортовані частини: вагони зліва від еталона та вагони справа. Алгоритм бере ліву частину і повторює для неї всі ті самі кроки (знову шукає кінець цієї зони, вибирає новий еталон, ділить вантажі). Потім він робить те саме для правої частини.</li>
+<li><pre><code>${oneWayMovement}</code></pre><strong>Складність одностороннього руху:</strong> Щоб відсортувати ліву групу, алгоритм має знати, де вона закінчується (тобто знайти вагон, що передує нашому зафіксованому еталону). Оскільки потяг може їхати тільки вперед, програмі доводиться щоразу робити додатковий пробіг від початку лівої групи, щоб знайти цей передостанній вагон.</li>
+</ul>
+<h3>Часова складність:</h3>
+<ul>
+<li><strong>O(n log n) у найкращому та середньому випадках:</strong> Якщо еталонний вантаж щоразу ділить зону приблизно на дві рівні половини, алгоритм працює надзвичайно ефективно. Він впорядковує дані блискавично, повністю виправдовуючи свою назву "Швидке" (Quick).</li>
+<li><strong>O(n²) у найгіршому випадку:</strong> Це слабке місце алгоритму. Якщо дати йому потяг, де вантажі вже розставлені ідеально (або навпаки, у зворотному порядку), самісінький останній вагон завжди матиме найбільший (або найменший) вантаж. Через це розбиття буде жахливим: 0 вагонів з одного боку і всі інші — з іншого. У такому сценарії, плюс враховуючи необхідність постійно бігати вперед для пошуку меж, швидкість алгоритму сильно падає і він стає таким же повільним, як "бульбашкове сортування".</li>
+</ul>`;
+                    }
+                }
+
                 if (algo === 'Bubble Sort') {
                     let codeDef, checkEmpty, startPass, compare, shorten, finishSort;
                     switch (progLang) {
@@ -2255,10 +3825,352 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 return `Сортує список використовуючи ${algo || 'обраний алгоритм'}.`;
             },
-            'add_vertex': 'Додає нову вершину до графа. Часова складність: O(1).',
-            'add_edge': 'Додає орієнтоване або неорієнтоване ребро між двома вершинами. Часова складність: O(1) (для списків суміжності).',
-            'bfs': 'Пошук в ширину. Обходить граф рівень за рівнем за допомогою Черги. Часова складність: O(V + E).',
-            'dfs': 'Пошук в глибину. Йде вглиб графа настільки далеко, наскільки це можливо (за допомогою Стека або рекурсії). Часова складність: O(V + E).',
+            'add_vertex': (progLang) => {
+                if (currentStructure === 'undirected-graph') {
+                    let appendEmpty, incCounter, notifyOpen;
+                    switch (progLang) {
+                        case 'python':
+                            appendEmpty = `self.adj.append([])`;
+                            incCounter = `self.numVertices += 1`;
+                            notifyOpen = `print(f"Added vertex {self.numVertices - 1}")`;
+                            break;
+                        case 'java':
+                            appendEmpty = `adj.add(new ArrayList<Integer>());`;
+                            incCounter = `numVertices++;`;
+                            notifyOpen = `System.out.println("Added vertex " + (numVertices - 1));`;
+                            break;
+                        case 'javascript':
+                            appendEmpty = `this.adj.push([]);`;
+                            incCounter = `this.numVertices++;`;
+                            notifyOpen = `console.log(\`Added vertex \${this.numVertices - 1}\\n\`);`;
+                            break;
+                        case 'cpp':
+                        default:
+                            appendEmpty = `adj.push_back(std::vector<int>());`;
+                            incCounter = `numVertices++;`;
+                            notifyOpen = `std::cout << "Added vertex " << numVertices - 1 << std::endl;`;
+                            break;
+                    }
+                    return `<h3>Додавання вершини до графа (add_vertex)</h3>
+<p><strong>Аналогія з реального життя: Будівництво нової залізничної станції</strong></p>
+<p>Уявіть, що ми розширюємо транспортну мережу країни. Ми вже маємо певну кількість міст, з'єднаних коліями. Цей алгоритм діє як наказ побудувати абсолютно нову станцію десь у полі.</p>
+<p>Ось етапи цього "будівництва":</p>
+<ul>
+<li><pre><code>${appendEmpty}</code></pre><strong>Розчищення пустиря (Додавання списку):</strong> Алгоритм створює новий, абсолютно порожній запис у головній маршрутній книзі. Це означає: "Станція вже існує, але до неї ще не прокладено жодної колії". Нова вершина додається ізольовано, без будь-яких з'єднань з іншими.</li>
+<li><pre><code>${incCounter}</code></pre><strong>Оновлення статистики (Збільшення лічильника):</strong> Ми беремо загальний реєстр усіх станцій у мережі та збільшуємо їх загальну кількість на одиницю. Тепер система офіційно знає, що кількість об'єктів зросла.</li>
+<li><pre><code>${notifyOpen}</code></pre><strong>Офіційне відкриття (Виведення повідомлення):</strong> Диспетчерам надсилається сповіщення: "Увага, успішно додано нову станцію з таким-то номером" (у програмуванні нумерація зазвичай починається з нуля, тому номер нової станції на одиницю менший за загальну кількість).</li>
+</ul>
+<p>Після виконання цього алгоритму в нашій мережі з'являється нова точка, яка терпляче чекає на інший алгоритм (додавання ребра), щоб прокласти до неї маршрути.</p>
+<h3>Оцінка ефективності (Big O)</h3>
+<p><strong>Часова складність:</strong> O(1) (амортизована)<br>
+Додавання нового порожнього запису в кінець динамічного масиву (списку суміжності) зазвичай відбувається миттєво. Нам не потрібно перевіряти або переміщати існуючі станції; ми просто додаємо нову в кінець списку.</p>
+<p><strong>Просторова складність:</strong> O(1)<br>
+Алгоритм виділяє мінімальний обсяг пам'яті виключно для одного нового порожнього списку з'єднань. Масштаб самого графа жодним чином не впливає на ці витрати.</p>`;
+                } else if (currentStructure.includes('graph')) {
+                    let checkExist, addSuccess;
+                    switch (progLang) {
+                        case 'python':
+                            checkExist = `if vertex not in self.adj_list:`;
+                            addSuccess = `self.adj_list[vertex] = []`;
+                            break;
+                        case 'java':
+                            checkExist = `if (!adj_list.containsKey(vertex)) {`;
+                            addSuccess = `adj_list.put(vertex, new ArrayList<Integer>());`;
+                            break;
+                        case 'javascript':
+                            checkExist = `if (!this.adj_list.has(vertex)) {`;
+                            addSuccess = `this.adj_list.set(vertex, []);`;
+                            break;
+                        case 'cpp':
+                        default:
+                            checkExist = `if (adj_list.find(vertex) == adj_list.end()) {`;
+                            addSuccess = `adj_list[vertex] = std::vector<int>();`;
+                            break;
+                    }
+                    return `<h3>Додавання вершини до графа (add_vertex)</h3>
+<p>Ми переходимо до надзвичайно потужної структури даних — Графів. Якщо зв'язний список нагадував потяг із послідовних вагонів, то граф найкраще уявляти як карту міст (які в програмуванні називаються "вершинами" або вузлами), з'єднаних дорогами (які називаються "ребрами").<br>
+Функція <code>add_vertex</code> виконує найпершу і найпростішу дію — вона просто реєструє нове місто на нашій порожній або вже існуючій карті.</p>
+<h3>Покрокове пояснення:</h3>
+<ul>
+<li><pre><code>${checkExist}</code></pre><strong>Перевірка довідника (Пошук дублікатів):</strong> Перш ніж будувати нове місто, програма заглядає у свій головний довідник (так званий "список суміжності"), щоб перевірити, чи немає там вже міста з точно такою ж назвою або ідентифікаційним номером.</li>
+<li><pre><code>${addSuccess}</code></pre><strong>Реєстрація нового міста:</strong> Якщо перевірка показує, що такого міста ще немає, програма офіційно додає його до довідника. На цьому етапі місто створюється абсолютно ізольованим — до нього ще не ведуть жодні дороги, і з нього неможливо нікуди виїхати (для нього створюється порожній список зв'язків). Дороги (ребра) ми будемо будувати пізніше за допомогою інших функцій.</li>
+<li><strong>Захист від помилок:</strong> Якщо місто з таким номером вже є на карті, алгоритм нічого не перезаписує і просто повідомляє користувача, що така точка вже існує. Це дуже важливий захисний механізм. Якби ми дозволили створення двох міст з однаковими номерами, наша навігаційна система просто б зламалася, не розуміючи, куди саме прокладати маршрути.</li>
+</ul>
+<h3>Часова складність:</h3>
+<ul>
+<li><strong>O(1) або O(log V) (Дуже швидко):</strong> Швидкість додавання вершини залежить від того, як саме технічно влаштований наш "довідник" під капотом програми:
+<ul>
+<li>Якщо довідник працює за принципом миттєвого пошуку (хеш-таблиця), перевірка та створення нового запису відбуваються за ідеальний константний час — O(1).</li>
+<li>Якщо довідник побудований як впорядковане дерево пошуку, програмі знадобиться трохи часу, щоб знайти потрібне місце за алфавітом або номером. У такому разі швидкість складе O(log V), де V — це кількість вже існуючих вершин (міст).</li>
+</ul>
+</li>
+</ul>
+<p>В обох випадках це надзвичайно ефективна операція, яка виконується майже миттєво.</p>`;
+                }
+                return `Додає нову вершину до графа. Часова складність: O(1).`;
+            },
+            'add_edge': (progLang) => {
+                if (currentStructure === 'undirected-graph') {
+                    let safetyCheck, firstConn, secondConn;
+                    switch (progLang) {
+                        case 'python':
+                            safetyCheck = `if u >= self.numVertices or v >= self.numVertices or u < 0 or v < 0:\n    print("Error: One or both vertices do not exist!")\n    return`;
+                            firstConn = `self.adj[u].append(v)`;
+                            secondConn = `self.adj[v].append(u)`;
+                            break;
+                        case 'java':
+                            safetyCheck = `if (u >= numVertices || v >= numVertices || u < 0 || v < 0) {\n    System.out.println("Error: One or both vertices do not exist!");\n    return;\n}`;
+                            firstConn = `adj.get(u).add(v);`;
+                            secondConn = `adj.get(v).add(u);`;
+                            break;
+                        case 'javascript':
+                            safetyCheck = `if (u >= this.numVertices || v >= this.numVertices || u < 0 || v < 0) {\n    console.log("Error: One or both vertices do not exist!\\n");\n    return;\n}`;
+                            firstConn = `this.adj[u].push(v);`;
+                            secondConn = `this.adj[v].push(u);`;
+                            break;
+                        case 'cpp':
+                        default:
+                            safetyCheck = `if (u >= numVertices || v >= numVertices || u < 0 || v < 0) {\n    std::cout << "Error: One or both vertices do not exist!" << std::endl;\n    return;\n}`;
+                            firstConn = `adj[u].push_back(v);`;
+                            secondConn = `adj[v].push_back(u);`;
+                            break;
+                    }
+                    return `<h3>Додавання з'єднання / ребра (add_edge)</h3>
+<p><strong>Аналогія з реального життя: Прокладання двоколійної залізниці між містами</strong></p>
+<p>Якщо в попередньому прикладі ми будували ізольовані станції, то тепер ми виділяємо ресурси, щоб з'єднати дві з них повноцінною колією. Оскільки граф неорієнтований, це схоже на будівництво стандартної двоколійної залізниці, де поїзди можуть вільно курсувати в обох напрямках.</p>
+<p>Ось як покроково працює логіка цього процесу:</p>
+<ul>
+<li><pre><code>${safetyCheck}</code></pre><strong>Перевірка реальності (Перевірка безпеки):</strong> Перш ніж відправляти будівельну бригаду, головний інженер завжди звіряється з картою. Він перевіряє, чи дійсно існують обидві вказані станції в реальності (їх номери не можуть бути від'ємними або більшими за загальну кількість існуючих станцій). Якщо хтось дає наказ з'єднати існуючу станцію з якоюсь уявною зупинкою "№ 999", система негайно блокує цю дію і повідомляє про помилку. Не можна будувати колії в нікуди.</li>
+<li><pre><code>${firstConn}</code></pre><strong>Оновлення розкладу першої станції (З'єднання u &rarr; v):</strong> Якщо обидві станції існують, ми повідомляємо начальнику першої станції: "Тепер у вас є прямий маршрут до другої станції". Він додає цей напрямок до свого місцевого списку доступних рейсів.</li>
+<li><pre><code>${secondConn}</code></pre><strong>Дзеркальне оновлення (З'єднання v &rarr; u):</strong> Оскільки наша залізниця працює у двох напрямках, ми обов'язково повинні зателефонувати начальнику другої станції і дати аналогічну вказівку: "Додайте зворотний рейс до першої станції у свій розклад".</li>
+</ul>
+<p>Без цього останнього кроку ми отримали б орієнтований граф (вулицю з одностороннім рухом), але для двостороннього зв'язку критично важливо записати інформацію в журнали обох вузлів.</p>
+<h3>Оцінка ефективності (Big O)</h3>
+<p><strong>Часова складність:</strong> O(1) (амортизована)<br>
+Перевірка існування станцій — це миттєва математична операція. Саме "прокладання маршруту" полягає у швидкому додаванні одного запису в кінець списків для двох конкретних станцій. Час виконання не залежить від того, наскільки масивною є вся транспортна мережа.</p>
+<p><strong>Просторова складність:</strong> O(1)<br>
+Для запису нового з'єднання алгоритм використовує рівно два нових елементи пам'яті (по одному для кожного напрямку). Масштаб усього графа не впливає на ці витрати.</p>`;
+                } else if (currentStructure.includes('graph')) {
+                    let prepVertex, linkEdge;
+                    switch (progLang) {
+                        case 'python':
+                            prepVertex = `self.add_vertex(source)\nself.add_vertex(destination)`;
+                            linkEdge = `self.adj_list[source].append(destination)`;
+                            break;
+                        case 'java':
+                            prepVertex = `add_vertex(source);\nadd_vertex(destination);`;
+                            linkEdge = `adj_list.get(source).add(destination);`;
+                            break;
+                        case 'javascript':
+                            prepVertex = `this.add_vertex(source);\nthis.add_vertex(destination);`;
+                            linkEdge = `this.adj_list.get(source).push(destination);`;
+                            break;
+                        case 'cpp':
+                        default:
+                            prepVertex = `add_vertex(source);\nadd_vertex(destination);`;
+                            linkEdge = `adj_list[source].push_back(destination);`;
+                            break;
+                    }
+                    return `<h3>Додавання з'єднання / ребра (add_edge)</h3>
+<p>Якщо вершини — це міста на нашій карті, то ребра — це дороги, які їх з'єднують. Без доріг наш граф складався б просто з набору ізольованих точок, між якими неможливо подорожувати.</p>
+<p>Функція, яку ми розглядаємо, створює орієнтоване ребро. У реальному житті це точний еквівалент вулиці з одностороннім рухом. Тобто ми прокладаємо маршрут від Міста А до Міста Б, але це зовсім не означає, що по цій самій дорозі можна повернутися назад!</p>
+<h3>Покрокове пояснення:</h3>
+<ul>
+<li><pre><code>${prepVertex}</code></pre><strong>Перевірка існування міст:</strong> Перш ніж будувати дорогу, логічно переконатися, що обидва міста дійсно існують. Алгоритм бере початкову та кінцеву точки і перевіряє наш головний довідник. Якщо якогось із цих міст ще немає на карті, програма автоматично створює їх (за допомогою попередньої функції <code>add_vertex</code>). Це захищає систему від помилок: ми ніколи не побудуємо дорогу "в нікуди".</li>
+<li><pre><code>${linkEdge}</code></pre><strong>Встановлення вказівника (Прокладання дороги):</strong> Як тільки ми переконалися, що обидва міста є на карті, алгоритм заглядає в довідник початкового міста. Він додає місто призначення до списку доступних виїздів з цього початкового міста.</li>
+<li><strong>Одностороння природа:</strong> Зверніть увагу: програма записує маршрут лише в довідник початкового міста. У довіднику міста призначення жодних нових записів не з'являється. Саме тому дорога виходить односторонньою. (Якби ми хотіли зробити стандартне двостороннє шосе, програмі довелося б зробити ще один крок і записати зворотний маршрут).</li>
+</ul>
+<h3>Часова складність:</h3>
+<ul>
+<li><strong>O(1) (Дуже швидко):</strong> Сам процес додавання нового запису про дорогу до списку виїздів міста відбувається майже миттєво. Загальний час виконання залежить лише від того, наскільки швидко програма знаходить ці міста в довіднику (як ми з'ясували раніше, це займає час O(1) або O(log V)). У будь-якому випадку, швидкість прокладання нової дороги не залежить від того, скільки мільйонів інших доріг вже існує на нашій карті. Це надзвичайно ефективна операція!</li>
+</ul>`;
+                }
+                return `Додає орієнтоване або неорієнтоване ребро між двома вершинами. Часова складність: O(1) (для списків суміжності).`;
+            },
+            'bfs': (progLang) => {
+                if (currentStructure === 'undirected-graph') {
+                    let setupQueue, markVisited, addToQueue;
+                    switch (progLang) {
+                        case 'python':
+                            setupQueue = `visited = [False] * self.numVertices\nq = []`;
+                            markVisited = `visited[neighbor] = True`;
+                            addToQueue = `q.append(neighbor)`;
+                            break;
+                        case 'java':
+                            setupQueue = `boolean[] visited = new boolean[numVertices];\nQueue<Integer> q = new LinkedList<>();`;
+                            markVisited = `visited[neighbor] = true;`;
+                            addToQueue = `q.add(neighbor);`;
+                            break;
+                        case 'javascript':
+                            setupQueue = `const visited = new Array(this.numVertices).fill(false);\nconst q = [];`;
+                            markVisited = `visited[neighbor] = true;`;
+                            addToQueue = `q.push(neighbor);`;
+                            break;
+                        case 'cpp':
+                        default:
+                            setupQueue = `std::vector<bool> visited(numVertices, false);\nstd::queue<int> q;`;
+                            markVisited = `visited[neighbor] = true;`;
+                            addToQueue = `q.push(neighbor);`;
+                            break;
+                    }
+                    return `<h3>Пошук в ширину (BFS)</h3>
+<p><strong>Аналогія з реального життя: Масштабна рятувальна операція</strong></p>
+<p>Уявіть, що в місті загубився собака, і ви керуєте штабом пошукової операції. Ваше завдання &mdash; прочесати місцевість так, щоб жоден провулок не залишився без уваги, поступово розширюючи зону пошуку навколо точки, де востаннє бачили улюбленця.</p>
+<p>Ось як працює ваша стратегія (вона повністю відображає логіку BFS):</p>
+<ul>
+<li><pre><code>${setupQueue}</code></pre><strong>Організація штабу (Початковий вузол і черга):</strong> Ви ставите намет на перехресті, з якого починається пошук (<code>startNode</code>). Щоб уникнути хаосу, ви берете рупор і блокнот (в алгоритмі це черга). У цей блокнот ви будете записувати всі перехрестя, які потрібно перевірити, строго в порядку їхньої черги.</li>
+<li><pre><code>${markVisited}</code></pre><strong>Перевірка найближчих сусідів (Перше коло):</strong> Спочатку ви відправляєте рятувальників на всі сусідні перехрестя (за один квартал). Коли рятувальники прибувають на місце, вони ставлять мітку "перевірено".</li>
+<li><pre><code>${addToQueue}</code></pre><strong>Планування наступної хвилі (Додавання до черги):</strong> З кожного перевіреного сусіднього перехрестя рятувальники бачать нові вулиці, що ведуть ще далі. Вони передають їх координати вам по рації. Ви не кажете їм бігти туди негайно! Ви просто записуєте ці нові координати в кінець свого блокнота.</li>
+<li><strong>Ефект кіл на воді:</strong> Ви продовжуєте викликати команди строго за списком з блокнота. Завдяки цьому правилу штаб гарантовано спочатку перевірить усі точки на відстані 1 кварталу, потім &mdash; усі точки на відстані 2 кварталів, потім &mdash; 3 кварталів і так далі. Пошук поширюється рівномірними концентричними колами, як кола від кинутого у воду каменя.</li>
+</ul>
+<p>Головна сила BFS полягає в тому, що він гарантовано знаходить найкоротший шлях (з найменшою кількістю переходів) від початкової точки до будь-якої іншої, оскільки він ніколи не перейде до віддалених кварталів, поки не дослідить ближчі.</p>
+<h3>Оцінка ефективності (Big O)</h3>
+<p><strong>Часова складність:</strong> O(V + E)<br>
+Як і у випадку з пошуком в глибину, V &mdash; це кількість перехресть, а E &mdash; кількість вулиць між ними. Щоб ретельно прочесати місто, нам доведеться відвідати кожне перехрестя і пройти кожною вулицею рівно один раз. Час виконання зростає лінійно залежно від розміру графа.</p>
+<p><strong>Просторова складність:</strong> O(V)<br>
+Пам'ять витрачається на масив міток (щоб знати, де ми вже були) і на чергу (наш "блокнот"). У найгіршому випадку, коли місто має зіркоподібну структуру (величезна кількість вулиць розходиться одночасно від центру), наша черга в певний момент може зберігати інформацію майже про всі вузли графа одночасно.</p>`;
+                } else if (currentStructure.includes('graph')) {
+                    let startTrav, loopQueue, checkNeighbors;
+                    switch (progLang) {
+                        case 'python':
+                            startTrav = `visited.add(start_vertex)\nqueue = [start_vertex]`;
+                            loopQueue = `while queue:\n    current = queue.pop(0)`;
+                            checkNeighbors = `for neighbor in self.adj_list[current]:\n    if neighbor not in visited:`;
+                            break;
+                        case 'java':
+                            startTrav = `visited.add(start_vertex);\nq.add(start_vertex);`;
+                            loopQueue = `while (!q.isEmpty()) {\n    int current = q.poll();`;
+                            checkNeighbors = `for (int neighbor : adj_list.get(current)) {\n    if (!visited.contains(neighbor)) {`;
+                            break;
+                        case 'javascript':
+                            startTrav = `visited.add(start_vertex);\nqueue.push(start_vertex);`;
+                            loopQueue = `while (queue.length > 0) {\n    const current = queue.shift();`;
+                            checkNeighbors = `for (const neighbor of this.adj_list.get(current)) {\n    if (!visited.has(neighbor)) {`;
+                            break;
+                        case 'cpp':
+                        default:
+                            startTrav = `visited.insert(start_vertex);\nq.push(start_vertex);`;
+                            loopQueue = `while (!q.empty()) {\n    int current = q.front();\n    q.pop();`;
+                            checkNeighbors = `for (int neighbor : adj_list[current]) {\n    if (visited.find(neighbor) == visited.end()) {`;
+                            break;
+                    }
+                    return `<h3>Пошук в ширину (BFS)</h3>
+<p>Уявіть, що ви стоїте у своєму рідному місті і хочете дослідити всю країну. Який найлогічніший спосіб це зробити? Найкращий підхід — спочатку відвідати всі міста, безпосередньо з'єднані з вашим (ваших найближчих сусідів). Потім відвідати всіх "сусідів ваших сусідів" (міста на відстані двох кроків), потім міста ще далі, і так далі.</p>
+<p>Ваш маршрут розширюється рівномірно в усіх напрямках, наче кола на воді від кинутого в ставок каменя. Цей "хвилеподібний" принцип — це саме те, як працює надзвичайно популярний алгоритм "Пошуку в ширину" (BFS).</p>
+<p>Щоб переконатися, що алгоритм не заблукає або не буде ходити по колу (оскільки дороги можуть утворювати петлі), йому потрібні два інструменти:</p>
+<ul>
+<li><strong>Журнал відвідувань:</strong> Список міст, де ми вже були або куди вже запланували поїхати.</li>
+<li><strong>Черга:</strong> Список міст, які чекають на дослідження. Вона працює як звичайна черга в магазині — хто перший прийшов, того першим і обслуговують.</li>
+</ul>
+<h3>Покрокове пояснення:</h3>
+<ul>
+<li><strong>Початкова перевірка:</strong> Спочатку навігатор перевіряє, чи дійсно існує місто, з якого ми хочемо почати, на карті. Якщо ні, пошук скасовується.</li>
+<li><pre><code>${startTrav}</code></pre><strong>Перший крок:</strong> Ми додаємо наше початкове місто до Журналу відвідувань (щоб ми ніколи туди не поверталися) і поміщаємо його першим у Чергу.</li>
+<li><pre><code>${loopQueue}</code></pre><strong>Обробка міста:</strong> Ми беремо найперше місто з Черги та "відвідуємо" його (наприклад, виводимо його назву на екран).</li>
+<li><pre><code>${checkNeighbors}</code></pre><strong>Сканування сусідів (Планування):</strong> Перебуваючи в цьому місті, ми дивимося на всі дороги, що ведуть з нього. Ми перевіряємо кожного сусіда: якщо цього сусіда ще немає в нашому Журналі відвідувань, ми негайно записуємо його туди і поміщаємо в самий кінець Черги.</li>
+<li><strong>Рух хвилі:</strong> Місто тепер повністю досліджено! Програма знову бере перше місто з Черги (яке буде одним із сусідів) і повторює процес. Оскільки ми завжди додаємо нові міста в кінець черги, алгоритм гарантовано відвідає всіх "близьких" сусідів перед тим, як перейти до "далеких".</li>
+<li><strong>Завершення:</strong> Цей процес триває, поки Черга не стане повністю порожньою. Це означає, що ми відвідали всі міста на карті, до яких можна було дістатися дорогами.</li>
+</ul>
+<h3>Часова складність:</h3>
+<ul>
+<li><strong>O(V + E) (Лінійний час):</strong> Швидкість алгоритму залежить від кількості вершин (V, міст) і кількості ребер (E, доріг) у нашому графі. Щоб повністю дослідити карту, алгоритм повинен "відвідати" кожне місто рівно один раз і перевірити кожну дорогу рівно один раз. Тому час виконання зростає пропорційно розміру карти. Це дуже ефективний алгоритм, який часто використовується в GPS-навігаторах для пошуку найкоротшого шляху!</li>
+</ul>
+<p>Бажаєте дізнатися, як Пошук в глибину (DFS) відрізняється від BFS, адже він використовує протилежний підхід, глибоко занурюючись у одну гілку перед тим, як досліджувати інші?</p>`;
+                }
+                return `Пошук в ширину. Обходить граф рівень за рівнем за допомогою Черги. Часова складність: O(V + E).`;
+            },
+            'dfs': (progLang) => {
+                if (currentStructure === 'undirected-graph') {
+                    let safetyCheck, initVisited, callHelper, fieldWork;
+                    switch (progLang) {
+                        case 'python':
+                            safetyCheck = `if startNode >= self.numVertices or startNode < 0:\n    print("Error: Starting node does not exist!")\n    return`;
+                            initVisited = `visited = [False] * self.numVertices`;
+                            callHelper = `self.dfs_helper(startNode, visited)`;
+                            fieldWork = `visited[currentNode] = True\nfor neighbor in self.adj[currentNode]:\n    if not visited[neighbor]:\n        self.dfs_helper(neighbor, visited)`;
+                            break;
+                        case 'java':
+                            safetyCheck = `if (startNode >= numVertices || startNode < 0) {\n    System.out.println("Error: Starting node does not exist!");\n    return;\n}`;
+                            initVisited = `boolean[] visited = new boolean[numVertices];`;
+                            callHelper = `dfs_helper(startNode, visited);`;
+                            fieldWork = `visited[currentNode] = true;\nfor (int neighbor : adj.get(currentNode)) {\n    if (!visited[neighbor]) {\n        dfs_helper(neighbor, visited);\n    }\n}`;
+                            break;
+                        case 'javascript':
+                            safetyCheck = `if (startNode >= this.numVertices || startNode < 0) {\n    console.log("Error: Starting node does not exist!\\n");\n    return;\n}`;
+                            initVisited = `const visited = new Array(this.numVertices).fill(false);`;
+                            callHelper = `this.dfs_helper(startNode, visited, result);`;
+                            fieldWork = `visited[currentNode] = true;\nfor (const neighbor of this.adj[currentNode]) {\n    if (!visited[neighbor]) {\n        this.dfs_helper(neighbor, visited, result);\n    }\n}`;
+                            break;
+                        case 'cpp':
+                        default:
+                            safetyCheck = `if (startNode >= numVertices || startNode < 0) {\n    std::cout << "Error: Starting node does not exist!" << std::endl;\n    return;\n}`;
+                            initVisited = `std::vector<bool> visited(numVertices, false);`;
+                            callHelper = `dfs_helper(startNode, visited);`;
+                            fieldWork = `visited[currentNode] = true;\nfor (int neighbor : adj[currentNode]) {\n    if (!visited[neighbor]) {\n        dfs_helper(neighbor, visited);\n    }\n}`;
+                            break;
+                    }
+                    return `<h3>Пошук в глибину (DFS)</h3>
+<p><strong>Аналогія з реального життя: Командний центр та Польовий агент</strong></p>
+<p>Уявіть, що наше дослідження заплутаного старого міста тепер вийшло на новий рівень. Це вже не самотній турист, а професійна експедиція, де обов'язки чітко розподілені між Командним центром (публічна функція) та Польовим агентом (приватна допоміжна функція).</p>
+<p>Ось як логічно розбитий цей процес:</p>
+<ul>
+<li><pre><code>${safetyCheck}</code></pre><strong>Перевірка координат Штабом (Перевірка безпеки):</strong> Коли надходить наказ розпочати дослідження (виклик публічної функції), Командний центр спочатку дивиться на карту. Якщо клієнт просить почати з перехрестя, якого не існує (від'ємне число або більше за розмір міста), місія негайно скасовується. Штаб не відправляє людей у нікуди.</li>
+<li><pre><code>${initVisited}</code></pre><strong>Видача спорядження (Ініціалізація visited):</strong> Якщо координати правильні, Штаб готує для агента абсолютно новий, чистий блокнот (масив visited), де навпроти кожного перехрестя стоїть статус "не відвідано" (false).</li>
+<li><pre><code>${callHelper}</code></pre><strong>Делегування роботи (Виклик dfs_helper):</strong> Штаб передає цей блокнот Польовому агенту, вказує стартову точку і каже: "Дій за інструкцією". На цьому активна робота Штабу закінчується; він просто чекає на результати.</li>
+<li><pre><code>${fieldWork}</code></pre><strong>Польова робота (Рекурсивна функція):</strong> Польовий агент виконує ту саму рутинну роботу, яку ми обговорювали раніше. Він прибуває на місце, робить позначку в блокноті, звітує по рації, оглядає сусідні вулиці і, якщо він там ще не був, з головою занурюється в них (рекурсивний виклик).</li>
+</ul>
+<h3>Чому такий підхід кращий?</h3>
+<p>Він створює ідеальний "сервіс" для кінцевого користувача. Замовнику дослідження не потрібно самому йти в магазин, купувати чистий блокнот і передавати його агенту. Користувач просто каже: "Почни з вузла 5", а програма сама готує всі необхідні інструменти та запускає приховані механізми.</p>
+<h3>Оцінка ефективності (Big O)</h3>
+<p>Оскільки під капотом це той самий алгоритм, його ефективність залишається незмінною:</p>
+<p><strong>Часова складність:</strong> O(V + E)<br>
+Де V &mdash; кількість вершин (перехресть), а E &mdash; кількість ребер (вулиць). Агенту все одно доведеться обійти всю доступну територію, витративши час, пропорційний її розміру.</p>
+<p><strong>Просторова складність:</strong> O(V)<br>
+Пам'ять витрачається на "блокнот" з мітками для кожної вершини та на підтримку зв'язку зі Штабом (стек рекурсивних викликів, коли агент заходить у глибокі глухі кути).</p>`;
+                } else if (currentStructure.includes('graph')) {
+                    let markVisited, checkNeighbors;
+                    switch (progLang) {
+                        case 'python':
+                            markVisited = `visited[node] = True`;
+                            checkNeighbors = `for neighbor in adj[node]:\n    if not visited[neighbor]:`;
+                            break;
+                        case 'java':
+                            markVisited = `visited[node] = true;`;
+                            checkNeighbors = `for (int neighbor : adj.get(node)) {\n    if (!visited[neighbor]) {`;
+                            break;
+                        case 'javascript':
+                            markVisited = `visited[node] = true;`;
+                            checkNeighbors = `for (const neighbor of adj[node]) {\n    if (!visited[neighbor]) {`;
+                            break;
+                        case 'cpp':
+                        default:
+                            markVisited = `visited[node] = true;`;
+                            checkNeighbors = `for (int neighbor : adj[node]) {\n        if (!visited[neighbor]) {`;
+                            break;
+                    }
+                    return `<h3>Пошук в глибину (DFS)</h3>
+<p><strong>Аналогія з реального життя: Дослідження лабіринту старого міста</strong></p>
+<p>Уявіть, що ви турист, який намагається дослідити абсолютно всі вузькі вулички незнайомого старого міста, щоб нічого не пропустити, але при цьому не ходити колами.</p>
+<p>Ось як працює ваша логіка дослідження (яка ідеально відповідає логіці алгоритму DFS):</p>
+<ul>
+<li><pre><code>${markVisited}</code></pre><strong>Мітка крейдою (Запис про відвідування):</strong> Коли ви прибуваєте на нове перехрестя (в коді це <code>node</code>), ви негайно малюєте хрестик на бруківці крейдою та робите фото цього місця (вивід на екран). Це сигнал вашому майбутньому "я": "Я тут уже був".</li>
+<li><strong>Огляд доступних шляхів (Перевірка сусідів):</strong> Ви дивитесь на всі вулиці, що розходяться від цього перехрестя.</li>
+<li><pre><code>${checkNeighbors}</code></pre><strong>Занурення в невідоме (Рекурсивний виклик):</strong> Якщо ви бачите вулицю, що веде до перехрестя без вашої мітки крейдою, ви не залишаєтесь, щоб розглянути інші повороти. Ви негайно йдете цією новою вулицею якомога далі.</li>
+<li><strong>Повернення назад (Backtracking):</strong> Ви продовжуєте йти глибше, поки не опинитесь у глухому куті або на перехресті, де всі сусідні вулиці вже мають ваші мітки крейдою. Що тоді? Ви просто робите один крок назад (це відбувається автоматично, коли рекурсивна функція завершує своє виконання для поточної точки) і перевіряєте, чи не залишилося інших недосліджених поворотів на попередньому перехресті.</li>
+</ul>
+<p>Головна особливість цього підходу криється в його назві — "в глибину". Ви завжди намагаєтесь просунутися якомога далі по одному маршруту, перш ніж повертатися назад і перевіряти альтернативи.</p>
+<h3>Оцінка ефективності (Big O)</h3>
+<p><strong>Часова складність:</strong> O(V + E)</p>
+<ul>
+<li>V (Вершини) — це кількість перехресть (вузлів).</li>
+<li>E (Ребра) — це кількість вулиць між ними (ребер).</li>
+</ul>
+<p>Алгоритму потрібно відвідати кожне перехрестя і перевірити кожну вулицю один раз, тому час виконання зростає пропорційно розміру всієї карти.</p>
+<p><strong>Просторова складність:</strong> O(V)<br>
+Нам потрібна додаткова пам'ять для зберігання масиву міток (де ми вже були). Крім того, пам'ять споживається для підтримки самого ланцюга повернення (стек викликів рекурсії). У найгіршому випадку (якщо всі вулиці вишикувані в одну довгу пряму лінію), нам доведеться тримати всі вузли графа в пам'яті одночасно.</p>`;
+                }
+                return `Пошук в глибину. Йде вглиб графа настільки далеко, наскільки це можливо (за допомогою Стека або рекурсії). Часова складність: O(V + E).`;
+            },
             'insert': 'Вставляє нове значення в дерево. Часова складність: O(log n) для збалансованих дерев, O(n) для незбалансованих.',
             'remove': 'Видаляє значення з дерева. Часова складність: O(log n) для збалансованих дерев.',
             'search': 'Шукає значення в дереві. Часова складність: O(log n) для збалансованих дерев.'
