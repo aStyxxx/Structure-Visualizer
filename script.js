@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let executionId = 0;
     let isPaused = false;
     let stepIndex = 0;
+    let animationSpeedMultiplier = 1.0;
 
     // --- Localization ---
     const translations = {
@@ -1289,8 +1290,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    let animationSpeedMultiplier = 1.0;
-    
     document.getElementById('speed-slider').addEventListener('input', (e) => {
         animationSpeedMultiplier = parseFloat(e.target.value);
         document.getElementById('speed-label').textContent = `Speed: ${animationSpeedMultiplier}x`;
