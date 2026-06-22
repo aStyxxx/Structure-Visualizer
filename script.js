@@ -63,7 +63,11 @@ document.addEventListener('DOMContentLoaded', () => {
             'avl-tree': 'AVL Tree',
             'queue': 'Queue:',
             'stack': 'Stack:',
-            'visited': 'Visited:'
+            'visited': 'Visited:',
+            'categories': { 'linkedLists': 'Linked Lists', 'graphs': 'Graphs', 'trees': 'Trees' },
+            'palette': 'Blocks Palette',
+            'workspace': 'Script Workspace',
+            'speed': 'Speed'
         },
         'uk': {
             'visualizing': 'Візуалізація',
@@ -88,7 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
             'avl-tree': 'АВЛ Дерево',
             'queue': 'Черга (Queue):',
             'stack': 'Стек (Stack):',
-            'visited': 'Відвідані:'
+            'visited': 'Відвідані:',
+            'speed': 'Швидкість'
         }
     };
     
@@ -115,6 +120,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 visualizerPlaceholderText.textContent = `${t.visualizing}: ${t[struct] || item.textContent}`;
             }
         });
+        
+        const speedLabel = document.getElementById('speed-label');
+        if (speedLabel) speedLabel.textContent = `${t.speed}: ${typeof animationSpeedMultiplier !== 'undefined' ? animationSpeedMultiplier : 1}x`;
+
+        const catLinked = document.getElementById('cat-linked-lists');
+        if (catLinked) catLinked.textContent = t.categories.linkedLists;
+        
+        const catGraphs = document.getElementById('cat-graphs');
+        if (catGraphs) catGraphs.textContent = t.categories.graphs;
+        
+        const catTrees = document.getElementById('cat-trees');
+        if (catTrees) catTrees.textContent = t.categories.trees;
+        
+        const titlePalette = document.getElementById('title-blocks-palette');
+        if (titlePalette) titlePalette.textContent = t.palette;
+        
+        const titleWorkspace = document.getElementById('title-script-workspace');
+        if (titleWorkspace) titleWorkspace.textContent = t.workspace;
+
         // Home Page updates
         const homeSubtitle = document.getElementById('home-subtitle');
         if (homeSubtitle) {
